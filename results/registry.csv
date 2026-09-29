@@ -1,1 +1,4 @@
 run_id,date_utc,commit,phase,kind,where,path,notes
+2026-09-29_kaggle_00_smoke_offline,2026-09-29T09:13Z,76f2612 (pushed before commit; job files identical),0,sandbox smoke (internet off),kaggle cpu,results/2026-09-29_kaggle_00_smoke_offline,network blocked; 3 Kaggle platform tokens present in env
+2026-09-29_phase0_data_level_probe,2026-09-29,76f2612,0,baseline runnability (data-level tools on probe splits),laptop,results/2026-09-29_phase0_data_level_probe,leakcheck-ml 0.3.0; leakhound-ml 0.5.0; dataleaks 0.1.2; deepchecks 0.19.1 (py3.11 env)
+2026-09-29_kaggle_00b_yang_baseline,2026-09-29,76f2612,0,baseline runnability (Yang et al. analyser build + probes),kaggle cpu (internet on; trusted inputs only),results/2026-09-29_kaggle_00b_yang_baseline,build ok; p1 detected; p2 p3 not flagged; p4 clean

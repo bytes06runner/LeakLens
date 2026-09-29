@@ -1,0 +1,76 @@
+[{"stream_name":"stdout","time":37.287642009,"data":"[apt_souffle] rc=0 (37s)\n"}
+,{"stream_name":"stdout","time":40.128780782,"data":"[node] rc=0 (3s)\n"}
+,{"stream_name":"stdout","time":50.58641491,"data":"[clone] rc=0 (10s)\n"}
+,{"stream_name":"stdout","time":178.578450503,"data":"[pyright_build] rc=0 (128s)\n"}
+,{"stream_name":"stdout","time":191.159180269,"data":"[python38_venv] rc=0 (13s)\n"}
+,{"stream_name":"stdout","time":199.006868006,"data":"[analyse_p1_preprocessing_leak.py] rc=0 (7s)\n"}
+,{"stream_name":"stdout","time":204.263081531,"data":"[analyse_p2_group_leak.py] rc=0 (5s)\n"}
+,{"stream_name":"stdout","time":210.556276805,"data":"[analyse_p3_temporal_leak.py] rc=0 (6s)\n"}
+,{"stream_name":"stdout","time":215.227709341,"data":"[analyse_p4_clean.py] rc=0 (5s)\n"}
+,{"stream_name":"stdout","time":215.395936357,"data":"{\n"}
+,{"stream_name":"stdout","time":215.395962594,"data":"  \"started_utc\": \"2026-09-29T09:18:45Z\",\n"}
+,{"stream_name":"stdout","time":215.395970187,"data":"  \"yang_commit\": \"a7d038bfec6b8ddbe21d87dde54b806aecdd79f7\",\n"}
+,{"stream_name":"stdout","time":215.395977062,"data":"  \"leaklens_commit\": \"76f26127b337d5670b6eec4aabcef6829db2e554\",\n"}
+,{"stream_name":"stdout","time":215.395983567,"data":"  \"probe_results\": {\n"}
+,{"stream_name":"stdout","time":215.395989907,"data":"    \"p1_preprocessing_leak.py\": {\n"}
+,{"stream_name":"stdout","time":215.395996324,"data":"      \"exit_ok\": true,\n"}
+,{"stream_name":"stdout","time":215.396002281,"data":"      \"seconds\": 6.5,\n"}
+,{"stream_name":"stdout","time":215.396008676,"data":"      \"html_written\": true,\n"}
+,{"stream_name":"stdout","time":215.396015011,"data":"      \"leak_relations\": {\n"}
+,{"stream_name":"stdout","time":215.396020963,"data":"        \"PreProcessingLeak\": [\n"}
+,{"stream_name":"stdout","time":215.396026883,"data":"          \"X\\t$invo10\\tLogisticRegression.fit\\t[, ]\"\n"}
+,{"stream_name":"stdout","time":215.396033524,"data":"        ],\n"}
+,{"stream_name":"stdout","time":215.396039594,"data":"        \"Telemetry_FinalPreProcessingLeak\": [\n"}
+,{"stream_name":"stdout","time":215.396046244,"data":"          \"clf\\tX_train\\t$invo10\\tLogisticRegression.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tLogisticRegression.score\\t[, ]\\t_var12\\tX\",\n"}
+,{"stream_name":"stdout","time":215.396053492,"data":"          \"clf\\tX_train\\t$invo10\\tLogisticRegression.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tLogisticRegression.score\\t[, ]\\tX_0\\tX\"\n"}
+,{"stream_name":"stdout","time":215.396059793,"data":"        ],\n"}
+,{"stream_name":"stdout","time":215.396065172,"data":"        \"Telemetry_ModelPair\": [\n"}
+,{"stream_name":"stdout","time":215.396071617,"data":"          \"clf\\tX_train\\t$invo10\\tLogisticRegression.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tLogisticRegression.score\\t[, ]\"\n"}
+,{"stream_name":"stdout","time":215.39607833,"data":"        ],\n"}
+,{"stream_name":"stdout","time":215.396084883,"data":"        \"Telemetry_PreProcessingLeak\": [\n"}
+,{"stream_name":"stdout","time":215.396091263,"data":"          \"clf\\tX_train\\t$invo10\\tLogisticRegression.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tLogisticRegression.score\\t[, ]\\t_var12\\tX\",\n"}
+,{"stream_name":"stdout","time":215.396098593,"data":"          \"clf\\tX_train\\t$invo10\\tLogisticRegression.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tLogisticRegression.score\\t[, ]\\tX_0\\tX\"\n"}
+,{"stream_name":"stdout","time":215.396105514,"data":"        ]\n"}
+,{"stream_name":"stdout","time":215.396111641,"data":"      }\n"}
+,{"stream_name":"stdout","time":215.396117394,"data":"    },\n"}
+,{"stream_name":"stdout","time":215.396123548,"data":"    \"p2_group_leak.py\": {\n"}
+,{"stream_name":"stdout","time":215.396143107,"data":"      \"exit_ok\": true,\n"}
+,{"stream_name":"stdout","time":215.396148441,"data":"      \"seconds\": 5.3,\n"}
+,{"stream_name":"stdout","time":215.396153322,"data":"      \"html_written\": true,\n"}
+,{"stream_name":"stdout","time":215.396158545,"data":"      \"leak_relations\": {\n"}
+,{"stream_name":"stdout","time":215.396163511,"data":"        \"Telemetry_ModelPair\": [\n"}
+,{"stream_name":"stdout","time":215.3961687,"data":"          \"model\\tX_train\\t$invo14\\tRandomForestClassifier.fit\\t[, ]\\tmodel\\tX_test\\t$invo15\\tBaseForest.score\\t[, ]\"\n"}
+,{"stream_name":"stdout","time":215.39617438,"data":"        ]\n"}
+,{"stream_name":"stdout","time":215.396179398,"data":"      }\n"}
+,{"stream_name":"stdout","time":215.396184129,"data":"    },\n"}
+,{"stream_name":"stdout","time":215.396188527,"data":"    \"p3_temporal_leak.py\": {\n"}
+,{"stream_name":"stdout","time":215.396193423,"data":"      \"exit_ok\": true,\n"}
+,{"stream_name":"stdout","time":215.39619866,"data":"      \"seconds\": 6.3,\n"}
+,{"stream_name":"stdout","time":215.396203342,"data":"      \"html_written\": true,\n"}
+,{"stream_name":"stdout","time":215.396207996,"data":"      \"leak_relations\": {\n"}
+,{"stream_name":"stdout","time":215.39621292,"data":"        \"Telemetry_ModelPair\": [\n"}
+,{"stream_name":"stdout","time":215.396218649,"data":"          \"model\\tX_train\\t$invo13\\tRidge.fit\\t[, ]\\tmodel\\tX_test\\t$invo14\\t_BaseRidge.score\\t[, ]\"\n"}
+,{"stream_name":"stdout","time":215.396224067,"data":"        ]\n"}
+,{"stream_name":"stdout","time":215.396228476,"data":"      }\n"}
+,{"stream_name":"stdout","time":215.396232996,"data":"    },\n"}
+,{"stream_name":"stdout","time":215.396237915,"data":"    \"p4_clean.py\": {\n"}
+,{"stream_name":"stdout","time":215.396242621,"data":"      \"exit_ok\": true,\n"}
+,{"stream_name":"stdout","time":215.396247088,"data":"      \"seconds\": 4.7,\n"}
+,{"stream_name":"stdout","time":215.39625189,"data":"      \"html_written\": true,\n"}
+,{"stream_name":"stdout","time":215.396257219,"data":"      \"leak_relations\": {\n"}
+,{"stream_name":"stdout","time":215.396261981,"data":"        \"Telemetry_ModelPair\": [\n"}
+,{"stream_name":"stdout","time":215.396269472,"data":"          \"clf\\tX_train\\t$invo10\\tPipeline.fit\\t[, ]\\tclf\\tX_test\\t$invo11\\tPipeline.score\\t[, ]\"\n"}
+,{"stream_name":"stdout","time":215.396275238,"data":"        ]\n"}
+,{"stream_name":"stdout","time":215.396279644,"data":"      }\n"}
+,{"stream_name":"stdout","time":215.396284592,"data":"    }\n"}
+,{"stream_name":"stdout","time":215.396289199,"data":"  },\n"}
+,{"stream_name":"stdout","time":215.396294197,"data":"  \"finished_utc\": \"2026-09-29T09:22:19Z\",\n"}
+,{"stream_name":"stdout","time":215.396299413,"data":"  \"build_ok\": true\n"}
+,{"stream_name":"stdout","time":215.396304005,"data":"}\n"}
+,{"stream_name":"stderr","time":218.966717955,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":218.966787291,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":219.232843721,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":219.232874565,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":220.031998698,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":221.415201497,"data":"[NbConvertApp] Writing 296451 bytes to __results__.html\n"}
+]

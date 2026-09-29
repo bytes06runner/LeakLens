@@ -1,0 +1,125 @@
+{
+  "started_utc": "2026-09-29T09:18:45Z",
+  "yang_commit": "a7d038bfec6b8ddbe21d87dde54b806aecdd79f7",
+  "leaklens_commit": "76f26127b337d5670b6eec4aabcef6829db2e554",
+  "steps": [
+    {
+      "name": "apt_souffle",
+      "cmd": "set -e; apt-get update -qq; apt-get install -y -qq wget gnupg ca-certificates; wget -q https://souffle-lang.github.io/ppa/souffle-key.public -O /usr/share/keyrings/souffle-archive-keyring.gpg; echo 'deb [signed-by=/usr/share/keyrings/souffle-archive-keyring.gpg] https://souffle-lang.github.io/ppa/ubuntu/ stable main' > /etc/apt/sources.list.d/souffle.list; apt-get update -qq; apt-get install -y -qq souffle; souffle --version",
+      "rc": 0,
+      "seconds": 36.6,
+      "log_tail": " ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 121001 files and directories currently installed.)\nPreparing to unpack .../libffi7_3.3-5ubuntu1_amd64.deb ...\nUnpacking libffi7:amd64 (3.3-5ubuntu1) ...\nSelecting previously unselected package libmcpp0:amd64.\nPreparing to unpack .../libmcpp0_2.7.2-5_amd64.deb ...\nUnpacking libmcpp0:amd64 (2.7.2-5) ...\nSelecting previously unselected package mcpp.\nPreparing to unpack .../mcpp_2.7.2-5_amd64.deb ...\nUnpacking mcpp (2.7.2-5) ...\nSelecting previously unselected package souffle.\nPreparing to unpack .../archives/souffle_2.4_amd64.deb ...\nUnpacking souffle (2.4) ...\nSetting up libmcpp0:amd64 (2.7.2-5) ...\nSetting up libffi7:amd64 (3.3-5ubuntu1) ...\nSetting up mcpp (2.7.2-5) ...\nSetting up souffle (2.4) ...\nProcessing triggers for man-db (2.10.2-1) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.13) ...\n/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_5.so.3 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero.so.0 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtbbbind.so.3 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libur_adapter_level_zero_v2.so.0 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtbbbind_2_0.so.3 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libur_loader.so.0 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtbb.so.12 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libumf.so.1 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtcm_debug.so.1 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libur_adapter_opencl.so.0 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc_proxy.so.2 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtcm.so.1 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libtbbmalloc.so.2 is not a symbolic link\n\n/sbin/ldconfig.real: /usr/local/lib/libhwloc.so.15 is not a symbolic link\n\n----------------------------------------------------------------------------\nVersion: 2.4\nWord size: 64 bits\nOptions enabled: ffi openmp ncurses sqlite zlib\n----------------------------------------------------------------------------\nCopyright (c) 2016-22 The Souffle Developers.\nCopyright (c) 2013-16 Oracle and/or its affiliates.\nAll rights reserved.\n============================================================================\n\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu jammy InRelease' does not seem to provide it (sources.list entry misspelt?)\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu jammy InRelease' does not seem to provide it (sources.list entry misspelt?)\n"
+    },
+    {
+      "name": "node",
+      "cmd": "set -e; cd /tmp; wget -q https://nodejs.org/dist/v16.20.2/node-v16.20.2-linux-x64.tar.xz; tar xf node-v16.20.2-linux-x64.tar.xz; /tmp/node-v16.20.2-linux-x64/bin/node --version",
+      "rc": 0,
+      "seconds": 2.8,
+      "log_tail": "v16.20.2\n"
+    },
+    {
+      "name": "clone",
+      "cmd": "set -e; git clone -q https://github.com/malusamayo/leakage-analysis.git /tmp/leakage-analysis; cd /tmp/leakage-analysis; git checkout -q a7d038bfec6b8ddbe21d87dde54b806aecdd79f7; git submodule update --init --recursive; git -C pyright log -1 --format=%H%n%cI",
+      "rc": 0,
+      "seconds": 10.5,
+      "log_tail": "Submodule path 'pyright': checked out 'e3d7d9c44ac69fa6bc66bb8a47377fcec034e503'\ne3d7d9c44ac69fa6bc66bb8a47377fcec034e503\n2022-03-28T19:51:23-04:00\nSubmodule 'pyright' (https://github.com/malusamayo/pyright) registered for path 'pyright'\nCloning into '/tmp/leakage-analysis/pyright'...\n"
+    },
+    {
+      "name": "pyright_build",
+      "cmd": "set -e; npm install -g lerna@4.0.0 >/dev/null; npm install >/dev/null 2>&1 || npm install; cd packages/pyright; npm run build",
+      "rc": 0,
+      "seconds": 128.0,
+      "log_tail": "evToolPlugin pyright-langserver.js generate SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-langserver.js generated SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin vendor.js generate SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin vendor.js generated SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-internal.js generate SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-internal.js generated SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright.js attach SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-langserver.js attach SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-langserver.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin vendor.js attach SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin vendor.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-internal.js attach SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin pyright-internal.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin\n<s> [webpack.Progress] 92% sealing asset processing\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 95% emitting emit CleanPlugin\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% \n\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 100% \n\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 100% \n\n"
+    },
+    {
+      "name": "python38_venv",
+      "cmd": "set -e; pip install -q uv; uv venv -q -p 3.8 /tmp/yang-venv; uv pip install -q -p /tmp/yang-venv/bin/python -r /tmp/leakage-analysis/requirements.txt; /tmp/yang-venv/bin/python --version; uv pip list -p /tmp/yang-venv/bin/python",
+      "rc": 0,
+      "seconds": 12.6,
+      "log_tail": "   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 20.5/20.5 MB 49.1 MB/s eta 0:00:00\nPython 3.8.20\nPackage          Version\n---------------- -----------\nastunparse       1.6.3\nimbalanced-learn 0.12.4\nimblearn         0.0\njoblib           1.4.2\nnumpy            1.24.4\npandas           2.0.3\npygments         2.10.0\npython-dateutil  2.9.0.post0\npytz             2026.4\nscikit-learn     1.3.2\nscipy            1.10.1\nsix              1.17.0\nthreadpoolctl    3.5.0\ntzdata           2026.4\nwheel            0.45.1\nUsing Python 3.8.20 environment at: /tmp/yang-venv\n"
+    },
+    {
+      "name": "analyse_p1_preprocessing_leak.py",
+      "cmd": "/tmp/yang-venv/bin/python -m src.main /tmp/probes/p1_preprocessing_leak.py -o",
+      "rc": 0,
+      "seconds": 6.5,
+      "log_tail": "-------------------------------------------------------^---------------------------\nWarning: Variable invo20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n---------------------------------------------------------------------------------------------------------^---------------------\nWarning: Variable meth20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n----------------------------------------------------------------------------------------------------------------^--------------\nWarning: Variable train only occurs once in file main.dl at line 1390\n    TrainingDataWithModel(trainModel, train, _, _, ctx2),\n--------------------------------------^-------------------\nWarning: Variable invo2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n------------------------------------------^--------------------\nWarning: Variable meth2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n-------------------------------------------------^-------------\nWarning: Variable test0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------^-------------------------\nWarning: Variable invo0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------^-------------------\nWarning: Variable meth0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------------^-------------\nWarning: Variable test only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+    },
+    {
+      "name": "analyse_p2_group_leak.py",
+      "cmd": "/tmp/yang-venv/bin/python -m src.main /tmp/probes/p2_group_leak.py -o",
+      "rc": 0,
+      "seconds": 5.3,
+      "log_tail": "-------------------------------------------------------^---------------------------\nWarning: Variable invo20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n---------------------------------------------------------------------------------------------------------^---------------------\nWarning: Variable meth20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n----------------------------------------------------------------------------------------------------------------^--------------\nWarning: Variable train only occurs once in file main.dl at line 1390\n    TrainingDataWithModel(trainModel, train, _, _, ctx2),\n--------------------------------------^-------------------\nWarning: Variable invo2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n------------------------------------------^--------------------\nWarning: Variable meth2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n-------------------------------------------------^-------------\nWarning: Variable test0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------^-------------------------\nWarning: Variable invo0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------^-------------------\nWarning: Variable meth0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------------^-------------\nWarning: Variable test only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+    },
+    {
+      "name": "analyse_p3_temporal_leak.py",
+      "cmd": "/tmp/yang-venv/bin/python -m src.main /tmp/probes/p3_temporal_leak.py -o",
+      "rc": 0,
+      "seconds": 6.3,
+      "log_tail": "-------------------------------------------------------^---------------------------\nWarning: Variable invo20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n---------------------------------------------------------------------------------------------------------^---------------------\nWarning: Variable meth20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n----------------------------------------------------------------------------------------------------------------^--------------\nWarning: Variable train only occurs once in file main.dl at line 1390\n    TrainingDataWithModel(trainModel, train, _, _, ctx2),\n--------------------------------------^-------------------\nWarning: Variable invo2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n------------------------------------------^--------------------\nWarning: Variable meth2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n-------------------------------------------------^-------------\nWarning: Variable test0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------^-------------------------\nWarning: Variable invo0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------^-------------------\nWarning: Variable meth0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------------^-------------\nWarning: Variable test only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+    },
+    {
+      "name": "analyse_p4_clean.py",
+      "cmd": "/tmp/yang-venv/bin/python -m src.main /tmp/probes/p4_clean.py -o",
+      "rc": 0,
+      "seconds": 4.7,
+      "log_tail": "-------------------------------------------------------^---------------------------\nWarning: Variable invo20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n---------------------------------------------------------------------------------------------------------^---------------------\nWarning: Variable meth20 only occurs once in file main.dl at line 1363\n    c1 = count : { ModelPair(testModel, ctx2, trainModel, ctx1), ValOrTestDataWithModel(testModel, test, invo2, meth2, ctx2)},\n----------------------------------------------------------------------------------------------------------------^--------------\nWarning: Variable train only occurs once in file main.dl at line 1390\n    TrainingDataWithModel(trainModel, train, _, _, ctx2),\n--------------------------------------^-------------------\nWarning: Variable invo2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n------------------------------------------^--------------------\nWarning: Variable meth2 only occurs once in file main.dl at line 1392\n    ScoredDataWithModel(scoreModel, data, invo2, meth2, ctx3),\n-------------------------------------------------^-------------\nWarning: Variable test0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------^-------------------------\nWarning: Variable invo0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------^-------------------\nWarning: Variable meth0 only occurs once in file main.dl at line 1403\n    c1 = count : {ModelPair(testModel, ctx1, _, _), TestDataWithModel(testModel, test, invo, meth, ctx1)},\n---------------------------------------------------------------------------------------------^-------------\nWarning: Variable test only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+    }
+  ],
+  "probe_results": {
+    "p1_preprocessing_leak.py": {
+      "exit_ok": true,
+      "seconds": 6.5,
+      "html_written": true,
+      "leak_relations": {
+        "PreProcessingLeak": [
+          "X\t$invo10\tLogisticRegression.fit\t[, ]"
+        ],
+        "Telemetry_FinalPreProcessingLeak": [
+          "clf\tX_train\t$invo10\tLogisticRegression.fit\t[, ]\tclf\tX_test\t$invo11\tLogisticRegression.score\t[, ]\t_var12\tX",
+          "clf\tX_train\t$invo10\tLogisticRegression.fit\t[, ]\tclf\tX_test\t$invo11\tLogisticRegression.score\t[, ]\tX_0\tX"
+        ],
+        "Telemetry_ModelPair": [
+          "clf\tX_train\t$invo10\tLogisticRegression.fit\t[, ]\tclf\tX_test\t$invo11\tLogisticRegression.score\t[, ]"
+        ],
+        "Telemetry_PreProcessingLeak": [
+          "clf\tX_train\t$invo10\tLogisticRegression.fit\t[, ]\tclf\tX_test\t$invo11\tLogisticRegression.score\t[, ]\t_var12\tX",
+          "clf\tX_train\t$invo10\tLogisticRegression.fit\t[, ]\tclf\tX_test\t$invo11\tLogisticRegression.score\t[, ]\tX_0\tX"
+        ]
+      }
+    },
+    "p2_group_leak.py": {
+      "exit_ok": true,
+      "seconds": 5.3,
+      "html_written": true,
+      "leak_relations": {
+        "Telemetry_ModelPair": [
+          "model\tX_train\t$invo14\tRandomForestClassifier.fit\t[, ]\tmodel\tX_test\t$invo15\tBaseForest.score\t[, ]"
+        ]
+      }
+    },
+    "p3_temporal_leak.py": {
+      "exit_ok": true,
+      "seconds": 6.3,
+      "html_written": true,
+      "leak_relations": {
+        "Telemetry_ModelPair": [
+          "model\tX_train\t$invo13\tRidge.fit\t[, ]\tmodel\tX_test\t$invo14\t_BaseRidge.score\t[, ]"
+        ]
+      }
+    },
+    "p4_clean.py": {
+      "exit_ok": true,
+      "seconds": 4.7,
+      "html_written": true,
+      "leak_relations": {
+        "Telemetry_ModelPair": [
+          "clf\tX_train\t$invo10\tPipeline.fit\t[, ]\tclf\tX_test\t$invo11\tPipeline.score\t[, ]"
+        ]
+      }
+    }
+  },
+  "finished_utc": "2026-09-29T09:22:19Z",
+  "build_ok": true
+}
