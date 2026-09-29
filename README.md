@@ -6,8 +6,8 @@
 
 [![CI](https://github.com/bytes06runner/LeakLens/actions/workflows/ci.yml/badge.svg)](https://github.com/bytes06runner/LeakLens/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
-![Status: Phase 0 of 9](https://img.shields.io/badge/status-Phase%200%20of%209-orange)
-![Licence: not yet chosen](https://img.shields.io/badge/licence-not%20yet%20chosen-lightgrey)
+![Status: Phase 1 of 9](https://img.shields.io/badge/status-Phase%201%20of%209-orange)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
 [The problem](#the-problem) ·
 [What is different](#what-leaklens-does-that-existing-tools-do-not) ·
@@ -21,7 +21,7 @@
 </div>
 
 > [!IMPORTANT]
-> LeakLens is a research prototype at **Phase 0 (setup and novelty check)**. The detector is not built yet:
+> LeakLens is a research prototype at **Phase 1 (taxonomy and specification)**. The detector is not built yet:
 > `leaklens scan` exits with code 3 and says so rather than reporting a file as clean.
 > Every number on this page comes from a logged run in [`results/`](results/) or a source in
 > [`literature/related_work.csv`](literature/related_work.csv).
@@ -58,19 +58,21 @@ The table summarises our Phase 0 survey (details and sources: [`docs/PHASE0_REPO
 "Code" means the tool reads your `.py` / `.ipynb` source; "data" means you must export the train and test tables
 yourself and hand them over.
 
-| Capability | Code-level analysers<br><sub>Yang et al., NBLyzer, LeakageDetector, LeakCheck</sub> | Data-level checkers<br><sub>Deepchecks, leakcheck-ml, LeakHound, dataleaks</sub> | **LeakLens (goal)** |
+| Capability | Code-level analysers<br><sub>Yang et al., NBLyzer, LeakageDetector, LeakCheck, scicode-lint</sub> | Data-level checkers<br><sub>Deepchecks, leakcheck-ml, LeakHound, dataleaks</sub> | **LeakLens (goal)** |
 |---|:-:|:-:|:-:|
 | Points to the line of code responsible | ✅ | ❌ | ✅ |
 | Preprocessing / overlap / multi-test leakage | ✅ | partial | ✅ |
 | **Group leakage** (same patient/user/device on both sides) | ❌ | ✅ once you export splits | ✅ **from code** |
-| **Temporal leakage** (training on the future) | ❌ | ✅ once you export splits | ✅ **from code** |
+| **Temporal leakage** (training on the future) | partial: scicode-lint (LLM patterns: shuffled CV, forward shifts) | ✅ once you export splits | ✅ from code, via data flow, confirmed on data |
 | Works on cross-validation, not only a single split | n/a | ❌ | ✅ per fold |
 | No need to name the group or time column | n/a | leakcheck-ml only | ✅ heuristic, with confidence |
 | **Impact estimate** | ❌ | LeakHound: its own proxy model | ✅ **re-runs your pipeline** with the fix |
 
 **The novel parts, stated precisely:**
 
-1. **C1. Group and temporal leakage detected from source code.** No code-level tool we could find does this.
+1. **C1. Group and temporal leakage detected from source code.** No code-level tool we could find detects group
+   leakage. For temporal leakage, scicode-lint (2026) asks an LLM about shuffled CV and forward-looking features;
+   LeakLens uses data-flow analysis and confirms findings on the data (see [`docs/NOVELTY_LOG.md`](docs/NOVELTY_LOG.md)).
 2. **C2. Static findings confirmed on real data without user setup.** The static pass nominates the split call and
    the candidate entity or time column; an instrumented run checks overlap at that call, fold by fold.
 3. **C3. Per-finding impact on your own pipeline.** LeakLens applies the canonical fix (for example
@@ -81,8 +83,8 @@ yourself and hand them over.
 
 ## The six leakage types
 
-Full definitions, positive and negative examples, and the mapping to Kapoor & Narayanan's eight types and Yang et
-al.'s three arrive in Phase 1 (`docs/TAXONOMY.md`).
+Full definitions, runnable positive and negative examples, and the mapping to Kapoor & Narayanan's eight types and
+Yang et al.'s three are in [`docs/TAXONOMY.md`](docs/TAXONOMY.md).
 
 | Type | Typical code | Static signal | Dynamic confirmation | Canonical fix |
 |---|---|---|---|---|
@@ -113,14 +115,27 @@ flowchart LR
   marked unreliable. A fix that fails to run is reported as "impact unknown", never dropped.
 
 Each finding will carry: file, line range, type, confidence, evidence, suggested fix, and (when measured) the
-metric before and after the fix. The exact schema and CI exit codes are specified in Phase 1 (`docs/SPEC.md`).
+metric before and after the fix. The format, severity levels and CI exit codes are specified in
+[`docs/SPEC.md`](docs/SPEC.md), with a machine-readable
+[JSON Schema](src/leaklens/report/finding.schema.json).
+
+### Running untrusted notebooks safely
+
+Dynamic and impact modes execute code. Notebooks from the internet run only through
+[`leaklens.sandbox`](src/leaklens/sandbox.py), inside an offline Kaggle session: the child process gets an
+allow-listed environment, a throwaway working directory, a process-group timeout, and runs as an unprivileged
+user. Each layer answers a measured problem. Kaggle injects session tokens into every notebook, even offline, and
+the data proxy `dp.kaggle.net` stays reachable. A child running as root could read those tokens from
+`/proc/<pid>/environ` even with a clean environment. The sandbox refuses to run untrusted code anywhere it cannot
+drop privileges or while the network is reachable. Evidence:
+[`results/`](results/) (`00_smoke_offline`, `01b_sandbox_hardening_probe`, `01_sandbox_check`).
 
 ## Project status
 
 | Phase | Deliverable | Status |
 |---|---|---|
-| 0 | Setup, novelty check, baseline runnability | ✅ done, awaiting sign-off ([report](docs/PHASE0_REPORT.md)) |
-| 1 | Taxonomy and specification | ⏳ |
+| 0 | Setup, novelty check, baseline runnability | ✅ done ([report](docs/PHASE0_REPORT.md)) |
+| 1 | Taxonomy, specification, sandbox | ✅ done, awaiting decision on C1 ([report](docs/PHASE1_REPORT.md)) |
 | 2 | Benchmark (injected + real, DEV/TEST split frozen before rules) | ⏳ |
 | 3 | Evaluation protocol, frozen | ⏳ |
 | 4 | Static analyser | ⏳ |
@@ -156,8 +171,11 @@ Other findings:
 - Yang et al.'s analyser still builds as released, but only on Linux (Souffle, a pyright fork, Python 3.8). We
   build it in a Kaggle job in about 3 minutes.
 - Deepchecks (last release December 2024) fails on a current Python 3.12 stack and needs a pinned Python 3.11 one.
-- Five data-level leakage tools were first published in September 2026. We will repeat the novelty search at
-  every phase boundary.
+- Five data-level leakage tools were first published in September 2026. The novelty search is repeated at every
+  phase boundary ([`docs/NOVELTY_LOG.md`](docs/NOVELTY_LOG.md)); the Phase 1 search found scicode-lint, which
+  covers part of temporal leakage from code.
+- Excluded or deferred baselines and the reasons are in [`docs/EXCLUDED_BASELINES.md`](docs/EXCLUDED_BASELINES.md):
+  ReproGuard (its licence forbids use for competing tools) and LeakCheck (needs a paid LLM API; deferred).
 
 ## Development
 
@@ -192,8 +210,9 @@ See [`kaggle/README.md`](kaggle/README.md) for the step-by-step Kaggle workflow.
 ## Repository layout
 
 ```
-src/leaklens/        package: ingest/ static/ dynamic/ impact/ report/ cli.py
-tests/               pytest (+ hypothesis from Phase 4)
+src/leaklens/        package: ingest/ static/ dynamic/ impact/ report/ sandbox.py cli.py
+configs/             YAML settings (no magic numbers in code)
+tests/               pytest; fixtures/taxonomy/ holds the runnable TAXONOMY examples
 baselines/           runners and probes for existing tools
 benchmark/           manifests, labels, injection scripts (Phase 2; no raw code unless licensed)
 mining/              corpus sampling and Kaggle jobs (Phase 8)
@@ -221,10 +240,12 @@ The full rules are in [`CLAUDE.md`](CLAUDE.md#2-integrity-rules-non-negotiable).
   environment.
 - **No shaming.** Mining results are aggregates; no notebook author is named.
 - **Bad results are reported**, including types where a baseline wins.
+- **No code from other tools.** Baselines run in their own environments; nothing from them is copied into
+  LeakLens.
 
 ## Related work
 
-Twenty-five entries with verification status are in
+Twenty-eight entries with verification status are in
 [`literature/related_work.csv`](literature/related_work.csv). Key references: Kaufman et al. (TKDD 2012),
 Kapoor & Narayanan (Patterns 2023), Yang et al. (ASE 2022), Subotić et al. (ICSE-SEIP 2022, SOAP 2022),
 Drobnjaković et al. (TASE 2024), Draoui et al. (PACMSE 2026), Roth (arXiv 2026), Grafberger et al. (mlwhatif,
@@ -237,4 +258,4 @@ by **Prof. Tridib Chakraborty**, Guru Nanak Institute of Technology, Kolkata. Co
 CalibraEEG (cross-patient seizure detection), whose evaluation regimes provide a ground-truth case study in
 Phase 7.
 
-**Licence:** not chosen yet. Until one is added, all rights are reserved.
+**Licence:** [MIT](LICENSE).

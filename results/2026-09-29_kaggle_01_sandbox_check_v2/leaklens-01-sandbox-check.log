@@ -1,0 +1,71 @@
+[{"stream_name":"stdout","time":245.9432495,"data":"{\n"}
+,{"stream_name":"stdout","time":245.943365951,"data":"  \"started_utc\": \"2026-09-29T10:10:13Z\",\n"}
+,{"stream_name":"stdout","time":245.943379139,"data":"  \"code_version\": {\n"}
+,{"stream_name":"stdout","time":245.943400413,"data":"    \"commit\": \"9c45944f0dabc1d39c18f15d1711fc359ae30ff0\",\n"}
+,{"stream_name":"stdout","time":245.943405572,"data":"    \"built_utc\": \"2026-09-29T10:09:50Z\"\n"}
+,{"stream_name":"stdout","time":245.943411068,"data":"  },\n"}
+,{"stream_name":"stdout","time":245.943415291,"data":"  \"pip_install_rc\": 0,\n"}
+,{"stream_name":"stdout","time":245.94342004,"data":"  \"parent_secret_like_names\": [\n"}
+,{"stream_name":"stdout","time":245.943424998,"data":"    \"KAGGLE_API_V1_TOKEN\",\n"}
+,{"stream_name":"stdout","time":245.943429327,"data":"    \"KAGGLE_CONTAINER_NAME\",\n"}
+,{"stream_name":"stdout","time":245.943433333,"data":"    \"KAGGLE_DATA_PROXY_PROJECT\",\n"}
+,{"stream_name":"stdout","time":245.943437292,"data":"    \"KAGGLE_DATA_PROXY_TOKEN\",\n"}
+,{"stream_name":"stdout","time":245.943441228,"data":"    \"KAGGLE_DATA_PROXY_URL\",\n"}
+,{"stream_name":"stdout","time":245.943445217,"data":"    \"KAGGLE_DOCKER_IMAGE\",\n"}
+,{"stream_name":"stdout","time":245.943449196,"data":"    \"KAGGLE_GCP_ZONE\",\n"}
+,{"stream_name":"stdout","time":245.943453137,"data":"    \"KAGGLE_GRPC_DATA_PROXY_URL\",\n"}
+,{"stream_name":"stdout","time":245.94345719,"data":"    \"KAGGLE_KERNEL_INTEGRATIONS\",\n"}
+,{"stream_name":"stdout","time":245.943461082,"data":"    \"KAGGLE_KERNEL_RUN_TYPE\",\n"}
+,{"stream_name":"stdout","time":245.943465017,"data":"    \"KAGGLE_URL_BASE\",\n"}
+,{"stream_name":"stdout","time":245.943469009,"data":"    \"KAGGLE_USER_SECRETS_TOKEN\"\n"}
+,{"stream_name":"stdout","time":245.943473255,"data":"  ],\n"}
+,{"stream_name":"stdout","time":245.943477053,"data":"  \"network_reachable\": false,\n"}
+,{"stream_name":"stdout","time":245.943481047,"data":"  \"child_env_names\": [\n"}
+,{"stream_name":"stdout","time":245.9434852,"data":"    \"HOME\",\n"}
+,{"stream_name":"stdout","time":245.943489088,"data":"    \"LANG\",\n"}
+,{"stream_name":"stdout","time":245.943493023,"data":"    \"LC_ALL\",\n"}
+,{"stream_name":"stdout","time":245.943496949,"data":"    \"MPLBACKEND\",\n"}
+,{"stream_name":"stdout","time":245.94350084,"data":"    \"OMP_NUM_THREADS\",\n"}
+,{"stream_name":"stdout","time":245.943505479,"data":"    \"PATH\",\n"}
+,{"stream_name":"stdout","time":245.943509904,"data":"    \"PYTHONDONTWRITEBYTECODE\",\n"}
+,{"stream_name":"stdout","time":245.943514845,"data":"    \"PYTHONNOUSERSITE\",\n"}
+,{"stream_name":"stdout","time":245.9435199,"data":"    \"TMPDIR\"\n"}
+,{"stream_name":"stdout","time":245.943524725,"data":"  ],\n"}
+,{"stream_name":"stdout","time":245.943661605,"data":"  \"leaked_names\": [],\n"}
+,{"stream_name":"stdout","time":245.943667414,"data":"  \"leaked_value_count\": 0,\n"}
+,{"stream_name":"stdout","time":245.943671387,"data":"  \"sandbox_ok\": true,\n"}
+,{"stream_name":"stdout","time":245.94367528,"data":"  \"proc_scan\": {\n"}
+,{"stream_name":"stdout","time":245.943679137,"data":"    \"token_present_in_parent\": true,\n"}
+,{"stream_name":"stdout","time":245.943683163,"data":"    \"ancestors_with_token\": 0,\n"}
+,{"stream_name":"stdout","time":245.943687074,"data":"    \"ancestors_unreadable\": 2,\n"}
+,{"stream_name":"stdout","time":245.943691088,"data":"    \"child_euid\": 1000,\n"}
+,{"stream_name":"stdout","time":245.943695223,"data":"    \"stderr\": \"\"\n"}
+,{"stream_name":"stdout","time":245.943699277,"data":"  },\n"}
+,{"stream_name":"stdout","time":245.943714737,"data":"  \"proc_scan_control_root_child\": {\n"}
+,{"stream_name":"stdout","time":245.943721653,"data":"    \"ancestors_with_token\": 2,\n"}
+,{"stream_name":"stdout","time":245.943726723,"data":"    \"ancestors_unreadable\": 0,\n"}
+,{"stream_name":"stdout","time":245.943731517,"data":"    \"child_euid\": 0\n"}
+,{"stream_name":"stdout","time":245.943735665,"data":"  },\n"}
+,{"stream_name":"stdout","time":245.9437399,"data":"  \"kaggle_url_endpoints\": {\n"}
+,{"stream_name":"stdout","time":245.943743931,"data":"    \"KAGGLE_URL_BASE\": {\n"}
+,{"stream_name":"stdout","time":245.943747836,"data":"      \"host\": \"api.kaggle.com\",\n"}
+,{"stream_name":"stdout","time":245.943752031,"data":"      \"port\": 443,\n"}
+,{"stream_name":"stdout","time":245.94375608,"data":"      \"status\": \"unreachable (gaierror)\"\n"}
+,{"stream_name":"stdout","time":245.943760141,"data":"    },\n"}
+,{"stream_name":"stdout","time":245.943763965,"data":"    \"KAGGLE_DATA_PROXY_URL\": {\n"}
+,{"stream_name":"stdout","time":245.943767933,"data":"      \"host\": \"dp.kaggle.net\",\n"}
+,{"stream_name":"stdout","time":245.943771977,"data":"      \"port\": 443,\n"}
+,{"stream_name":"stdout","time":245.943785775,"data":"      \"status\": \"REACHABLE\"\n"}
+,{"stream_name":"stdout","time":245.943790278,"data":"    }\n"}
+,{"stream_name":"stdout","time":245.943794108,"data":"  },\n"}
+,{"stream_name":"stdout","time":245.943798068,"data":"  \"tests_dir_found\": \"/tmp/ll/tests\",\n"}
+,{"stream_name":"stdout","time":245.943802328,"data":"  \"pytest_rc\": 0,\n"}
+,{"stream_name":"stdout","time":245.943812247,"data":"  \"pytest_tail\": \"============================= test session starts ==============================\\nplatform linux -- Python 3.12.13, pytest-8.4.2, pluggy-1.6.0 -- /usr/bin/python3\\nrootdir: /tmp/ll/tests\\nplugins: anyio-4.13.0, typeguard-4.5.1, langsmith-0.7.34\\ncollecting ... collected 15 items\\n\\n../../tmp/ll/tests/test_sandbox.py::test_kaggle_tokens_absent_in_child PASSED [  6%]\\n../../tmp/ll/tests/test_sandbox.py::test_child_env_is_exactly_the_allowlist PASSED [ 13%]\\n../../tmp/ll/tests/test_sandbox.py::test_throwaway_workdir_is_home_and_deleted PASSED [ 20%]\\n../../tmp/ll/tests/test_sandbox.py::test_outputs_collected_before_cleanup PASSED [ 26%]\\n../../tmp/ll/tests/test_sandbox.py::test_timeout_kills_process_group PASSED [ 33%]\\n../../tmp/ll/tests/test_sandbox.py::test_refuses_when_online PASSED      [ 40%]\\n../../tmp/ll/tests/test_sandbox.py::test_untrusted_refused_without_root PASSED [ 46%]\\n../../tmp/ll/tests/test_sandbox.py::test_untrusted_runs_offline_as_unprivileged_user PASSED [ 53%]\\n../../tmp/ll/tests/test_sandbox.py::test_deny_markers_override_allowlist PASSED [ 60%]\\n../../tmp/ll/tests/test_sandbox.py::test_root_parent_refuses_if_user_cannot_be_created PASSED [ 66%]\\n../../tmp/ll/tests/test_sandbox.py::test_child_cannot_read_ancestor_environ_via_proc PASSED [ 73%]\\n../../tmp/ll/tests/test_smoke.py::test_six_leakage_types PASSED          [ 80%]\\n../../tmp/ll/tests/test_smoke.py::test_info_runs PASSED                  [ 86%]\\n../../tmp/ll/tests/test_smoke.py::test_scan_refuses_until_implemented PASSED [ 93%]\\n../../tmp/ll/tests/test_smoke.py::test_subpackages_import PASSED         [100%]\\n\\n============================== 15 passed in 1.98s ==============================\\n\"\n"}
+,{"stream_name":"stdout","time":245.94383214,"data":"}\n"}
+,{"stream_name":"stderr","time":248.841481123,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":248.841565147,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":249.298741177,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":249.298790499,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":250.180118505,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":252.203087854,"data":"[NbConvertApp] Writing 300750 bytes to __results__.html\n"}
+]

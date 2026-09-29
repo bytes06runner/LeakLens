@@ -1,0 +1,64 @@
+{
+  "started_utc": "2026-09-29T10:10:13Z",
+  "code_version": {
+    "commit": "9c45944f0dabc1d39c18f15d1711fc359ae30ff0",
+    "built_utc": "2026-09-29T10:09:50Z"
+  },
+  "pip_install_rc": 0,
+  "parent_secret_like_names": [
+    "KAGGLE_API_V1_TOKEN",
+    "KAGGLE_CONTAINER_NAME",
+    "KAGGLE_DATA_PROXY_PROJECT",
+    "KAGGLE_DATA_PROXY_TOKEN",
+    "KAGGLE_DATA_PROXY_URL",
+    "KAGGLE_DOCKER_IMAGE",
+    "KAGGLE_GCP_ZONE",
+    "KAGGLE_GRPC_DATA_PROXY_URL",
+    "KAGGLE_KERNEL_INTEGRATIONS",
+    "KAGGLE_KERNEL_RUN_TYPE",
+    "KAGGLE_URL_BASE",
+    "KAGGLE_USER_SECRETS_TOKEN"
+  ],
+  "network_reachable": false,
+  "child_env_names": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "MPLBACKEND",
+    "OMP_NUM_THREADS",
+    "PATH",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONNOUSERSITE",
+    "TMPDIR"
+  ],
+  "leaked_names": [],
+  "leaked_value_count": 0,
+  "sandbox_ok": true,
+  "proc_scan": {
+    "token_present_in_parent": true,
+    "ancestors_with_token": 0,
+    "ancestors_unreadable": 2,
+    "child_euid": 1000,
+    "stderr": ""
+  },
+  "proc_scan_control_root_child": {
+    "ancestors_with_token": 2,
+    "ancestors_unreadable": 0,
+    "child_euid": 0
+  },
+  "kaggle_url_endpoints": {
+    "KAGGLE_URL_BASE": {
+      "host": "api.kaggle.com",
+      "port": 443,
+      "status": "unreachable (gaierror)"
+    },
+    "KAGGLE_DATA_PROXY_URL": {
+      "host": "dp.kaggle.net",
+      "port": 443,
+      "status": "REACHABLE"
+    }
+  },
+  "tests_dir_found": "/tmp/ll/tests",
+  "pytest_rc": 0,
+  "pytest_tail": "============================= test session starts ==============================\nplatform linux -- Python 3.12.13, pytest-8.4.2, pluggy-1.6.0 -- /usr/bin/python3\nrootdir: /tmp/ll/tests\nplugins: anyio-4.13.0, typeguard-4.5.1, langsmith-0.7.34\ncollecting ... collected 15 items\n\n../../tmp/ll/tests/test_sandbox.py::test_kaggle_tokens_absent_in_child PASSED [  6%]\n../../tmp/ll/tests/test_sandbox.py::test_child_env_is_exactly_the_allowlist PASSED [ 13%]\n../../tmp/ll/tests/test_sandbox.py::test_throwaway_workdir_is_home_and_deleted PASSED [ 20%]\n../../tmp/ll/tests/test_sandbox.py::test_outputs_collected_before_cleanup PASSED [ 26%]\n../../tmp/ll/tests/test_sandbox.py::test_timeout_kills_process_group PASSED [ 33%]\n../../tmp/ll/tests/test_sandbox.py::test_refuses_when_online PASSED      [ 40%]\n../../tmp/ll/tests/test_sandbox.py::test_untrusted_refused_without_root PASSED [ 46%]\n../../tmp/ll/tests/test_sandbox.py::test_untrusted_runs_offline_as_unprivileged_user PASSED [ 53%]\n../../tmp/ll/tests/test_sandbox.py::test_deny_markers_override_allowlist PASSED [ 60%]\n../../tmp/ll/tests/test_sandbox.py::test_root_parent_refuses_if_user_cannot_be_created PASSED [ 66%]\n../../tmp/ll/tests/test_sandbox.py::test_child_cannot_read_ancestor_environ_via_proc PASSED [ 73%]\n../../tmp/ll/tests/test_smoke.py::test_six_leakage_types PASSED          [ 80%]\n../../tmp/ll/tests/test_smoke.py::test_info_runs PASSED                  [ 86%]\n../../tmp/ll/tests/test_smoke.py::test_scan_refuses_until_implemented PASSED [ 93%]\n../../tmp/ll/tests/test_smoke.py::test_subpackages_import PASSED         [100%]\n\n============================== 15 passed in 1.98s ==============================\n"
+}
