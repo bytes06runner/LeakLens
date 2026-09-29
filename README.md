@@ -62,7 +62,7 @@ yourself and hand them over.
 |---|:-:|:-:|:-:|
 | Points to the line of code responsible | ✅ | ❌ | ✅ |
 | Preprocessing / overlap / multi-test leakage | ✅ | partial | ✅ |
-| **Group leakage** (same patient/user/device on both sides) | ❌ | ✅ once you export splits | ✅ **from code (primary novelty)** |
+| **Group leakage** (same patient/user/device on both sides) | ❌ static; splitguard: at runtime if you declare the group ids | ✅ once you export splits | ✅ **from code, entity inferred (primary novelty)** |
 | **Temporal leakage** (training on the future) | partial: scicode-lint (LLM patterns: shuffled CV, forward shifts) | ✅ once you export splits | ✅ from code, via data flow, confirmed on data |
 | Works on cross-validation, not only a single split | n/a | ❌ | ✅ per fold |
 | No need to name the group or time column | n/a | leakcheck-ml only | ✅ heuristic, with confidence |
@@ -70,8 +70,9 @@ yourself and hand them over.
 
 **The novel parts, stated precisely:**
 
-1. **C1. Group leakage detected from source code**, the primary novelty: no code-level tool we could find detects
-   it. Temporal leakage is detected by data-flow analysis and confirmed on the data; this improves on existing
+1. **C1. Group leakage detected from source code**, the primary novelty: no static tool we could find detects it,
+   and the one runtime tool that does (splitguard, 2026) needs the user to declare the group ids. LeakLens infers
+   the entity from names, repetition and file paths. Temporal leakage is detected by data-flow analysis and confirmed on the data; this improves on existing
    code-level checks (scicode-lint, 2026, asks an LLM about shuffled CV and forward-looking features) rather than
    being a first. The benchmark has a separate category for the cases where the two approaches differ, such as
    `train_test_split`'s default shuffle on time-ordered data (see [`docs/NOVELTY_LOG.md`](docs/NOVELTY_LOG.md)).

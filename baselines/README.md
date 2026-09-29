@@ -6,6 +6,8 @@ input, that is recorded as a coverage result, never dropped.
 | Tool | Level | Version / commit | Where it runs | Environment | Status |
 |---|---|---|---|---|---|
 | Yang et al. leakage-analysis | code | `a7d038b` (2023-05-02) | Kaggle CPU job | Souffle (PPA), pyright fork, Node 16.20.2, Python 3.8 | runnable |
+| scicode-lint | code (LLM-executed patterns) | 0.5.0 | needs vLLM + Qwen3-8B-FP8 on a >=16 GB GPU (published setup) | Python 3.13 | temporal baseline; CPU feasibility measured, see docs/SCICODE_TIMING.md |
+| splitguard | runtime (instruments user code) | 0.1.0 | Kaggle CPU (offline) inside the sandbox | Python 3.12 | candidate baseline for the dynamic pass (C2); group only with declared ids; not yet run |
 | LeakageDetector 2.0 | code (VS Code) | – | – | – | not tested (GUI only) |
 | LeakCheck + ml-slicer | code + LLM | repo HEAD 2026-01-11 | – | LLM API key + Docker slicer | not run, decision pending |
 | ReproGuard | code (heuristic) | 0.5.2 | – | – | not run: licence forbids use for a competing tool |

@@ -3,7 +3,7 @@
 seed: 20260930
 # Candidate pool: for every query, these listing orders and pages are fetched, pooled per stratum, de-duplicated,
 # then shuffled with `seed`. Several orders reduce the bias towards only the most popular notebooks.
-sort_orders: [relevance, voteCount, dateRun]
+sort_orders: [hotness, voteCount, dateRun]
 pages_per_order: 2
 page_size: 100
 strata:

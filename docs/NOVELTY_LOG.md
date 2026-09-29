@@ -33,3 +33,27 @@ Reported to the project owner for a decision before Phase 2.
 data-flow detection plus confirmation on the data, presented as an improvement over existing code-level checks,
 not a first. scicode-lint is added as a temporal baseline and cited in related work. The benchmark gets its own
 category (`differentiating`) for cases where the approaches differ; results on it are reported separately.
+
+## 2026-09-29, Phase 2 boundary
+
+Searched: web ("group leakage detection source code static analysis notebook GroupKFold tool 2026"; "arXiv 2026
+data leakage ML code impact estimation re-execution counterfactual fix notebooks"), PyPI names (`leakage-lint`,
+`mlleak`, `leakfinder`, `leakdetect`, `notebook-leakage`, `leak-audit`, `splitguard`, `groupleak`), GitHub
+repositories created after 2026-09-20 and repositories mentioning "group leakage" created after 2026-09-01.
+
+| New item | Level | Touches | Finding |
+|---|---|---|---|
+| **splitguard** 0.1.0 (Aiello, MIT, first release 2026-06-27) | **runtime**, instruments the user's own code | **C2 (partly), C1 (claim overlap)** | Patches `train_test_split`, CV `.split` and every `fit`; tracks held-out row identity; reports the exact line; per-fold CV tracking. Group leakage **only when the user registers group ids** (`mark_groups`/`guard(groups=...)`); no automatic entity inference in its source. No temporal, multi-test, target-derived, or impact. README markets it as "the one tool that automatically catches group leakage". |
+| mlleak 0.1.1 (MIT, 2025-12-24) | data | – | Group/temporal overlap with declared columns; same category as leakcheck-ml. |
+| (own repo) | – | – | The public LeakLens repository is already indexed by web search. |
+
+**Missed earlier:** splitguard was released three months before Phase 0 and was not found by the Phase 0 or
+Phase 1 searches (queries were phrased around "static analysis" and "notebooks"; its PyPI summary says "at
+runtime"). Future searches add runtime/instrumentation phrasing.
+
+**Verdict: partial overlap; reported to the project owner before Phase 3.** C1 as defined (group leakage found in
+source code, with the entity inferred from names, cardinality or file paths, no execution, no declaration) is not
+covered. C2's mechanism (checking entity overlap at the split call, per fold, pointing at the line) exists in
+splitguard once groups are declared; LeakLens's remaining novelty in C2 is that the static pass supplies the
+entity column so no declaration is needed. C3 is not covered. The README's claim "no code-level tool detects group
+leakage" must be qualified: splitguard detects it at runtime with declared groups.

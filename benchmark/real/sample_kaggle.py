@@ -23,6 +23,7 @@ import csv
 import hashlib
 import io
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -36,16 +37,21 @@ RAW = ROOT / "benchmark" / "raw" / "real"
 CFG = yaml.safe_load((HERE / "sampling.yaml").read_text())
 
 
+KAGGLE = str(Path(sys.executable).parent / "kaggle")  # the project venv's CLI; nested `uv run` can block on a lock
+
+
 def kaggle(*args: str) -> str:
-    p = subprocess.run(["uv", "run", "kaggle", *args], capture_output=True, text=True, cwd=ROOT, timeout=300)
+    p = subprocess.run([KAGGLE, *args], capture_output=True, text=True, cwd=ROOT, timeout=300)
     if p.returncode != 0:
         raise RuntimeError(f"kaggle {' '.join(args)} failed: {p.stderr.strip()[-300:]}")
     return p.stdout
 
 
 def list_refs(query: str, order: str, page: int) -> list[dict]:
-    out = kaggle("kernels", "list", "--search", query, "--language", "python", "--kernel-type", "notebook",
-                 "--sort-by", order, "--page-size", str(CFG["page_size"]), "-p", str(page), "--csv")
+    # The API returns "Not found" when --search is combined with --language/--kernel-type (checked 2026-09-29),
+    # so only the search term is sent; Python-notebook and content filters are applied after pulling.
+    out = kaggle("kernels", "list", "--search", query, "--sort-by", order, "--page-size", str(CFG["page_size"]),
+                 "-p", str(page), "--csv")
     if not out.strip() or out.startswith("No kernels"):
         return []
     return list(csv.DictReader(io.StringIO(out)))
@@ -77,7 +83,9 @@ def main() -> None:
         for q in spec["queries"]:
             for order in CFG["sort_orders"]:
                 for page in range(1, CFG["pages_per_order"] + 1):
-                    for row in list_refs(q, order, page):
+                    rows = list_refs(q, order, page)
+                    print(f"  list {stratum} | {q!r} | {order} p{page}: {len(rows)}", flush=True)
+                    for row in rows:
                         ref = row.get("ref")
                         if ref and ref not in seen:
                             seen.add(ref)
@@ -112,6 +120,8 @@ def main() -> None:
                     row["status"] = f"error: {type(e).__name__}: {str(e)[:200]}"
                 time.sleep(0.5)
             pool_rows.append(row)
+            if row["status"] != "not_reached":
+                print(f"  {stratum} #{rank} {c['ref']}: {row['status']} (kept {n_kept}/{target})", flush=True)
         print(f"{stratum}: kept {n_kept}/{target}")
 
     fields = ["stratum", "pool_rank", "ref", "author", "title", "query", "order", "status", "code_cells",
