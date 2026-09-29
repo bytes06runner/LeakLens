@@ -1,0 +1,14 @@
+{
+  "id": "srijeetbanerjee/leaklens-00b-yang-baseline",
+  "title": "leaklens-00b-yang-baseline",
+  "code_file": "run_yang.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

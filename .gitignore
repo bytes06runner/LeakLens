@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+dist/
+build/
+*.egg-info/
+.DS_Store
+# Kaggle / API credentials must never enter git
+kaggle.json
+access_token
+*.token
+.env
+# Large or non-redistributable data (see CLAUDE.md Rule 9)
+benchmark/raw/
+mining/raw/
+results/**/tmp/

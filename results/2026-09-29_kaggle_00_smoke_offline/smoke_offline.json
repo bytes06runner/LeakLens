@@ -1,0 +1,38 @@
+{
+  "started_utc": "2026-09-29T09:13:14Z",
+  "python": "3.12.13",
+  "platform": "Linux-6.12.90+-x86_64-with-glibc2.35",
+  "cpu_count": 4,
+  "mem_total_kb": 32870492,
+  "versions": {
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "sklearn": "1.6.1",
+    "scipy": "1.16.3",
+    "nbformat": "5.10.4",
+    "nbconvert": "6.4.5",
+    "click": "8.3.3",
+    "rich": "unknown",
+    "yaml": "6.0.3",
+    "imblearn": "0.14.1",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.6.0",
+    "torch": "2.10.0+cpu",
+    "tensorflow": "2.20.0",
+    "keras": "3.13.2",
+    "statsmodels": "0.14.6"
+  },
+  "network": {
+    "pypi.org:443": "blocked (gaierror)",
+    "github.com:443": "blocked (gaierror)",
+    "1.1.1.1:53": "blocked (TimeoutError)"
+  },
+  "network_blocked": true,
+  "credential_like_env_names": [
+    "KAGGLE_API_V1_TOKEN",
+    "KAGGLE_DATA_PROXY_TOKEN",
+    "KAGGLE_USER_SECRETS_TOKEN"
+  ],
+  "kaggle_json_present": false,
+  "working_free_gb": 20.9
+}

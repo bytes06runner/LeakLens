@@ -1,0 +1,47 @@
+[{"stream_name":"stderr","time":10.694879221,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":10.694968507,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":11.192836349,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":11.192874388,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":11.378489607,"data":"/kaggle/src/script.py:30: DeprecationWarning: The '__version__' attribute is deprecated and will be removed in Click 9.1. Use feature detection or 'importlib.metadata.version(\"click\")' instead.\n"}
+,{"stream_name":"stderr","time":11.378547618,"data":"  versions[mod] = getattr(importlib.import_module(mod), \"__version__\", \"unknown\")\n"}
+,{"stream_name":"stdout","time":122.614755566,"data":"{\n"}
+,{"stream_name":"stdout","time":122.61485617,"data":"  \"started_utc\": \"2026-09-29T09:13:14Z\",\n"}
+,{"stream_name":"stdout","time":122.614865537,"data":"  \"python\": \"3.12.13\",\n"}
+,{"stream_name":"stdout","time":122.614873019,"data":"  \"platform\": \"Linux-6.12.90+-x86_64-with-glibc2.35\",\n"}
+,{"stream_name":"stdout","time":122.614879203,"data":"  \"cpu_count\": 4,\n"}
+,{"stream_name":"stdout","time":122.614884398,"data":"  \"mem_total_kb\": 32870492,\n"}
+,{"stream_name":"stdout","time":122.614897158,"data":"  \"versions\": {\n"}
+,{"stream_name":"stdout","time":122.61490126,"data":"    \"numpy\": \"2.0.2\",\n"}
+,{"stream_name":"stdout","time":122.614905067,"data":"    \"pandas\": \"2.3.3\",\n"}
+,{"stream_name":"stdout","time":122.614908863,"data":"    \"sklearn\": \"1.6.1\",\n"}
+,{"stream_name":"stdout","time":122.614912498,"data":"    \"scipy\": \"1.16.3\",\n"}
+,{"stream_name":"stdout","time":122.614916283,"data":"    \"nbformat\": \"5.10.4\",\n"}
+,{"stream_name":"stdout","time":122.61491992,"data":"    \"nbconvert\": \"6.4.5\",\n"}
+,{"stream_name":"stdout","time":122.614923744,"data":"    \"click\": \"8.3.3\",\n"}
+,{"stream_name":"stdout","time":122.614927261,"data":"    \"rich\": \"unknown\",\n"}
+,{"stream_name":"stdout","time":122.614930918,"data":"    \"yaml\": \"6.0.3\",\n"}
+,{"stream_name":"stdout","time":122.614934384,"data":"    \"imblearn\": \"0.14.1\",\n"}
+,{"stream_name":"stdout","time":122.614937943,"data":"    \"xgboost\": \"3.2.0\",\n"}
+,{"stream_name":"stdout","time":122.614941577,"data":"    \"lightgbm\": \"4.6.0\",\n"}
+,{"stream_name":"stdout","time":122.614945052,"data":"    \"torch\": \"2.10.0+cpu\",\n"}
+,{"stream_name":"stdout","time":122.614948654,"data":"    \"tensorflow\": \"2.20.0\",\n"}
+,{"stream_name":"stdout","time":122.614952161,"data":"    \"keras\": \"3.13.2\",\n"}
+,{"stream_name":"stdout","time":122.614955789,"data":"    \"statsmodels\": \"0.14.6\"\n"}
+,{"stream_name":"stdout","time":122.614959313,"data":"  },\n"}
+,{"stream_name":"stdout","time":122.614962715,"data":"  \"network\": {\n"}
+,{"stream_name":"stdout","time":122.614966359,"data":"    \"pypi.org:443\": \"blocked (gaierror)\",\n"}
+,{"stream_name":"stdout","time":122.614969997,"data":"    \"github.com:443\": \"blocked (gaierror)\",\n"}
+,{"stream_name":"stdout","time":122.614973604,"data":"    \"1.1.1.1:53\": \"blocked (TimeoutError)\"\n"}
+,{"stream_name":"stdout","time":122.614977268,"data":"  },\n"}
+,{"stream_name":"stdout","time":122.614981048,"data":"  \"network_blocked\": true,\n"}
+,{"stream_name":"stdout","time":122.614984592,"data":"  \"credential_like_env_names\": [\n"}
+,{"stream_name":"stdout","time":122.615054655,"data":"    \"KAGGLE_API_V1_TOKEN\",\n"}
+,{"stream_name":"stdout","time":122.615066139,"data":"    \"KAGGLE_DATA_PROXY_TOKEN\",\n"}
+,{"stream_name":"stdout","time":122.615069007,"data":"    \"KAGGLE_USER_SECRETS_TOKEN\"\n"}
+,{"stream_name":"stdout","time":122.615071784,"data":"  ],\n"}
+,{"stream_name":"stdout","time":122.615074518,"data":"  \"kaggle_json_present\": false,\n"}
+,{"stream_name":"stdout","time":122.615077438,"data":"  \"working_free_gb\": 20.9\n"}
+,{"stream_name":"stdout","time":122.61508017,"data":"}\n"}
+,{"stream_name":"stderr","time":128.810587506,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":129.953136111,"data":"[NbConvertApp] Writing 285977 bytes to __results__.html\n"}
+]

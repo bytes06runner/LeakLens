@@ -1,0 +1,44 @@
+[project]
+name = "leaklens"
+version = "0.0.1"
+description = "Static and dynamic detection of data leakage in Python ML code, with per-finding impact estimation"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+authors = [{ name = "Srijeet Prasad Banerjee" }]
+keywords = ["machine-learning", "data-leakage", "static-analysis", "jupyter", "reproducibility"]
+dependencies = [
+  # numpy / pandas / scikit-learn pinned to the versions preinstalled on Kaggle CPU sessions
+  # (measured for CalibraEEG on 2026-09-24; re-checked by kaggle/00_smoke_offline), so Kaggle jobs need no reinstall.
+  "numpy==2.0.2",
+  "pandas==2.3.3",
+  "scikit-learn==1.6.1",
+  "scipy==1.16.3",
+  "nbformat>=5.10",
+  "click>=8.1",
+  "rich>=13.7",
+  "pyyaml>=6.0",
+]
+
+[project.scripts]
+leaklens = "leaklens.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8", "hypothesis>=6.100", "ruff>=0.6", "kaggle"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/leaklens"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
