@@ -33,6 +33,13 @@ line) and **what kind** it is.
 | **row** | one example (one patient visit, one sale, one image) |
 | **column** | one piece of information about every row (age, price, date, patient_id) |
 
+## 2b. What you receive
+
+A folder with one text file per notebook (`R001.txt`, `R002.txt`, ...), the practice files, and an empty sheet.
+Work through the notebooks **in number order** (R001, R002, ...), even if you skip one as `cannot_read`; the
+order was randomised so that any first N notebooks form a fair sample. The files come from public Kaggle
+notebooks; do not publish or share them outside the project.
+
 ## 3. How to label one notebook (step by step)
 
 You get each notebook as a text file with every line numbered like `[cell 4 | line 7]`. Open it in any text

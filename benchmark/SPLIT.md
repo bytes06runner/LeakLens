@@ -85,5 +85,26 @@ check. True inflation on this set is by construction (CLAUDE.md Rule 12).
 
 ## Real set
 
-Split unit: **notebook author** (all notebooks by one author on the same side), assigned at sampling time, before
-labelling and before any rule exists. See `benchmark/real/` (added in Phase 2, section below once sampled).
+Sampled 2026-09-29 by `benchmark/real/sample_kaggle.py` (config `benchmark/real/sampling.yaml`, seed 20260930),
+**before any labels and before any detection rule**. Nothing was executed.
+
+- Source: Kaggle notebooks found by 16 search queries in three strata (grouped / timeseries / tabular), each in
+  three listing orders, two pages of 100. Pools: 2,594 / 2,066 / 2,157 unique candidates. Each stratum's pool was
+  shuffled and walked until 50 notebooks passed the source filters (Python notebook, scikit-learn import, a fit
+  call, a metric; 5 to 120 code cells). All 98 rejections are recorded with their reason in
+  `benchmark/real/pool.csv` (44 no scikit-learn import, 17 cell count, 16 no fit, 12 no metric, 9 not a notebook).
+- **Strata are query-based, not verified data types**: e.g. the "grouped" stratum contains some churn and EDA
+  notebooks. Whether a notebook really has repeated entities or dates is decided by the labellers (Q4, Q5).
+- **Split unit: author**, seeded 50/50 over the 139 authors: DEV 71 notebooks (69 authors), TEST 79 (70 authors).
+
+| stratum | DEV | TEST | total |
+|---|---|---|---|
+| grouped | 26 | 24 | 50 |
+| tabular | 22 | 28 | 50 |
+| timeseries | 23 | 27 | 50 |
+| total | 71 | 79 | 150 |
+
+- **Labelling order** is the random `queue` column (R001 = first). Labellers work in that order, so if fewer than
+  150 are labelled, the labelled subset is still a random sample, not a hand-picked one.
+- The repo stores only URLs, hashes and metadata (`benchmark/real/manifest.csv`); notebooks and their numbered
+  renderings stay local in `benchmark/raw/` (gitignored). Licences are `unverified` until checked per notebook.
