@@ -11,3 +11,4 @@ ts_energy,timeseries,DEV
 ts_sensor,timeseries,DEV
 ts_air,timeseries,TEST
 ts_sales,timeseries,TEST
+grp_imaging,grouped,DEV

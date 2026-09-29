@@ -35,6 +35,7 @@ Companion project: CalibraEEG (same author). Its evaluation regimes are a free g
 9. **Respect licences.** Store notebook URLs and hashes; redistribute notebook content only where the licence allows. The benchmark release includes only redistributable items plus a download script for the rest.
 10. **Report bad results.** If LeakLens loses to a baseline on some type, that goes in the paper.
 11. **No code from other tools.** LeakLens is MIT-licensed. Baselines may be installed and run in separate environments, but no code, rule, pattern or threshold from any other tool is copied into LeakLens (especially AGPL Deepchecks and LeakHound, and proprietary ReproGuard). ReproGuard is excluded entirely: do not read or use its check logic (see `docs/EXCLUDED_BASELINES.md`).
+12. **Injected inflation is by construction.** The synthetic generators were adjusted after seeing seed-0 inflation (EVAL_CHANGES.md #1). True inflation on the injected benchmark may be used ONLY to evaluate detection and impact-estimation accuracy, where the true answer is known, never as evidence of real-world severity. Severity claims come only from real notebooks and the CalibraEEG case study. Wording: `docs/PAPER_WORDING.md`.
 
 ## 3. Compute and environment
 

@@ -227,10 +227,35 @@ def grp_sites(seed: int) -> dict:
     return {"data.csv": pd.DataFrame(rows)}
 
 
+def grp_imaging(seed: int) -> dict:
+    """Per-patient image folders: 40 patients x 4-10 small scans; patient identity is only the folder name.
+
+    Added 2026-09-29 as a DEV base (see EVAL_CHANGES.md) so DEV has a file-path-derived entity case from a domain
+    other than EEG. Each patient has a scanner/anatomy fingerprint (intensity offset, noise texture) and a personal
+    lesion prevalence (5% to 85%); the lesion itself is a weak bright spot. Labels live in labels.csv.
+    """
+    r = _rng(seed)
+    files, rows = {}, []
+    yy, xx = np.mgrid[0:16, 0:16]
+    for p in range(40):
+        offset, texture, prev = r.normal(0, 0.8), r.uniform(0.5, 1.5), r.uniform(0.05, 0.85)
+        for k in range(r.integers(4, 11)):
+            lesion = int(r.random() < prev)
+            img = offset + texture * r.normal(0, 1, (16, 16))
+            if lesion:
+                cy, cx = r.integers(4, 12, 2)
+                img += 0.6 * np.exp(-((yy - cy) ** 2 + (xx - cx) ** 2) / 6)
+            rel = f"images/patient_{p:03d}/scan_{k:02d}.npy"
+            files[rel] = img.astype(np.float32)
+            rows.append({"file": rel, "lesion": lesion})
+    files["labels.csv"] = pd.DataFrame(rows)
+    return files
+
+
 GENERATORS = {
     f.__name__: f
     for f in (tab_credit, tab_housing, tab_fraud, tab_churn, ts_sales, ts_sensor, ts_energy, ts_air,
-              grp_eeg, grp_patients, grp_users, grp_sites)
+              grp_eeg, grp_patients, grp_users, grp_sites, grp_imaging)
 }
 
 

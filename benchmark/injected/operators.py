@@ -197,6 +197,7 @@ CV_SETUP = {  # base -> (setup lines, cv expression, groups expression)
     "ts_air": (["cv = TimeSeriesSplit(n_splits=5)"], "cv", None),
     "grp_eeg": (["cv = GroupKFold(n_splits=4)"], "cv", "groups"),
     "grp_users": ([], "GroupKFold(n_splits=5)", 'df["user_id"]'),
+    "grp_imaging": ([], "GroupKFold(n_splits=5)", 'df["patient"]'),
 }
 
 
@@ -332,6 +333,7 @@ PROXY = {  # base -> (feature name, expression using df[TARGET])
     "grp_patients": ("icu_days", "df[TARGET] * np.random.default_rng(7).integers(1, 9, len(df))"),
     "grp_users": ("order_items", "df[TARGET] * np.random.default_rng(7).integers(1, 6, len(df))"),
     "grp_sites": ("treatment_started", "df[TARGET] * (np.random.default_rng(7).random(len(df)) < 0.9)"),
+    "grp_imaging": ("radiologist_flag", "df[TARGET] * (np.random.default_rng(7).random(len(df)) < 0.85)"),
 }
 
 

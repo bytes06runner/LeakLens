@@ -4,6 +4,16 @@ grp_eeg__grp_cv__kfold,1,group,,row_cv+file_path_entity,group,TEST,items/grp_eeg
 grp_eeg__grp_cv__stratified,1,group,,row_cv+file_path_entity,group,TEST,items/grp_eeg__grp_cv__stratified/pipeline.ipynb,2,5,6,25,26,5;6
 grp_eeg__grp_cv__default_cv,1,group,,default_cv+file_path_entity,group,TEST,items/grp_eeg__grp_cv__default_cv/pipeline.py,,29,29,29,29,29
 grp_eeg__tgt_proxy__proxy,1,target_derived,,post_outcome,standard,TEST,items/grp_eeg__tgt_proxy__proxy/pipeline.ipynb,1,14,14,20,20,14
+grp_imaging__pre_scaler__standard,1,preprocessing,,scaler,standard,DEV,items/grp_imaging__pre_scaler__standard/pipeline.py,,28,28,28,28,28
+grp_imaging__pre_scaler__minmax,1,preprocessing,,scaler,standard,DEV,items/grp_imaging__pre_scaler__minmax/pipeline.ipynb,2,5,5,23,23,5
+grp_imaging__pre_scaler__robust,1,preprocessing,,scaler,standard,DEV,items/grp_imaging__pre_scaler__robust/pipeline.ipynb,2,5,5,23,23,5
+grp_imaging__pre_pandas_stats__zscore,1,preprocessing,,pandas_stats,standard,DEV,items/grp_imaging__pre_pandas_stats__zscore/pipeline.py,,27,27,27,27,27
+grp_imaging__pre_pandas_stats__minmax,1,preprocessing,,pandas_stats,standard,DEV,items/grp_imaging__pre_pandas_stats__minmax/pipeline.ipynb,2,5,5,22,22,5
+grp_imaging__mul_cv_loop__loop,1,multi_test,,cv_selection_reported,standard,DEV,items/grp_imaging__mul_cv_loop__loop/pipeline.ipynb,2,7,7,24,24,7
+grp_imaging__grp_cv__kfold,1,group,,row_cv+file_path_entity,group,DEV,items/grp_imaging__grp_cv__kfold/pipeline.ipynb,2,4,5,22,23,4;5
+grp_imaging__grp_cv__stratified,1,group,,row_cv+file_path_entity,group,DEV,items/grp_imaging__grp_cv__stratified/pipeline.ipynb,2,4,5,22,23,4;5
+grp_imaging__grp_cv__default_cv,1,group,,default_cv+file_path_entity,group,DEV,items/grp_imaging__grp_cv__default_cv/pipeline.ipynb,2,4,4,21,21,4
+grp_imaging__tgt_proxy__proxy,1,target_derived,,post_outcome,standard,DEV,items/grp_imaging__tgt_proxy__proxy/pipeline.py,,21,21,21,21,21
 grp_patients__pre_scaler__standard,1,preprocessing,,scaler,standard,TEST,items/grp_patients__pre_scaler__standard/pipeline.ipynb,2,5,5,14,14,5
 grp_patients__pre_scaler__minmax,1,preprocessing,,scaler,standard,TEST,items/grp_patients__pre_scaler__minmax/pipeline.py,,19,19,19,19,19
 grp_patients__pre_scaler__robust,1,preprocessing,,scaler,standard,TEST,items/grp_patients__pre_scaler__robust/pipeline.ipynb,2,5,5,14,14,5

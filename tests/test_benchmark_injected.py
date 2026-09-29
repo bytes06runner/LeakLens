@@ -49,11 +49,28 @@ def test_split_is_by_base_and_frozen():
         assert lab["split"] == SPLIT[lab["item_id"].split("__")[0]]
 
 
-def test_each_family_has_two_dev_and_two_test_bases():
+def test_split_composition():
+    """2 DEV + 2 TEST bases per family (seeded, 2026-09-29), plus grp_imaging added to DEV afterwards (EVAL_CHANGES)."""
     meta = yaml.safe_load((BENCH / "bases.yaml").read_text())
-    for fam in ("tabular", "timeseries", "grouped"):
-        splits = sorted(SPLIT[b] for b, m in meta.items() if m["family"] == fam)
-        assert splits == ["DEV", "DEV", "TEST", "TEST"]
+    expected = {"tabular": ["DEV", "DEV", "TEST", "TEST"], "timeseries": ["DEV", "DEV", "TEST", "TEST"],
+                "grouped": ["DEV", "DEV", "DEV", "TEST", "TEST"]}
+    for fam, want in expected.items():
+        assert sorted(SPLIT[b] for b, m in meta.items() if m["family"] == fam) == want
+    assert SPLIT["grp_imaging"] == "DEV" and SPLIT["grp_eeg"] == "TEST"
+
+
+def test_file_path_entity_case_in_both_splits():
+    meta = yaml.safe_load((BENCH / "bases.yaml").read_text())
+    splits = {SPLIT[b] for b, m in meta.items() if m.get("entity_source") == "file_path"}
+    assert splits == {"DEV", "TEST"}
+
+
+def test_generation_is_deterministic(tmp_path):
+    before = (BENCH / "manifest.csv").read_text()
+    import subprocess
+
+    subprocess.run([sys.executable, str(BENCH / "generate.py")], cwd=BENCH, check=True, capture_output=True)
+    assert (BENCH / "manifest.csv").read_text() == before
 
 
 def _expected_leak_lines():

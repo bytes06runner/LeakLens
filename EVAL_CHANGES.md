@@ -1,7 +1,11 @@
 # Evaluation changes log
 
-Every change to detection rules, thresholds or the protocol **after** TEST results have been seen is logged here
-with date, commit, what changed, and why (Integrity Rule 4). Empty until Phase 7.
+Every change to the benchmark, detection rules, thresholds or the protocol made **after** relevant results were
+seen is logged here with date, commit, what changed, why, and what had been seen (Integrity Rule 4). No detector
+exists yet (Phase 2), so no detection result on DEV or TEST has been seen by anyone.
 
-| Date | Commit | Change | Reason | TEST seen before? |
-|---|---|---|---|---|
+| # | Date | Commit | Change | Reason | What had been seen before the change |
+|---|---|---|---|---|---|
+| 1 | 2026-09-29 | `1b2084b` | Synthetic data generators adjusted after the first seed-0 inflation run: `grp_eeg`, `grp_patients`, `grp_users`, `grp_sites` rebuilt so features carry an entity fingerprint and labels an entity-specific component; `grp_sites` and `ts_sensor` models changed from linear to random forests; trap items now use their own code as the fixed reference. | First run showed group leaks inflating by about 0 (mean +0.001 / +0.006), because the generators put the entity effect only into population-level signal; this contradicted the published mechanism (Brookshire et al. 2024) rather than testing it. Traps showed spurious non-zero inflation because their reference differed from their code. | **Seed-0 true inflation of all 164 items, DEV and TEST bases alike** (e.g. `grp_eeg`, `grp_patients` are TEST). No detector output. Consequence: injected-set inflation is a property we designed; see rule in CLAUDE.md §2 note and `docs/PAPER_WORDING.md`. |
+| 2 | 2026-09-29 | this commit | New DEV base `grp_imaging` (per-patient image folders; entity = parent folder name), 11 items. Added to `split.csv` as DEV by hand (the seeded split script refuses to rerun). | The only file-path-derived entity base (`grp_eeg`) was in TEST, so DEV had no such case to develop the rule on. | Nothing about detection. The frozen TEST set is unchanged: all 164 pre-existing items have identical code (checked against `1b2084b`). |
+| 3 | 2026-09-29 | this commit | Notebook cell ids made deterministic in `generate.py` (were random per write, a `nbformat` default). | `manifest.csv` file hashes changed on every regeneration although code was identical. | Nothing. All `.ipynb` items changed bytes (cell ids only); code and execution counts identical to `1b2084b`. |

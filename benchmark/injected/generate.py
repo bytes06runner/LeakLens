@@ -161,6 +161,7 @@ def main() -> None:
             for i, c in enumerate(cells):
                 cell = nbformat.v4.new_code_cell("\n".join(c))
                 cell.execution_count = i + 1 if with_counts else None
+                cell.id = hashlib.sha256(f"{item_id}:{i}".encode()).hexdigest()[:8]  # nbformat's default is random
                 nb.cells.append(cell)
             path = d / "pipeline.ipynb"
             nbformat.write(nb, path)
