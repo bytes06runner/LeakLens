@@ -6,33 +6,34 @@ You are the lead research software engineer on LeakLens. Read this whole file be
 
 LeakLens detects **data leakage** in Python ML code (scripts and Jupyter notebooks): any path by which evaluation data influences training, which inflates reported scores.
 
-The research gap (see docs/ch2 in the proposal) has three parts:
-1. **Coverage.** Existing code-level tools (Yang et al. ASE 2022, NBLyzer, LeakageDetector 1.0/2.0, Draoui et al. 2026 LLM slicing) detect preprocessing, overlap and multi-test leakage. None detects **group leakage** (same patient/user/device in train and test) or **temporal leakage** (training on the future) from code.
-2. **Severity mismatch.** Roth 2026 (arXiv:2604.04199) found scaler-on-full-data leakage changes AUC by at most 0.005, while boundary (group/temporal) leakage is invisible under random CV. Tools focus on the least harmful type.
-3. **No impact estimate.** All tools give binary flags. None measures how much a finding inflates the metric.
+The research gap, as narrowed by the Phase 0 novelty check (docs/PHASE0_REPORT.md, 2026-09-29):
+1. **Coverage, from code.** Existing code-level tools (Yang et al. ASE 2022, NBLyzer, LeakageDetector 1.0/2.0, Draoui et al. 2026 LLM slicing) detect preprocessing, overlap and multi-test leakage. None detects **group leakage** (same patient/user/device in train and test) or **temporal leakage** (training on the future) **from source code**.
+2. **Data-level checks exist but are disconnected from code.** Since September 2026, data-level tools (leakcheck-ml, LeakHound, dataleaks; also Deepchecks for dates, and BORG/bioLeak in R) detect group and temporal overlap once the user exports train/test tables and, for most, names the column. They give no code location and do not handle cross-validation folds. An entity/time overlap check is therefore **not novel on its own**; ours is novel only as the confirmation step of a code-level finding, with no user declaration.
+3. **Severity mismatch.** Roth 2026 (arXiv:2604.04199) found scaler-on-full-data leakage changes AUC by at most 0.005, while boundary (group/temporal) leakage is invisible under random CV. Code-level tools focus on the least harmful type.
+4. **Impact on the user's own pipeline is unmeasured.** Code-level tools give binary flags. LeakHound estimates inflation with its own proxy model on the given split; bioLeak and Roth measure inflation inside their own frameworks; mlwhatif re-executes user pipelines but only for data-cleaning what-ifs. None re-runs the user's own pipeline with a fix and reports the change in the user's own metric per finding.
 
-LeakLens contributions:
-- A hybrid analyser: static data-flow analysis plus an optional instrumented run.
-- Group and temporal leakage detection, alongside the standard types.
-- **Impact estimation**: automatic counterfactual fix and re-execution in a sandbox, reporting the metric change per finding.
-- A labelled benchmark including the missing types.
-- A mining study of prevalence and measured impact.
-- Usable software: CLI, pre-commit, GitHub Action, SARIF, PyPI.
+LeakLens contributions (approved 2026-09-29):
+- **C1. Group and temporal leakage detected from source code**, including CV splitters and file-path-derived IDs, alongside the standard types.
+- **C2. Static-to-dynamic linking without user setup.** The static pass nominates the split call site and candidate entity/time columns; an instrumented run checks overlap at that call, fold by fold. Data-level tools are baselines for this dynamic pass, given the same materialised splits.
+- **C3. Per-finding impact on the user's own pipeline**: canonical fix applied to a sandboxed copy, re-run, metric diff. On the injected benchmark the true inflation is known, so estimation error is measured and compared against LeakHound's proxy estimate. If the proxy is as good, we report that.
+- **C4. A labelled benchmark including group and temporal leakage**, which no public dataset has.
+- Supporting: a mining study of prevalence and measured impact; usable software (CLI, pre-commit, GitHub Action, SARIF, PyPI; MIT licence).
 
 Companion project: CalibraEEG (same author). Its evaluation regimes are a free ground-truth case study (Phase 7).
 
 ## 2. Integrity Rules (non-negotiable)
 
-1. **Novelty check first.** Before building, verify that no published tool already detects group or temporal leakage from ML code or quantifies per-finding impact by re-execution. If one exists, stop and report.
+1. **Novelty check first, and again at every phase boundary.** Before building, and at the end of every phase, re-run the novelty search (group/temporal leakage from code; per-finding impact by re-executing the user's pipeline; new leakage tools on PyPI/GitHub/arXiv). Log each search in `docs/NOVELTY_LOG.md`. If a tool covering C1 or C3 appears, stop and report.
 2. **Never fabricate.** No invented citations, tool capabilities or numbers. Every literature claim goes in `literature/related_work.csv` with title, venue, year, DOI/URL and a `verified` column. Anything you could not open and read is marked unverified.
 3. **The detector must not label its own benchmark.** Benchmark labels come from (a) injected leaks with known ground truth, and (b) human labels by me and a teammate. You may propose labels, but a human confirms every real-notebook label. Report inter-rater agreement (Cohen's kappa) on the double-labelled subset.
 4. **Freeze the test split of the benchmark.** Split the benchmark into DEV and TEST before writing detection rules. Rules and thresholds are tuned on DEV only. TEST is scored once per release, and any rule change after seeing TEST results is logged in `EVAL_CHANGES.md` with the reason.
 5. **Baselines run as released.** Existing tools are run with their published defaults. If a baseline cannot run on some input, report that as a coverage result; never drop those inputs silently.
 6. **Report precision and recall per leakage type**, with confidence intervals. No single headline F1 hiding a weak type.
-7. **Untrusted code never runs on the laptop.** Notebooks from the internet are executed only inside Kaggle sessions with **internet off and no credentials attached**. Never put any token into a Kaggle session that runs untrusted code.
+7. **Untrusted code never runs on the laptop.** Notebooks from the internet are executed only inside Kaggle sessions with **internet off**, and inside those sessions only through `leaklens.sandbox`: a child process with an allow-listed environment (Kaggle injects `KAGGLE_API_V1_TOKEN`, `KAGGLE_DATA_PROXY_TOKEN`, `KAGGLE_USER_SECRETS_TOKEN` into every session; these must not be visible), a throwaway working directory, and a timeout. Never put any token into a Kaggle session that runs untrusted code.
 8. **No shaming.** The mining study reports aggregates. Never name individual notebook authors as leaky in outputs, papers or issues.
 9. **Respect licences.** Store notebook URLs and hashes; redistribute notebook content only where the licence allows. The benchmark release includes only redistributable items plus a download script for the rest.
 10. **Report bad results.** If LeakLens loses to a baseline on some type, that goes in the paper.
+11. **No code from other tools.** LeakLens is MIT-licensed. Baselines may be installed and run in separate environments, but no code, rule, pattern or threshold from any other tool is copied into LeakLens (especially AGPL Deepchecks and LeakHound, and proprietary ReproGuard). ReproGuard is excluded entirely: do not read or use its check logic (see `docs/EXCLUDED_BASELINES.md`).
 
 ## 3. Compute and environment
 
