@@ -1,0 +1,43 @@
+[{"stream_name":"stdout","time":1.7646778140000001,"data":"{\n"}
+,{"stream_name":"stdout","time":1.764724344,"data":"  \"uid\": 0,\n"}
+,{"stream_name":"stdout","time":1.764729247,"data":"  \"euid\": 0,\n"}
+,{"stream_name":"stdout","time":1.764732634,"data":"  \"user\": \"root\",\n"}
+,{"stream_name":"stdout","time":1.764735374,"data":"  \"cap_eff\": \"00000000a80425fb\",\n"}
+,{"stream_name":"stdout","time":1.7647380639999999,"data":"  \"parent_has_token_in_env\": true,\n"}
+,{"stream_name":"stdout","time":1.764740913,"data":"  \"child_same_user_reads_environ\": {\n"}
+,{"stream_name":"stdout","time":1.7647435740000001,"data":"    \"rc\": 0,\n"}
+,{"stream_name":"stdout","time":1.7647461020000001,"data":"    \"out\": \"{\\\"parent\\\": true, \\\"1\\\": true}\",\n"}
+,{"stream_name":"stdout","time":1.764749091,"data":"    \"err\": \"\"\n"}
+,{"stream_name":"stdout","time":1.7647516460000001,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.764754325,"data":"  \"useradd\": {\n"}
+,{"stream_name":"stdout","time":1.7647569920000001,"data":"    \"rc\": 0,\n"}
+,{"stream_name":"stdout","time":1.7647597350000002,"data":"    \"out\": \"\",\n"}
+,{"stream_name":"stdout","time":1.76476242,"data":"    \"err\": \"\"\n"}
+,{"stream_name":"stdout","time":1.764764969,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.764767354,"data":"  \"child_unprivileged_reads_environ\": {\n"}
+,{"stream_name":"stdout","time":1.7647699669999999,"data":"    \"rc\": 0,\n"}
+,{"stream_name":"stdout","time":1.764772488,"data":"    \"out\": \"{\\\"parent\\\": \\\"unreadable: PermissionError\\\", \\\"1\\\": \\\"unreadable: PermissionError\\\"}\",\n"}
+,{"stream_name":"stdout","time":1.764775895,"data":"    \"err\": \"\"\n"}
+,{"stream_name":"stdout","time":1.764778407,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.764780922,"data":"  \"unprivileged_user_available\": true,\n"}
+,{"stream_name":"stdout","time":1.764783536,"data":"  \"proxy_from_plain_child\": {\n"}
+,{"stream_name":"stdout","time":1.764786107,"data":"    \"rc\": 0,\n"}
+,{"stream_name":"stdout","time":1.764788526,"data":"    \"out\": \"REACHABLE\",\n"}
+,{"stream_name":"stdout","time":1.764791145,"data":"    \"err\": \"\"\n"}
+,{"stream_name":"stdout","time":1.764793587,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.764796242,"data":"  \"unshare_path\": \"/usr/bin/unshare\",\n"}
+,{"stream_name":"stdout","time":1.764798912,"data":"  \"proxy_from_netns_child\": {\n"}
+,{"stream_name":"stdout","time":1.7648014349999999,"data":"    \"rc\": 1,\n"}
+,{"stream_name":"stdout","time":1.764803935,"data":"    \"out\": \"\",\n"}
+,{"stream_name":"stdout","time":1.76480651,"data":"    \"err\": \"unshare: unshare failed: Operation not permitted\"\n"}
+,{"stream_name":"stdout","time":1.764809155,"data":"  },\n"}
+,{"stream_name":"stdout","time":1.764811537,"data":"  \"proxy_status_line_no_token\": \"HTTP/1.1 404 Not Found\",\n"}
+,{"stream_name":"stdout","time":1.764814217,"data":"  \"kaggle_kernel_integrations_nonempty\": false\n"}
+,{"stream_name":"stdout","time":1.764817066,"data":"}\n"}
+,{"stream_name":"stderr","time":4.461574433,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4.461641186,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4.883597185,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4.88362623,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":6.635870059,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":8.198873068,"data":"[NbConvertApp] Writing 291000 bytes to __results__.html\n"}
+]

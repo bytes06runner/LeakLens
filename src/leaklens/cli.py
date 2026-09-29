@@ -1,7 +1,7 @@
 """Command-line entry point.
 
-Phase 0 ships only `leaklens info`. `leaklens scan` exists so the interface is visible, but it refuses to
-produce findings until the analyser is built (Phase 4); it never prints a fake "no leakage found".
+Until the analyser is built (Phase 4), `leaklens scan` refuses with exit code 3 ("mode unavailable", SPEC §7);
+it never prints a fake "no leakage found".
 """
 
 import sys
@@ -13,8 +13,12 @@ from leaklens import LEAKAGE_TYPES, __version__
 
 console = Console()
 
-# Exit codes are specified in docs/SPEC.md (Phase 1). 3 = tool cannot analyse the input.
-EXIT_NOT_IMPLEMENTED = 3
+# Exit codes: docs/SPEC.md §7.
+EXIT_OK = 0
+EXIT_FINDINGS = 1
+EXIT_USAGE = 2
+EXIT_UNANALYSABLE = 3
+EXIT_NOT_IMPLEMENTED = EXIT_UNANALYSABLE
 
 
 @click.group()
@@ -29,7 +33,7 @@ def info() -> None:
     console.print(f"[bold]LeakLens[/bold] {__version__}")
     console.print(f"Python {sys.version.split()[0]}")
     console.print("Leakage types (docs/TAXONOMY.md): " + ", ".join(LEAKAGE_TYPES))
-    console.print("Status: Phase 0 (setup and novelty check). No detector is implemented yet.")
+    console.print("Status: Phase 1 (taxonomy and specification). No detector is implemented yet.")
 
 
 @main.command()

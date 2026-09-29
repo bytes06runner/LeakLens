@@ -1,0 +1,36 @@
+{
+  "uid": 0,
+  "euid": 0,
+  "user": "root",
+  "cap_eff": "00000000a80425fb",
+  "parent_has_token_in_env": true,
+  "child_same_user_reads_environ": {
+    "rc": 0,
+    "out": "{\"parent\": true, \"1\": true}",
+    "err": ""
+  },
+  "useradd": {
+    "rc": 0,
+    "out": "",
+    "err": ""
+  },
+  "child_unprivileged_reads_environ": {
+    "rc": 0,
+    "out": "{\"parent\": \"unreadable: PermissionError\", \"1\": \"unreadable: PermissionError\"}",
+    "err": ""
+  },
+  "unprivileged_user_available": true,
+  "proxy_from_plain_child": {
+    "rc": 0,
+    "out": "REACHABLE",
+    "err": ""
+  },
+  "unshare_path": "/usr/bin/unshare",
+  "proxy_from_netns_child": {
+    "rc": 1,
+    "out": "",
+    "err": "unshare: unshare failed: Operation not permitted"
+  },
+  "proxy_status_line_no_token": "HTTP/1.1 404 Not Found",
+  "kaggle_kernel_integrations_nonempty": false
+}

@@ -20,3 +20,7 @@ workdir_prefix: leaklens-sbx-
 network_probe:
   targets: [["pypi.org", 443], ["github.com", 443], ["1.1.1.1", 53]]
   timeout_seconds: 3
+# When the parent runs as root (Kaggle jobs do), the child runs as this unprivileged user, created on demand.
+# A root child could read the tokens from /proc/<pid>/environ of its ancestors even with a clean environment
+# (measured: results/2026-09-29_kaggle_01b_sandbox_hardening_probe). If the user cannot be created, the run is refused.
+unprivileged_user: llsandbox

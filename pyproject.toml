@@ -25,7 +25,13 @@ dependencies = [
 leaklens = "leaklens.cli:main"
 
 [dependency-groups]
-dev = ["pytest>=8", "hypothesis>=6.100", "ruff>=0.6", "kaggle"]
+dev = [
+    "pytest>=8",
+    "hypothesis>=6.100",
+    "ruff>=0.6",
+    "kaggle",
+    "jsonschema>=4.23",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -47,3 +53,7 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+# Kaggle job scripts are kept byte-identical to what ran; long embedded child programs are allowed there.
+"kaggle/**" = ["E501"]

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/bytes06runner/LeakLens/schemas/finding/v1",
+  "title": "LeakLens finding (v1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "rule_id", "type", "subtype", "severity", "confidence", "location", "message", "evidence",
+               "related", "suggested_fix", "dynamic", "impact", "suppressed"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[0-9a-f]{16}$"},
+    "rule_id": {"type": "string", "pattern": "^LL-(PRE|OVL|MUL|GRP|TMP|TGT)-[0-9]{3}$"},
+    "type": {"enum": ["preprocessing", "overlap", "multi_test", "group", "temporal", "target_derived"]},
+    "subtype": {"type": ["string", "null"]},
+    "severity": {"enum": ["info", "low", "medium", "high"]},
+    "confidence": {"enum": ["low", "medium", "high"]},
+    "location": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "line_start", "line_end", "cell", "flat_line_start", "flat_line_end"],
+      "properties": {
+        "file": {"type": "string"},
+        "line_start": {"type": "integer", "minimum": 1},
+        "line_end": {"type": "integer", "minimum": 1},
+        "cell": {"type": ["integer", "null"], "minimum": 0},
+        "flat_line_start": {"type": "integer", "minimum": 1},
+        "flat_line_end": {"type": "integer", "minimum": 1}
+      }
+    },
+    "message": {"type": "string", "minLength": 1},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "detail"],
+        "properties": {
+          "kind": {"enum": ["data_flow", "entity_column", "time_column", "forward_op", "split_call", "fit_call",
+                            "selection", "dynamic_overlap", "single_feature_score", "note"]},
+          "detail": {"type": "string"},
+          "location": {"type": "object"},
+          "value": {"type": "number"}
+        }
+      }
+    },
+    "related": {"type": "array", "items": {"type": "string"}},
+    "suggested_fix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "canonical_fix"],
+      "properties": {
+        "description": {"type": "string"},
+        "canonical_fix": {"type": ["string", "null"]},
+        "patch": {"type": ["string", "null"]}
+      }
+    },
+    "dynamic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["not_run", "confirmed", "refuted", "error"]},
+        "details": {"type": "object"}
+      }
+    },
+    "impact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {"enum": ["not_run", "measured", "unreliable", "unknown"]},
+        "metric": {"type": ["string", "null"]},
+        "value_leaky": {"type": ["number", "null"]},
+        "value_fixed": {"type": ["number", "null"]},
+        "delta": {"type": ["number", "null"]},
+        "n_runs": {"type": ["integer", "null"], "minimum": 1},
+        "note": {"type": ["string", "null"]}
+      }
+    },
+    "suppressed": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["by"],
+          "properties": {"by": {"enum": ["inline", "config"]}, "reason": {"type": ["string", "null"]}}
+        }
+      ]
+    }
+  }
+}

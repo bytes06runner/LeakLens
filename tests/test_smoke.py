@@ -12,7 +12,7 @@ def test_six_leakage_types():
 def test_info_runs():
     result = CliRunner().invoke(main, ["info"])
     assert result.exit_code == 0
-    assert "Phase 0" in result.output
+    assert "No detector is implemented yet" in result.output
 
 
 def test_scan_refuses_until_implemented(tmp_path):

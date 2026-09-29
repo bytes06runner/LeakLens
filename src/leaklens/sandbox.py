@@ -8,16 +8,26 @@ top of the Kaggle session, which provides the outer boundary (internet off, no p
   the tokens Kaggle injects into every session.
 - **Working directory:** a fresh temporary directory, also used as HOME and TMPDIR, deleted after the run.
 - **Timeout:** the child runs in its own process group; on timeout the whole group is killed.
-- **Offline check:** by default the run is refused if any network probe succeeds, so an internet-enabled session
-  (or a laptop) cannot execute untrusted code by mistake. Tests pass `require_offline=False` for trusted snippets.
+- **Privilege drop:** if the parent runs as root (Kaggle jobs do), the child runs as an unprivileged user created
+  on demand. Without this, a root child can read the tokens from `/proc/<pid>/environ` of its ancestors even with
+  a clean environment (measured on Kaggle, results/2026-09-29_kaggle_01b_sandbox_hardening_probe). If the user
+  cannot be created, the run is refused.
+- **Offline check:** the run is refused if any network probe succeeds, so an internet-enabled session cannot
+  execute untrusted code by mistake.
 
-It is not a filesystem jail: the child can read absolute paths the parent can read. The Kaggle session must
-therefore never hold personal credentials (it does not: see results/2026-09-29_kaggle_00_smoke_offline).
+Untrusted mode (the default) requires both the offline check and the privilege drop, so in practice it only runs
+inside an offline Kaggle job. On a laptop it refuses. `trusted_code=True` skips both, for our own test snippets.
+
+Known limits: it is not a filesystem jail (the child can read world-readable paths), and it cannot cut the
+network route to Kaggle's data proxy (`dp.kaggle.net` stays reachable with internet off; `unshare -n` is not
+permitted on Kaggle). The child cannot obtain the proxy token, and no integrations are attached to LeakLens
+kernels, so the proxy gives it nothing to act on.
 """
 
 from __future__ import annotations
 
 import os
+import pwd
 import shutil
 import signal
 import socket
@@ -67,6 +77,29 @@ def build_env(workdir: Path, parent_env: Mapping[str, str] | None = None) -> dic
     return env
 
 
+def unprivileged_ids() -> tuple[int, int]:
+    """(uid, gid) of the unprivileged sandbox user, created if needed. Requires a root parent."""
+    if os.geteuid() != 0:
+        raise SandboxRefused(
+            "untrusted code needs a root parent to drop the child to an unprivileged user; "
+            "a same-user child could read the parent's /proc/<pid>/environ. Run it in an offline Kaggle job."
+        )
+    name = load_config("sandbox")["unprivileged_user"]
+    try:
+        pw = pwd.getpwnam(name)
+    except KeyError:
+        created = subprocess.run(
+            ["useradd", "--no-create-home", "--shell", "/usr/sbin/nologin", name], capture_output=True, text=True
+        )
+        try:
+            pw = pwd.getpwnam(name)
+        except KeyError:
+            raise SandboxRefused(f"running as root and cannot create user {name!r}: {created.stderr.strip()}") from None
+    if pw.pw_uid == 0:
+        raise SandboxRefused(f"sandbox user {name!r} has uid 0")
+    return pw.pw_uid, pw.pw_gid
+
+
 def network_reachable() -> bool:
     """True if any configured probe target accepts a connection."""
     probe = load_config("sandbox")["network_probe"]
@@ -85,7 +118,7 @@ def run_untrusted(
     inputs: Mapping[str, Path] | None = None,
     collect: Sequence[str] = (),
     timeout_seconds: float | None = None,
-    require_offline: bool = True,
+    trusted_code: bool = False,
     network_probe: Callable[[], bool] = network_reachable,
     parent_env: Mapping[str, str] | None = None,
 ) -> SandboxResult:
@@ -93,9 +126,13 @@ def run_untrusted(
 
     inputs:  {relative name: source path} copied into the working directory before the run.
     collect: relative paths read back (as bytes) after the run, before the directory is deleted.
+    trusted_code: our own code only; skips the offline check and the privilege drop.
     """
-    if require_offline and network_probe():
-        raise SandboxRefused("network is reachable; untrusted code runs only in an offline Kaggle session")
+    ids = None
+    if not trusted_code:
+        if network_probe():
+            raise SandboxRefused("network is reachable; untrusted code runs only in an offline Kaggle session")
+        ids = unprivileged_ids()
 
     cfg = load_config("sandbox")
     timeout = cfg["timeout_seconds"] if timeout_seconds is None else timeout_seconds
@@ -110,10 +147,16 @@ def run_untrusted(
                 shutil.copy2(src, dest)
 
         env = build_env(workdir, parent_env)
+        drop = {}
+        if ids is not None:
+            uid, gid = ids
+            for p in [workdir, *workdir.rglob("*")]:
+                os.chown(p, uid, gid)
+            drop = {"user": uid, "group": gid, "extra_groups": []}
         t0 = time.monotonic()
         proc = subprocess.Popen(
             list(argv), cwd=workdir, env=env, stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True, **drop,
         )
         try:
             stdout, stderr = proc.communicate(timeout=timeout)
