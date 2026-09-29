@@ -11,7 +11,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tarfile
 import time
 
 t0 = time.time()
@@ -24,8 +23,10 @@ hits = glob.glob("/kaggle/input/**/benchmark/injected/measure_inflation.py", rec
 if hits:
     shutil.copytree(os.path.dirname(os.path.dirname(hits[0])), "/tmp/bench/benchmark")
 else:
-    with tarfile.open(os.path.join(code_dir, "benchmark_injected.tar.gz")) as t:
-        t.extractall("/tmp/bench", filter="data")
+    import zipfile
+
+    with zipfile.ZipFile(os.path.join(code_dir, "benchmark_injected.zip")) as z:
+        z.extractall("/tmp/bench")
 script = "/tmp/bench/benchmark/injected/measure_inflation.py"
 p = subprocess.run([sys.executable, script, "/kaggle/working/inflation.csv", "--seeds", "0", "1", "2", "3", "4",
                     "--workers", "4"], capture_output=True, text=True)

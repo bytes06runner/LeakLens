@@ -13,7 +13,7 @@ uv build --wheel -q
 cp dist/*.whl "$OUT/"
 COPYFILE_DISABLE=1 tar czf "$OUT/tests.tar.gz" tests
 cp configs/*.yaml "$OUT/"
-COPYFILE_DISABLE=1 tar czf "$OUT/benchmark_injected.tar.gz" --exclude="__pycache__" benchmark/injected
+(zip -qr -X "$OUT/benchmark_injected.zip" benchmark/injected -x "*/__pycache__/*" -x "*.DS_Store")
 printf '{"commit": "%s", "built_utc": "%s"}\n' "$COMMIT" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$OUT/CODE_VERSION.json"
 printf '{"title": "leaklens-code", "id": "%s/leaklens-code", "licenses": [{"name": "other"}]}\n' "$USER_NAME" > "$OUT/dataset-metadata.json"
 if uv run kaggle datasets status "$USER_NAME/leaklens-code" >/dev/null 2>&1; then
@@ -21,4 +21,4 @@ if uv run kaggle datasets status "$USER_NAME/leaklens-code" >/dev/null 2>&1; the
 else
   uv run kaggle datasets create -p "$OUT" -q   # private by default
 fi
-echo "published leaklens-code @ $COMMIT"
+echo "published leaklens-code @ $COMMIT (version processing on Kaggle; run scripts/check_code_version.sh before pushing jobs)"

@@ -1,0 +1,69 @@
+[{"stream_name":"stdout","time":2.51820747,"data":"llama_cpp 0 1.0\n"}
+,{"stream_name":"stdout","time":174.32282835,"data":"model 0 171.8\n"}
+,{"stream_name":"stdout","time":189.992293144,"data":"scicode_lint 0 15.7\n"}
+,{"stream_name":"stdout","time":1700.13830346,"data":"temporal_pos.py timeout after 1500 s 1500.1\n"}
+,{"stream_name":"stdout","time":2793.753307853,"data":"temporal_neg.py done 1093.6\n"}
+,{"stream_name":"stdout","time":4293.871024214,"data":"temporal_pos_future_feature.py timeout after 1500 s 1500.1\n"}
+,{"stream_name":"stdout","time":4786.528963798,"data":"preprocessing_neg.py done 492.7\n"}
+,{"stream_name":"stdout","time":4786.536912623,"data":"{\n"}
+,{"stream_name":"stdout","time":4786.536943523,"data":"  \"code_version\": {\n"}
+,{"stream_name":"stdout","time":4786.536949926,"data":"    \"commit\": \"6a33990d2a5302ee90a38a1185868192c9613dcf\",\n"}
+,{"stream_name":"stdout","time":4786.536956398,"data":"    \"built_utc\": \"2026-09-29T10:27:05Z\"\n"}
+,{"stream_name":"stdout","time":4786.536963222,"data":"  },\n"}
+,{"stream_name":"stdout","time":4786.536968681,"data":"  \"cfg\": {\n"}
+,{"stream_name":"stdout","time":4786.536974605,"data":"    \"scicode_lint_version\": \"0.5.0\",\n"}
+,{"stream_name":"stdout","time":4786.536980805,"data":"    \"python\": \"3.13\",\n"}
+,{"stream_name":"stdout","time":4786.536986403,"data":"    \"llama_cpp_release\": \"b11249\",\n"}
+,{"stream_name":"stdout","time":4786.536992065,"data":"    \"llama_cpp_asset\": \"llama-b11249-bin-ubuntu-x64.tar.gz\",\n"}
+,{"stream_name":"stdout","time":4786.53699776,"data":"    \"model_repo\": \"Qwen/Qwen3-8B-GGUF\",\n"}
+,{"stream_name":"stdout","time":4786.537003568,"data":"    \"model_file\": \"Qwen3-8B-Q8_0.gguf\",\n"}
+,{"stream_name":"stdout","time":4786.537138515,"data":"    \"served_alias\": \"qwen3-8b-fp8\",\n"}
+,{"stream_name":"stdout","time":4786.537145203,"data":"    \"context_total\": 32768,\n"}
+,{"stream_name":"stdout","time":4786.537150993,"data":"    \"parallel_slots\": 2,\n"}
+,{"stream_name":"stdout","time":4786.537156615,"data":"    \"threads\": 4,\n"}
+,{"stream_name":"stdout","time":4786.537162106,"data":"    \"patterns\": \"ml-005,ml-006\",\n"}
+,{"stream_name":"stdout","time":4786.537168071,"data":"    \"inputs\": [\n"}
+,{"stream_name":"stdout","time":4786.537173865,"data":"      \"temporal_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537179278,"data":"      \"temporal_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537185096,"data":"      \"temporal_pos_future_feature.py\",\n"}
+,{"stream_name":"stdout","time":4786.537190875,"data":"      \"preprocessing_neg.py\"\n"}
+,{"stream_name":"stdout","time":4786.537196706,"data":"    ],\n"}
+,{"stream_name":"stdout","time":4786.537201995,"data":"    \"per_file_timeout_minutes\": 25,\n"}
+,{"stream_name":"stdout","time":4786.537207663,"data":"    \"total_budget_minutes\": 80\n"}
+,{"stream_name":"stdout","time":4786.537213616,"data":"  },\n"}
+,{"stream_name":"stdout","time":4786.537218591,"data":"  \"fixtures_found\": [\n"}
+,{"stream_name":"stdout","time":4786.537224652,"data":"    \"group_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537230235,"data":"    \"group_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537235974,"data":"    \"group_pos_windows.py\",\n"}
+,{"stream_name":"stdout","time":4786.537241345,"data":"    \"multi_test_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537246939,"data":"    \"multi_test_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537252571,"data":"    \"overlap_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537257871,"data":"    \"overlap_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537264308,"data":"    \"preprocessing_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.53728436,"data":"    \"preprocessing_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537289392,"data":"    \"target_derived_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537293788,"data":"    \"target_derived_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537298668,"data":"    \"temporal_neg.py\",\n"}
+,{"stream_name":"stdout","time":4786.537303236,"data":"    \"temporal_pos.py\",\n"}
+,{"stream_name":"stdout","time":4786.537307738,"data":"    \"temporal_pos_future_feature.py\"\n"}
+,{"stream_name":"stdout","time":4786.537312273,"data":"  ],\n"}
+,{"stream_name":"stdout","time":4786.537317025,"data":"  \"setup_ok\": true,\n"}
+,{"stream_name":"stdout","time":4786.537321515,"data":"  \"setup_seconds\": 188.6,\n"}
+,{"stream_name":"stdout","time":4786.537326313,"data":"  \"server_ready\": true,\n"}
+,{"stream_name":"stdout","time":4786.537340619,"data":"  \"server_load_seconds\": 10.0,\n"}
+,{"stream_name":"stdout","time":4786.537345712,"data":"  \"files\": {\n"}
+,{"stream_name":"stdout","time":4786.537350866,"data":"    \"temporal_pos.py\": {\n"}
+,{"stream_name":"stdout","time":4786.537355505,"data":"      \"status\": \"timeout after 1500 s\",\n"}
+,{"stream_name":"stdout","time":4786.537360553,"data":"      \"seconds\": 1500.1\n"}
+,{"stream_name":"stdout","time":4786.537365501,"data":"    },\n"}
+,{"stream_name":"stdout","time":4786.537369793,"data":"    \"temporal_neg.py\": {\n"}
+,{"stream_name":"stdout","time":4786.537374486,"data":"      \"status\": \"done\",\n"}
+,{"stream_name":"stdout","time":4786.537379155,"data":"      \"rc\": 0,\n"}
+,{"stream_name":"stdout","time":4786.537446235,"data":"      \"stdout\": \"[\\n  {\\n    \\\"file\\\": \\\"/kaggle/input/datasets/srijeetbanerjee/leaklens-code/tests/tests/fixtures/taxonomy/temporal_neg.py\\\",\\n    \\\"findings\\\": [],\\n    \\\"checked_patterns\\\": [\\n      {\\n        \\\"pattern_id\\\": \\\"ml-006\\\",\\n        \\\"detected\\\": \\\"no\\\",\\n        \\\"confidence\\\": 0.95,\\n        \\\"reasoning\\\": \\\"Features use shift(1) (past data) and no negative shifts. Target is shift(-1) but this is the predicted value, not a feature\\\",\\n        \\\"thinking\\\": \\\"Okay, let's tackle this detection question. The user is asking if the code uses future data in temporal features, which would cause data leakage. The pattern they're looking for includes negative shifts like shift(-1) or shift(-N), which pull future values into the current row as features.\\\\n\\\\nLooking at the code, I need to check where the features are created. Let's go line by line. \\\\n\\\\nLine 8: df[\\\\\\\"value\\\\\\\"] is created as a cumulative sum of random numbers. That's just a feature, not a shift. \\\\n\\\\nLine 9: df[\\\\\\\"lag1\\\\\\\"] = df[\\\\\\\"value\\\\\\\"].shift(1). Shift(1) here means the previous day's value, which is past data. So this is a positive shift, using historical data. That's safe.\\\\n\\\\nLine 10: df[\\\\\\\"target\\\\\\\"] = df[\\\\\\\"value\\\\\\\"].shift(-1). Oh, shift(-1) here. That means the next day's value. So the target is the future value relative to the current row. Wait, but the target is the thing we're predicting. If the model is using the target as a feature, that's a problem. Wait, no. Wait, in the code, X is the features, which are [\\\\\\\"value\\\\\\\", \\\\\\\"lag1\\\\\\\"], and y is the target. So the target is the future value. But the features include lag1 (past value) and value (current value). Wait, but the target is shift(-1), which is the next day's value. So when the model is trained, the target is the future value. But the features are current and past values. Wait, but in the code, the target is the future value. So when the model is trained, the features are up to the current day, and the target is the next day's value. That's a time series prediction setup. But the problem is whether the features include future data. \\\\n\\\\nWait, the code creates \\\\\\\"lag1\\\\\\\" as shift(1), which is past data. The \\\\\\\"value\\\\\\\" column is the current value. So the features are current and past values. The target is the next day's value. So the model is predicting the next day's value based on current and past values. That's a standard time series setup. But the question is about using future data in the features. \\\\n\\\\nWait, the code's \\\\\\\"lag1\\\\\\\" is shift(1), which is past. The \\\\\\\"value\\\\\\\" is the current value. So the features are current and past. The target is the future. So the features don't include future data. Therefore, there's no data leakage here. \\\\n\\\\nBut wait, the user's question is about negative shifts in the features. The code's \\\\\\\"lag1\\\\\\\" is shift(1), which is positive. The target is shift(-1), which is future. But the target is the label, not a feature. The features are X, which are [\\\\\\\"value\\\\\\\", \\\\\\\"lag1\\\\\\\"], which are current and past. So no negative shifts in the features. Therefore, the code doesn't use future data in the features. \\\\n\\\\nSo the answer should be NO. The code is correct in that the features don't include future data. The target is the future value, which is the correct setup for time series prediction. The features are based on past and current data. So no data leakage here.\\\\n\\\"\\n      },\\n      {\\n        \\\"pattern_id\\\": \\\"ml-005\\\",\\n        \\\"detected\\\": \\\"no\\\",\\n        \\\"confidence\\\": 0.95,\\n        \\\"reasoning\\\": \\\"train_test_split uses shuffle=False and no cross-validation splitter is employed\\\",\\n        \\\"thinking\\\": \\\"Okay, let's tackle this detection question. The user is asking whether the code shuffles time-series data in cross-validation, which could cause temporal leakage. The pattern ID is ml-005, so I need to check for specific conditions.\\\\n\\\\nFirst, I'll look at the code. The code uses train_test_split with shuffle=False. Wait, the question is about cross-validation setup for time-series data. The code here is using a simple train_test_split, not a cross-validator like KFold. But the detection task mentions that both conditions must be true for a YES: shuffle=True in a CV splitter and explicit temporal evidence. \\\\n\\\\nLooking at the code, line 13: X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=False). So shuffle is set to False here. The detection task says that if shuffle=False is used, then it's not a bug. Also, the code has a 'date' column and sorted by date, which is explicit temporal evi\n"}
+,{"stream_name":"stderr","time":4789.985470008,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4789.985569549,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4790.498881002,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4790.498926272,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":4791.897831956,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":4793.89450646,"data":"[NbConvertApp] Writing 302620 bytes to __results__.html\n"}
+]

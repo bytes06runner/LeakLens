@@ -1,0 +1,157 @@
+{
+  "code_version": {
+    "commit": "6a33990d2a5302ee90a38a1185868192c9613dcf",
+    "built_utc": "2026-09-29T10:27:05Z"
+  },
+  "cfg": {
+    "scicode_lint_version": "0.5.0",
+    "python": "3.13",
+    "llama_cpp_release": "b11249",
+    "llama_cpp_asset": "llama-b11249-bin-ubuntu-x64.tar.gz",
+    "model_repo": "Qwen/Qwen3-8B-GGUF",
+    "model_file": "Qwen3-8B-Q8_0.gguf",
+    "served_alias": "qwen3-8b-fp8",
+    "context_total": 32768,
+    "parallel_slots": 2,
+    "threads": 4,
+    "patterns": "ml-005,ml-006",
+    "inputs": [
+      "temporal_pos.py",
+      "temporal_neg.py",
+      "temporal_pos_future_feature.py",
+      "preprocessing_neg.py"
+    ],
+    "per_file_timeout_minutes": 25,
+    "total_budget_minutes": 80
+  },
+  "steps": [
+    {
+      "name": "llama_cpp",
+      "rc": 0,
+      "seconds": 1.0,
+      "log_tail": "llama/llama-b11249/llama-server\n"
+    },
+    {
+      "name": "model",
+      "rc": 0,
+      "seconds": 171.8,
+      "log_tail": "-rw-r--r-- 1 root root 8709518112 Sep 29 10:30 Qwen3-8B-Q8_0.gguf\n"
+    },
+    {
+      "name": "scicode_lint",
+      "rc": 0,
+      "seconds": 15.7,
+      "log_tail": "   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 20.5/20.5 MB 62.5 MB/s eta 0:00:00\nusage: scicode-lint [-h] {lint,filter-repo,analyze,vllm-server} ...\n\nAI-powered linter for scientific Python code\n\npositional arguments:\n"
+    }
+  ],
+  "fixtures_found": [
+    "group_neg.py",
+    "group_pos.py",
+    "group_pos_windows.py",
+    "multi_test_neg.py",
+    "multi_test_pos.py",
+    "overlap_neg.py",
+    "overlap_pos.py",
+    "preprocessing_neg.py",
+    "preprocessing_pos.py",
+    "target_derived_neg.py",
+    "target_derived_pos.py",
+    "temporal_neg.py",
+    "temporal_pos.py",
+    "temporal_pos_future_feature.py"
+  ],
+  "setup_ok": true,
+  "setup_seconds": 188.6,
+  "server_ready": true,
+  "server_load_seconds": 10.0,
+  "files": {
+    "temporal_pos.py": {
+      "status": "timeout after 1500 s",
+      "seconds": 1500.1
+    },
+    "temporal_neg.py": {
+      "status": "done",
+      "rc": 0,
+      "stdout": "[\n  {\n    \"file\": \"/kaggle/input/datasets/srijeetbanerjee/leaklens-code/tests/tests/fixtures/taxonomy/temporal_neg.py\",\n    \"findings\": [],\n    \"checked_patterns\": [\n      {\n        \"pattern_id\": \"ml-006\",\n        \"detected\": \"no\",\n        \"confidence\": 0.95,\n        \"reasoning\": \"Features use shift(1) (past data) and no negative shifts. Target is shift(-1) but this is the predicted value, not a feature\",\n        \"thinking\": \"Okay, let's tackle this detection question. The user is asking if the code uses future data in temporal features, which would cause data leakage. The pattern they're looking for includes negative shifts like shift(-1) or shift(-N), which pull future values into the current row as features.\\n\\nLooking at the code, I need to check where the features are created. Let's go line by line. \\n\\nLine 8: df[\\\"value\\\"] is created as a cumulative sum of random numbers. That's just a feature, not a shift. \\n\\nLine 9: df[\\\"lag1\\\"] = df[\\\"value\\\"].shift(1). Shift(1) here means the previous day's value, which is past data. So this is a positive shift, using historical data. That's safe.\\n\\nLine 10: df[\\\"target\\\"] = df[\\\"value\\\"].shift(-1). Oh, shift(-1) here. That means the next day's value. So the target is the future value relative to the current row. Wait, but the target is the thing we're predicting. If the model is using the target as a feature, that's a problem. Wait, no. Wait, in the code, X is the features, which are [\\\"value\\\", \\\"lag1\\\"], and y is the target. So the target is the future value. But the features include lag1 (past value) and value (current value). Wait, but the target is shift(-1), which is the next day's value. So when the model is trained, the target is the future value. But the features are current and past values. Wait, but in the code, the target is the future value. So when the model is trained, the features are up to the current day, and the target is the next day's value. That's a time series prediction setup. But the problem is whether the features include future data. \\n\\nWait, the code creates \\\"lag1\\\" as shift(1), which is past data. The \\\"value\\\" column is the current value. So the features are current and past values. The target is the next day's value. So the model is predicting the next day's value based on current and past values. That's a standard time series setup. But the question is about using future data in the features. \\n\\nWait, the code's \\\"lag1\\\" is shift(1), which is past. The \\\"value\\\" is the current value. So the features are current and past. The target is the future. So the features don't include future data. Therefore, there's no data leakage here. \\n\\nBut wait, the user's question is about negative shifts in the features. The code's \\\"lag1\\\" is shift(1), which is positive. The target is shift(-1), which is future. But the target is the label, not a feature. The features are X, which are [\\\"value\\\", \\\"lag1\\\"], which are current and past. So no negative shifts in the features. Therefore, the code doesn't use future data in the features. \\n\\nSo the answer should be NO. The code is correct in that the features don't include future data. The target is the future value, which is the correct setup for time series prediction. The features are based on past and current data. So no data leakage here.\\n\"\n      },\n      {\n        \"pattern_id\": \"ml-005\",\n        \"detected\": \"no\",\n        \"confidence\": 0.95,\n        \"reasoning\": \"train_test_split uses shuffle=False and no cross-validation splitter is employed\",\n        \"thinking\": \"Okay, let's tackle this detection question. The user is asking whether the code shuffles time-series data in cross-validation, which could cause temporal leakage. The pattern ID is ml-005, so I need to check for specific conditions.\\n\\nFirst, I'll look at the code. The code uses train_test_split with shuffle=False. Wait, the question is about cross-validation setup for time-series data. The code here is using a simple train_test_split, not a cross-validator like KFold. But the detection task mentions that both conditions must be true for a YES: shuffle=True in a CV splitter and explicit temporal evidence. \\n\\nLooking at the code, line 13: X_train, X_test, y_train, y_test = train_test_split(X, y, shuffle=False). So shuffle is set to False here. The detection task says that if shuffle=False is used, then it's not a bug. Also, the code has a 'date' column and sorted by date, which is explicit temporal evidence. But since shuffle is False, the condition for a YES isn't met. \\n\\nThe code doesn't use any cross-validation splitters like TimeSeriesSplit. It's just a single train-test split. The user's question is about cross-validation setup, but the code isn't using cross-validation. So the answer should be NO because the code isn't using a CV splitter with shuffle=True. Also, the data has temporal evidence, but since shuffle is False, there's no leakage. \\n\\nTherefore, the answer should be NO. The location is null because there's no CV splitter involved. The confidence is high since the conditions for a bug aren't met.\\n\"\n      }\n    ],\n    \"patterns_failed\": 0,\n    \"failed_patterns\": [],\n    \"error\": null,\n    \"summary\": {\n      \"total_findings\": 0,\n      \"by_severity\": {},\n      \"by_category\": {}\n    }\n  }\n]\n",
+      "stderr": "",
+      "seconds": 1093.6
+    },
+    "temporal_pos_future_feature.py": {
+      "status": "timeout after 1500 s",
+      "seconds": 1500.1
+    },
+    "preprocessing_neg.py": {
+      "status": "done",
+      "rc": 0,
+      "stdout": "[\n  {\n    \"file\": \"/kaggle/input/datasets/srijeetbanerjee/leaklens-code/tests/tests/fixtures/taxonomy/preprocessing_neg.py\",\n    \"findings\": [],\n    \"checked_patterns\": [\n      {\n        \"pattern_id\": \"ml-006\",\n        \"detected\": \"no\",\n        \"confidence\": 0.95,\n        \"reasoning\": \"No temporal shifting, rolling windows, or future data access detected in feature engineering\",\n        \"thinking\": \"Okay, let's tackle this question. The user is asking if the provided code uses future data in temporal features, which would cause data leakage. The pattern they're looking for includes things like shift(-1), shift(-N), center=True in rolling windows, or manual slicing that accesses future rows.\\n\\nFirst, I need to look at the code. Let me go through each line. The code imports necessary libraries: numpy, LogisticRegression, train_test_split, make_pipeline, and StandardScaler. Then it sets a random seed and generates some data. The data is split into training and test sets using train_test_split. Then a pipeline is created with StandardScaler and LogisticRegression, fitted on the training data, and the model's score is printed on the test set.\\n\\nNow, the key part here is checking for any temporal feature engineering that might involve future data. The code uses StandardScaler in a pipeline, which is for feature scaling. But does it involve any shifting or rolling windows? Looking at the code, there's no mention of shifting data. The StandardScaler is applied to the features, but scaling itself doesn't involve temporal shifts. The data is split into train and test sets, and the model is trained on the training data, then evaluated on the test data. There's no indication of using future data here. The code doesn't have any operations like shift(-1) or rolling with center=True. The data is just split and scaled normally. So, based on the code provided, there's no use of future data in the features. The answer should be NO, and the reasoning is that the code doesn't include any temporal operations that would pull future data into the features.\\n\"\n      },\n      {\n        \"pattern_id\": \"ml-005\",\n        \"detected\": \"no\",\n        \"confidence\": 0.95,\n        \"reasoning\": \"No cross-validation setup present - uses simple train_test_split instead of CV splitter with shuffle parameter\",\n        \"thinking\": \"Okay, let's tackle this detection question. The user is asking if the code shuffles time-series data in cross-validation, which could cause temporal leakage. The code provided uses train_test_split with random_state=0. \\n\\nFirst, I need to check if there's any cross-validation setup here. The code splits the data into train and test once using train_test_split, but there's no mention of cross-validation loops like KFold or StratifiedKFold. The question is about cross-validation, so the presence of a CV splitter is crucial.\\n\\nLooking at the code, line 9 uses train_test_split, which is for a single split, not cross-validation. The model is trained once on the training data and evaluated on the test set. There's no loop or CV object here. The detection task mentions that if TimeSeriesSplit is used or shuffle=False, it's not a bug. But in this code, there's no cross-validation setup at all. \\n\\nThe user's question is specifically about cross-validation setup for time-series data. Since the code doesn't use any cross-validation methods, the conditions for a YES answer aren't met. The code doesn't have shuffle=True in a CV splitter. Therefore, the answer should be NO because there's no cross-validation setup to begin with. The code uses a simple train-test split, which isn't cross-validation. So the detection question's conditions aren't triggered here.\\n\"\n      }\n    ],\n    \"patterns_failed\": 0,\n    \"failed_patterns\": [],\n    \"error\": null,\n    \"summary\": {\n      \"total_findings\": 0,\n      \"by_severity\": {},\n      \"by_category\": {}\n    }\n  }\n]\n",
+      "stderr": "",
+      "seconds": 492.7
+    }
+  },
+  "server_rates": [
+    {
+      "kind": "prompt eval",
+      "ms": 700.63,
+      "tokens": 1,
+      "tok_per_s": 1.43
+    },
+    {
+      "kind": "eval",
+      "ms": 283443.69,
+      "tokens": 385,
+      "tok_per_s": 1.35
+    },
+    {
+      "kind": "prompt eval",
+      "ms": 700.23,
+      "tokens": 1,
+      "tok_per_s": 1.43
+    },
+    {
+      "kind": "eval",
+      "ms": 489023.08,
+      "tokens": 748,
+      "tok_per_s": 1.53
+    },
+    {
+      "kind": "prompt eval",
+      "ms": 235357.32,
+      "tokens": 630,
+      "tok_per_s": 2.68
+    },
+    {
+      "kind": "eval",
+      "ms": 277397.58,
+      "tokens": 378,
+      "tok_per_s": 1.36
+    },
+    {
+      "kind": "prompt eval",
+      "ms": 226115.46,
+      "tokens": 616,
+      "tok_per_s": 2.72
+    },
+    {
+      "kind": "eval",
+      "ms": 237550.74,
+      "tokens": 337,
+      "tok_per_s": 1.41
+    },
+    {
+      "kind": "prompt eval",
+      "ms": 226115.2,
+      "tokens": 538,
+      "tok_per_s": 2.38
+    },
+    {
+      "kind": "eval",
+      "ms": 264564.64,
+      "tokens": 387,
+      "tok_per_s": 1.46
+    }
+  ],
+  "generated_tokens_total": 2235,
+  "generation_tok_per_s_mean": 1.42,
+  "server_log_tail": "   1.39 t/s\n75.56.163.586 I slot print_timing: id  1 | task 4407 | n_gen =    319, tg =   1.42 t/s, tg_3s =   1.39 t/s\n75.59.787.082 I slot print_timing: id  0 | task 4406 | n_gen =    324, tg =   1.42 t/s, tg_3s =   1.38 t/s\n75.59.788.022 I slot print_timing: id  1 | task 4407 | n_gen =    324, tg =   1.42 t/s, tg_3s =   1.38 t/s\n76.02.790.790 I slot print_timing: id  0 | task 4406 | n_gen =    328, tg =   1.42 t/s, tg_3s =   1.33 t/s\n76.02.791.555 I slot print_timing: id  1 | task 4407 | n_gen =    328, tg =   1.42 t/s, tg_3s =   1.33 t/s\n76.06.375.388 I slot print_timing: id  0 | task 4406 | n_gen =    333, tg =   1.41 t/s, tg_3s =   1.39 t/s\n76.06.376.267 I slot print_timing: id  1 | task 4407 | n_gen =    333, tg =   1.41 t/s, tg_3s =   1.39 t/s\n76.09.276.018 I slot print_timing: id  1 | task 4407 | prompt eval time =  226115.46 ms /   616 tokens (  367.07 ms per token,     2.72 tokens per second)\n76.09.276.162 I slot print_timing: id  1 | task 4407 |        eval time =  237550.74 ms /   337 tokens (  707.00 ms per token,     1.41 tokens per second)\n76.09.276.191 I slot print_timing: id  1 | task 4407 |       total time =  463666.20 ms /   953 tokens\n76.09.276.220 I slot print_timing: id  1 | task 4407 |    graphs reused =       4688\n76.09.276.530 I slot      release: id  1 | task 4407 | stop processing: n_tokens = 2352, truncated = 0\n76.09.819.533 I slot print_timing: id  0 | task 4406 | n_gen =    338, tg =   1.42 t/s, tg_3s =   1.45 t/s\n76.13.120.248 I slot print_timing: id  0 | task 4406 | n_gen =    344, tg =   1.42 t/s, tg_3s =   1.82 t/s\n76.16.273.501 I slot print_timing: id  0 | task 4406 | n_gen =    350, tg =   1.43 t/s, tg_3s =   1.90 t/s\n76.19.473.913 I slot print_timing: id  0 | task 4406 | n_gen =    356, tg =   1.43 t/s, tg_3s =   1.87 t/s\n76.22.751.126 I slot print_timing: id  0 | task 4406 | n_gen =    362, tg =   1.44 t/s, tg_3s =   1.83 t/s\n76.25.917.678 I slot print_timing: id  0 | task 4406 | n_gen =    368, tg =   1.44 t/s, tg_3s =   1.89 t/s\n76.29.165.311 I slot print_timing: id  0 | task 4406 | n_gen =    374, tg =   1.45 t/s, tg_3s =   1.85 t/s\n76.32.528.865 I slot print_timing: id  0 | task 4406 | n_gen =    380, tg =   1.45 t/s, tg_3s =   1.78 t/s\n76.35.748.114 I slot print_timing: id  0 | task 4406 | n_gen =    386, tg =   1.46 t/s, tg_3s =   1.86 t/s\n76.36.288.849 I slot print_timing: id  0 | task 4406 | prompt eval time =  226115.20 ms /   538 tokens (  420.29 ms per token,     2.38 tokens per second)\n76.36.288.873 I slot print_timing: id  0 | task 4406 |        eval time =  264564.64 ms /   387 tokens (  685.40 ms per token,     1.46 tokens per second)\n76.36.288.875 I slot print_timing: id  0 | task 4406 |       total time =  490679.84 ms /   925 tokens\n76.36.288.877 I slot print_timing: id  0 | task 4406 |    graphs reused =       4736\n76.36.289.119 I slot      release: id  0 | task 4406 | stop processing: n_tokens = 2324, truncated = 0\n76.36.499.986 I srv    operator(): operator(): cleaning up before exit...\n",
+  "total_seconds": 4785.1
+}
