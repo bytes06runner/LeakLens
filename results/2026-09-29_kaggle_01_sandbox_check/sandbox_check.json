@@ -1,0 +1,49 @@
+{
+  "started_utc": "2026-09-29T09:59:13Z",
+  "code_version": {
+    "commit": "87d76685f2fc7e65a3155f42edadb84728e69536",
+    "built_utc": "2026-09-29T09:58:36Z"
+  },
+  "pip_install_rc": 0,
+  "parent_secret_like_names": [
+    "KAGGLE_API_V1_TOKEN",
+    "KAGGLE_CONTAINER_NAME",
+    "KAGGLE_DATA_PROXY_PROJECT",
+    "KAGGLE_DATA_PROXY_TOKEN",
+    "KAGGLE_DATA_PROXY_URL",
+    "KAGGLE_DOCKER_IMAGE",
+    "KAGGLE_GCP_ZONE",
+    "KAGGLE_GRPC_DATA_PROXY_URL",
+    "KAGGLE_KERNEL_INTEGRATIONS",
+    "KAGGLE_KERNEL_RUN_TYPE",
+    "KAGGLE_URL_BASE",
+    "KAGGLE_USER_SECRETS_TOKEN"
+  ],
+  "network_reachable": false,
+  "child_env_names": [
+    "HOME",
+    "LANG",
+    "LC_ALL",
+    "MPLBACKEND",
+    "OMP_NUM_THREADS",
+    "PATH",
+    "PYTHONDONTWRITEBYTECODE",
+    "PYTHONNOUSERSITE",
+    "TMPDIR"
+  ],
+  "leaked_names": [],
+  "leaked_value_count": 0,
+  "sandbox_ok": true,
+  "kaggle_url_endpoints": {
+    "KAGGLE_URL_BASE": {
+      "host": "api.kaggle.com",
+      "port": 443,
+      "status": "unreachable (gaierror)"
+    },
+    "KAGGLE_DATA_PROXY_URL": {
+      "host": "dp.kaggle.net",
+      "port": 443,
+      "status": "REACHABLE"
+    }
+  }
+}
