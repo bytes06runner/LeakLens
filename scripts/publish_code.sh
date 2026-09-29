@@ -11,13 +11,13 @@ OUT=build/kaggle_code
 rm -rf "$OUT" dist && mkdir -p "$OUT"
 uv build --wheel -q
 cp dist/*.whl "$OUT/"
-tar czf "$OUT/tests.tar.gz" tests
+COPYFILE_DISABLE=1 tar czf "$OUT/tests.tar.gz" tests
 cp configs/*.yaml "$OUT/"
-tar czf "$OUT/benchmark_injected.tar.gz" --exclude="__pycache__" benchmark/injected
+COPYFILE_DISABLE=1 tar czf "$OUT/benchmark_injected.tar.gz" --exclude="__pycache__" benchmark/injected
 printf '{"commit": "%s", "built_utc": "%s"}\n' "$COMMIT" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$OUT/CODE_VERSION.json"
 printf '{"title": "leaklens-code", "id": "%s/leaklens-code", "licenses": [{"name": "other"}]}\n' "$USER_NAME" > "$OUT/dataset-metadata.json"
 if uv run kaggle datasets status "$USER_NAME/leaklens-code" >/dev/null 2>&1; then
-  uv run kaggle datasets version -p "$OUT" -m "code $COMMIT" -q
+  uv run kaggle datasets version -p "$OUT" -m "code $COMMIT"
 else
   uv run kaggle datasets create -p "$OUT" -q   # private by default
 fi
