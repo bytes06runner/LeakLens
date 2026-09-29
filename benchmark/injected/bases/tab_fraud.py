@@ -1,0 +1,45 @@
+# %%
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import average_precision_score
+from sklearn.model_selection import train_test_split
+from sklearn.utils import resample
+#<imports>
+#</imports>
+
+# %%
+#<load>
+df = pd.read_csv("data.csv")
+#</load>
+TARGET = "is_fraud"
+FEATURES = [c for c in df.columns if c != TARGET]
+#<features>
+#</features>
+
+# %%
+#<xy>
+X = df[FEATURES]
+y = df[TARGET]
+#</xy>
+#<presplit>
+#</presplit>
+#<split>
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=0)
+#</split>
+#<balance>
+minority = X_train[y_train == 1]
+extra = resample(minority, n_samples=4 * len(minority), random_state=0)
+X_train = pd.concat([X_train, extra])
+y_train = pd.concat([y_train, pd.Series(1, index=extra.index)])
+#</balance>
+
+# %%
+#<model>
+model = GradientBoostingClassifier(n_estimators=120, max_depth=3, random_state=0)
+#</model>
+#<fit_eval>
+model.fit(X_train, y_train)
+score = average_precision_score(y_test, model.predict_proba(X_test)[:, 1])
+#</fit_eval>
+print(f"test_ap: {score:.4f}")

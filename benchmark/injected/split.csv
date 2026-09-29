@@ -1,0 +1,13 @@
+base,family,split
+grp_sites,grouped,DEV
+grp_users,grouped,DEV
+grp_eeg,grouped,TEST
+grp_patients,grouped,TEST
+tab_churn,tabular,DEV
+tab_fraud,tabular,DEV
+tab_credit,tabular,TEST
+tab_housing,tabular,TEST
+ts_energy,timeseries,DEV
+ts_sensor,timeseries,DEV
+ts_air,timeseries,TEST
+ts_sales,timeseries,TEST
