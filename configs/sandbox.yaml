@@ -1,0 +1,22 @@
+# Sandbox for executing untrusted notebooks (CLAUDE.md Integrity Rule 7).
+# The child process sees ONLY these environment variables. Everything else, including the tokens Kaggle injects
+# into every session (KAGGLE_API_V1_TOKEN, KAGGLE_DATA_PROXY_TOKEN, KAGGLE_USER_SECRETS_TOKEN), is dropped.
+env_allowlist:
+  - LANG
+  - LC_ALL
+  - TZ
+  - PYTHONHASHSEED
+# Set for every child; HOME and TMPDIR point inside the throwaway working directory (filled in at run time).
+env_fixed:
+  MPLBACKEND: Agg
+  PYTHONDONTWRITEBYTECODE: "1"
+  PYTHONNOUSERSITE: "1"
+  OMP_NUM_THREADS: "4"          # Kaggle CPU sessions have 4 cores (Phase 0 smoke test)
+# Defence in depth: a variable whose name contains any of these is never passed, even if allow-listed above.
+env_deny_markers: [TOKEN, SECRET, PASSWORD, PASSWD, API_KEY, ACCESS_KEY, CREDENTIAL, KAGGLE, AWS_, GOOGLE_, GITHUB_]
+timeout_seconds: 900
+workdir_prefix: leaklens-sbx-
+# Network probe used to refuse runs when the session is online. Any successful connection means "online".
+network_probe:
+  targets: [["pypi.org", 443], ["github.com", 443], ["1.1.1.1", 53]]
+  timeout_seconds: 3

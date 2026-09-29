@@ -1,0 +1,14 @@
+{
+  "id": "srijeetbanerjee/leaklens-01-sandbox-check",
+  "title": "leaklens-01-sandbox-check",
+  "code_file": "sandbox_check.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": ["srijeetbanerjee/leaklens-code"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
