@@ -62,7 +62,7 @@ yourself and hand them over.
 |---|:-:|:-:|:-:|
 | Points to the line of code responsible | ✅ | ❌ | ✅ |
 | Preprocessing / overlap / multi-test leakage | ✅ | partial | ✅ |
-| **Group leakage** (same patient/user/device on both sides) | ❌ | ✅ once you export splits | ✅ **from code** |
+| **Group leakage** (same patient/user/device on both sides) | ❌ | ✅ once you export splits | ✅ **from code (primary novelty)** |
 | **Temporal leakage** (training on the future) | partial: scicode-lint (LLM patterns: shuffled CV, forward shifts) | ✅ once you export splits | ✅ from code, via data flow, confirmed on data |
 | Works on cross-validation, not only a single split | n/a | ❌ | ✅ per fold |
 | No need to name the group or time column | n/a | leakcheck-ml only | ✅ heuristic, with confidence |
@@ -70,9 +70,11 @@ yourself and hand them over.
 
 **The novel parts, stated precisely:**
 
-1. **C1. Group and temporal leakage detected from source code.** No code-level tool we could find detects group
-   leakage. For temporal leakage, scicode-lint (2026) asks an LLM about shuffled CV and forward-looking features;
-   LeakLens uses data-flow analysis and confirms findings on the data (see [`docs/NOVELTY_LOG.md`](docs/NOVELTY_LOG.md)).
+1. **C1. Group leakage detected from source code**, the primary novelty: no code-level tool we could find detects
+   it. Temporal leakage is detected by data-flow analysis and confirmed on the data; this improves on existing
+   code-level checks (scicode-lint, 2026, asks an LLM about shuffled CV and forward-looking features) rather than
+   being a first. The benchmark has a separate category for the cases where the two approaches differ, such as
+   `train_test_split`'s default shuffle on time-ordered data (see [`docs/NOVELTY_LOG.md`](docs/NOVELTY_LOG.md)).
 2. **C2. Static findings confirmed on real data without user setup.** The static pass nominates the split call and
    the candidate entity or time column; an instrumented run checks overlap at that call, fold by fold.
 3. **C3. Per-finding impact on your own pipeline.** LeakLens applies the canonical fix (for example
@@ -135,10 +137,10 @@ drop privileges or while the network is reachable. Evidence:
 | Phase | Deliverable | Status |
 |---|---|---|
 | 0 | Setup, novelty check, baseline runnability | ✅ done ([report](docs/PHASE0_REPORT.md)) |
-| 1 | Taxonomy, specification, sandbox | ✅ done, awaiting decision on C1 ([report](docs/PHASE1_REPORT.md)) |
-| 2 | Benchmark (injected + real, DEV/TEST split frozen before rules) | ⏳ |
+| 1 | Taxonomy, specification, sandbox | ✅ done ([report](docs/PHASE1_REPORT.md)) |
+| 2 | Benchmark (injected + real, DEV/TEST split frozen before rules) | 🔄 in progress |
 | 3 | Evaluation protocol, frozen | ⏳ |
-| 4 | Static analyser | ⏳ |
+| 4 | Static analyser (then: preprint checkpoint once group detection works) | ⏳ |
 | 5 | Dynamic analyser | ⏳ |
 | 6 | Impact estimation | ⏳ |
 | 7 | Evaluation on TEST, CalibraEEG case study, ablations | ⏳ |

@@ -28,3 +28,8 @@ subject-wise automatic detection ML code linter"), PyPI names (`leakage`, `leak-
 leakage. Its T1 coverage is partial (shuffled CV only; `train_test_split`'s default shuffle and unshuffled `KFold`
 are not covered); its T2 coverage is close to ours. **Group leakage from code, C2, C3 and C4 remain open.**
 Reported to the project owner for a decision before Phase 2.
+
+**Decision (project owner, 2026-09-29):** C1 reframed. Primary novelty: group leakage from code. Temporal:
+data-flow detection plus confirmation on the data, presented as an improvement over existing code-level checks,
+not a first. scicode-lint is added as a temporal baseline and cited in related work. The benchmark gets its own
+category (`differentiating`) for cases where the approaches differ; results on it are reported separately.

@@ -28,4 +28,5 @@ related-work sections.
 
 Needs an LLM API key (per-notebook cost) and a running ml-slicer Docker service. No LLM budget at present.
 An email asking the authors for access to their replication package and labelled benchmark (Zenodo, CC-BY-4.0,
-files access-restricted) was drafted on 2026-09-29; update this line when it is sent and answered. The decision on an LLM-based baseline is deferred to Phase 7.
+files access-restricted) was sent by the project owner on 2026-09-29, with the supervisor in CC (date as reported
+by the owner). Reply: pending. The decision on an LLM-based baseline is deferred to Phase 7.
