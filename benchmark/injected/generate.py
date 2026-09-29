@@ -17,16 +17,14 @@ import csv
 import hashlib
 import io
 import json
-import re
 import shutil
 import tokenize
 from pathlib import Path
 
 import nbformat
-import yaml
-
 import operators as ops
 import template
+import yaml
 
 HERE = Path(__file__).resolve().parent
 ITEMS, GT = HERE / "items", HERE / "_groundtruth"

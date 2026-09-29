@@ -1,0 +1,33 @@
+# Real-notebook sample for the LeakLens benchmark (Kaggle source). GitHub is added later, once the project owner
+# has created a read-only token (CLAUDE.md §3); nothing here needs one.
+seed: 20260930
+# Candidate pool: for every query, these listing orders and pages are fetched, pooled per stratum, de-duplicated,
+# then shuffled with `seed`. Several orders reduce the bias towards only the most popular notebooks.
+sort_orders: [relevance, voteCount, dateRun]
+pages_per_order: 2
+page_size: 100
+strata:
+  grouped:
+    target: 50
+    queries: ["patient classification", "EEG classification", "subject wise", "medical diagnosis sklearn",
+              "user behaviour prediction", "multiple visits"]
+  timeseries:
+    target: 50
+    queries: ["time series forecasting sklearn", "sales forecasting", "sensor data prediction",
+              "stock price prediction random forest", "energy consumption prediction"]
+  tabular:
+    target: 50
+    queries: ["classification sklearn pipeline", "credit risk", "customer churn", "house price regression",
+              "fraud detection"]
+# A pulled notebook is kept only if all hold (checked on the source, never executed):
+filters:
+  min_code_cells: 5
+  max_code_cells: 120
+  require_any_import: ["sklearn"]
+  require_any_call: [".fit(", "fit_transform(", "cross_val_score(", "cross_validate("]
+  require_any_metric: ["score(", "accuracy", "roc_auc", "f1_score", "r2_score", "mean_absolute_error",
+                       "mean_squared_error", "classification_report", "precision", "recall"]
+# DEV/TEST split of the real set: by author (all notebooks of one author on the same side).
+split:
+  unit: author
+  test_fraction: 0.5

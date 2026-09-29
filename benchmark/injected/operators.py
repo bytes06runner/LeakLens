@@ -169,7 +169,7 @@ def mul_holdout_loop(base, meta, slots, variant, k):
     rhs = _score_rhs(slots)
     pick = "max" if meta["higher_is_better"] else "min"
     values = repr(meta["values"])
-    leaky = [f"results = {{}}",
+    leaky = ["results = {}",
              f"for value in {values}:",
              f'    model.set_params(**{{"{meta["hparam"]}": value}})',
              "    model.fit(X_train, y_train)",
@@ -210,7 +210,7 @@ def mul_cv_loop(base, meta, slots, variant, k):
              f"for value in {meta['values']!r}:",
              f'    model.set_params(**{{"{meta["hparam"]}": value}})',
              L(f'    results[value] = cross_val_score(model, X, y, cv={cv}{g}, scoring="{meta["scoring"]}").mean()', k),
-             f"best = max(results, key=results.get)",
+             "best = max(results, key=results.get)",
              "scores = np.array([results[best]])"]
     inner = "TimeSeriesSplit(n_splits=3)" if meta["family"] == "timeseries" else "3"
     fixed = [*setup,

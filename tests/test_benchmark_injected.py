@@ -16,7 +16,6 @@ BENCH = ROOT / "benchmark" / "injected"
 sys.path.insert(0, str(BENCH))
 
 import generate  # noqa: E402
-import operators as ops  # noqa: E402
 import template  # noqa: E402
 
 MANIFEST = list(csv.DictReader((BENCH / "manifest.csv").open()))
@@ -76,7 +75,7 @@ def test_generation_is_deterministic(tmp_path):
 def _expected_leak_lines():
     """item_id -> leak index -> injected lines (marker stripped, renamed with the item's style)."""
     out = {}
-    for base, m, split, tpl, item_id, mut in generate.items():
+    for _base, _m, _split, _tpl, item_id, mut in generate.items():
         style = generate.STYLES[generate.stable_int(item_id) % 3]
         per = {}
         for lines in mut.overrides.values():
