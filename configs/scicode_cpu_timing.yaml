@@ -1,0 +1,21 @@
+# Feasibility timing of scicode-lint on a Kaggle CPU session (decision 2026-09-29). NOT a baseline run:
+# the published setup is vLLM + RedHatAI/Qwen3-8B-FP8-dynamic on a >=16 GB GPU. Here the same model family is served
+# on CPU by llama.cpp, so outputs may differ and are not used for scoring.
+scicode_lint_version: "0.5.0"
+python: "3.13"
+llama_cpp_release: b11249
+llama_cpp_asset: llama-b11249-bin-ubuntu-x64.tar.gz
+model_repo: Qwen/Qwen3-8B-GGUF
+model_file: Qwen3-8B-Q8_0.gguf          # closest available precision to the FP8 default
+served_alias: qwen3-8b-fp8              # scicode-lint's default model_served_name
+context_total: 32768
+parallel_slots: 2
+threads: 4                              # Kaggle CPU session: 4 cores (Phase 0)
+patterns: ml-005,ml-006                 # the two temporal patterns only
+inputs:                                 # our own taxonomy examples (tests/fixtures/taxonomy)
+  - temporal_pos.py
+  - temporal_neg.py
+  - temporal_pos_future_feature.py
+  - preprocessing_neg.py
+per_file_timeout_minutes: 25
+total_budget_minutes: 80
