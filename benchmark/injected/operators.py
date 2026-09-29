@@ -355,7 +355,9 @@ def trap_manual_scaler(base, meta, slots, variant, k):
         "X_train[num_cols] = scaler.transform(X_train[num_cols])",
         "X_test[num_cols] = scaler.transform(X_test[num_cols])",
     ]
-    return Mutation(overrides={"split": split}, imports=["from sklearn.preprocessing import StandardScaler"])
+    imps = ["from sklearn.preprocessing import StandardScaler"]
+    # Nothing to fix: the reference version is the trap itself, so its true inflation is 0 by definition.
+    return Mutation(overrides={"split": split}, imports=imps, fixed_overrides={"split": split}, fixed_imports=imps)
 
 
 # ------------------------------------------------------------------ registry
@@ -397,5 +399,5 @@ COMBOS = [
     ("ts_sales", [("pre_pandas_stats", "zscore"), ("tmp_holdout", "tts_default")]),
     ("ts_sensor", [("tmp_future_feature", "neg_shift"), ("tmp_cv", "kfold_shuffle")]),
     ("tab_credit", [("pre_imputer", "mean"), ("ovl_test_in_fit", "refit_all")]),
-    ("tab_churn", [("pre_select", "kbest"), ("mul_cv_loop", "loop")]),
+    ("tab_churn", [("pre_target_encoding", "groupby_mean"), ("mul_cv_loop", "loop")]),
 ]

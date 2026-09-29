@@ -12,7 +12,7 @@ from sklearn.model_selection import GroupShuffleSplit
 df = pd.read_csv("data.csv")
 #</load>
 TARGET = "complication"
-FEATURES = ["visit", "age", "bp_sys", "cholesterol", "bmi", "smoker"]
+FEATURES = ["visit", "age", "bp_sys", "height_cm", "resting_hr", "creatinine"]
 #<features>
 #</features>
 

@@ -1,7 +1,7 @@
 # %%
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import Ridge
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import TimeSeriesSplit, cross_val_score
 #<imports>
 #</imports>
@@ -32,7 +32,7 @@ y = df[TARGET]
 #<presplit>
 #</presplit>
 #<model>
-model = Ridge(alpha=1.0)
+model = RandomForestRegressor(n_estimators=100, min_samples_leaf=5, random_state=0, n_jobs=1)
 #</model>
 #<cv>
 cv = TimeSeriesSplit(n_splits=5)

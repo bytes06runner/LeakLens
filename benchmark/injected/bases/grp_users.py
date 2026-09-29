@@ -16,7 +16,7 @@ df = sessions.copy()
 #</load>
 df["pages_per_min"] = df["pages"] / (df["duration_s"] / 60 + 1)
 TARGET = "purchased"
-FEATURES = ["pages", "duration_s", "added_to_cart", "hour", "device", "pages_per_min"]
+FEATURES = ["pages", "duration_s", "added_to_cart", "hour", "device", "screen_width", "pages_per_min"]
 #<features>
 #</features>
 

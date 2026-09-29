@@ -150,20 +150,22 @@ def ts_air(seed: int) -> dict:
 def grp_eeg(seed: int) -> dict:
     """EEG-style recordings: 16 subjects, one file each; subject identity is only in the file name.
 
-    Each subject has its own baseline amplitude and its own share of 'event' windows, so a model can score well
-    by recognising the subject rather than the event.
+    Each subject has a stable amplitude/spectral fingerprint and its own share of 'event' windows (5% to 80%);
+    the event itself adds only a weak oscillation. Recognising the subject therefore predicts events far better
+    than the event signal does, as in segment-based EEG evaluation (Brookshire et al. 2024).
     """
     r = _rng(seed)
     fs, seconds, win = 100, 120, 200
     files = {}
     for s in range(16):
-        base = r.normal(0, 1.0)
-        rate = r.uniform(0.1, 0.6)
+        base, gain, tilt = r.normal(0, 1.0), r.uniform(0.6, 1.6), r.uniform(0.5, 3.0)
+        rate = r.uniform(0.05, 0.8)
         n_win = fs * seconds // win
         events = (r.random(n_win) < rate).astype(int)
+        t = np.linspace(0, 20 * np.pi, win)
         sig = []
         for e in events:
-            w = base + r.normal(0, 1.0, win) + (0.35 * e) * np.sin(np.linspace(0, 20 * np.pi, win))
+            w = base + gain * r.normal(0, 1.0, win) + 0.3 * np.sin(t / tilt) + (0.15 * e) * np.sin(t)
             sig.append(w)
         files[f"recordings/sub-{s:02d}_task-rest_eeg.npy"] = np.concatenate(sig).astype(np.float32)
         files[f"recordings/sub-{s:02d}_task-rest_events.npy"] = events.astype(np.int8)
@@ -171,50 +173,54 @@ def grp_eeg(seed: int) -> dict:
 
 
 def grp_patients(seed: int) -> dict:
-    """Multi-visit clinical data: 180 patients x 2-6 visits; strong patient random effect on features and outcome."""
+    """Multi-visit clinical data: 180 patients x 2-6 visits.
+
+    Stable per-patient traits (height, resting heart rate, a lab baseline) act as a fingerprint; the outcome has a
+    strong patient-specific component unrelated to those traits' population-level effect, plus a modest effect of
+    blood pressure. Seeing a patient in training reveals their personal risk.
+    """
     r = _rng(seed)
     rows = []
     for p in range(180):
-        u = r.normal(0, 1.2)
-        for v in range(r.integers(2, 7)):
-            bp = 120 + 10 * u + r.normal(0, 6)
-            chol = 190 + 15 * u + r.normal(0, 12)
-            bmi = 26 + 2 * u + r.normal(0, 1.5)
-            age = 40 + p % 40 + v
-            risk = 0.8 * u + 0.02 * (bp - 120) + r.normal(0, 0.8)
-            rows.append({"patient_id": f"P{p:04d}", "visit": v, "age": age, "bp_sys": bp, "cholesterol": chol,
-                         "bmi": bmi, "smoker": int(u > 0.8), "complication": int(risk > 0.9)})
+        height, hr0, lab0 = r.normal(170, 9), r.normal(68, 8), r.normal(1.0, 0.3)
+        v = r.normal(0, 1.6)  # personal risk, not measured
+        for visit in range(r.integers(2, 7)):
+            bp = 125 + r.normal(0, 12)
+            risk = 0.03 * (bp - 125) + v + r.normal(0, 0.5)
+            rows.append({"patient_id": f"P{p:04d}", "visit": visit, "height_cm": height + r.normal(0, 0.3),
+                         "resting_hr": hr0 + r.normal(0, 1.5), "creatinine": lab0 + r.normal(0, 0.03),
+                         "bp_sys": bp, "age": 40 + p % 40 + visit, "complication": int(risk > 0.8)})
     return {"data.csv": pd.DataFrame(rows)}
 
 
 def grp_users(seed: int) -> dict:
-    """Web sessions: 250 users x 3-12 sessions; per-user propensity drives purchases."""
+    """Web sessions: 250 users x 3-12 sessions; each user has a device fingerprint and a personal propensity."""
     r = _rng(seed)
     rows = []
     for u in range(250):
-        prop = r.normal(-1.5, 1.3)
-        style = r.normal(0, 1, 3)
+        prop = r.normal(-1.0, 1.8)
+        screen, habit_hour, speed = r.choice([360, 390, 414, 1280, 1440, 1920]), r.integers(0, 24), r.lognormal(0, 0.4)
         for _ in range(r.integers(3, 13)):
-            pages = max(1, int(r.poisson(max(0.5, 5 + 2 * style[0]))))
-            dur = abs(r.normal(120 + 40 * style[1], 30))
-            cart = int(r.random() < 0.3 + 0.1 * np.tanh(style[2]))
-            logit = prop + 0.1 * pages + 0.8 * cart
-            rows.append({"user_id": u, "pages": pages, "duration_s": dur, "added_to_cart": cart,
-                         "device": r.choice(["mobile", "desktop"]), "hour": int(r.integers(0, 24)),
+            pages = max(1, int(r.poisson(5)))
+            cart = int(r.random() < 0.3)
+            logit = prop + 0.05 * pages + 0.6 * cart
+            rows.append({"user_id": u, "pages": pages, "duration_s": abs(r.normal(120, 30)) * speed,
+                         "added_to_cart": cart, "device": "mobile" if screen < 500 else "desktop",
+                         "screen_width": screen, "hour": int((habit_hour + r.integers(-1, 2)) % 24),
                          "purchased": int(r.random() < 1 / (1 + np.exp(-logit)))})
     return {"data.csv": pd.DataFrame(rows)}
 
 
 def grp_sites(seed: int) -> dict:
-    """Multi-site study: 12 clinics x 120 patients; clinic-level batch effect on measurements and base rate."""
+    """Multi-site study: 12 clinics x 120 patients; clinic-level batch effect on markers and on the base rate."""
     r = _rng(seed)
     rows = []
     for c in range(12):
         batch = r.normal(0, 1.5, 4)
-        base_rate = r.normal(0, 1.0)
+        base_rate = r.normal(0, 1.5)
         for _ in range(120):
             m = r.normal(0, 1, 4)
-            logit = 0.6 * m[0] - 0.4 * m[1] + base_rate
+            logit = 0.5 * m[0] - 0.4 * m[1] + base_rate
             rows.append({"site": f"clinic_{c:02d}", "marker_a": m[0] + batch[0], "marker_b": m[1] + batch[1],
                          "marker_c": m[2] + batch[2], "marker_d": m[3] + batch[3],
                          "diagnosis": int(r.random() < 1 / (1 + np.exp(-logit)))})
