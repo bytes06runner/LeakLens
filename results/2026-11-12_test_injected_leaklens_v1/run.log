@@ -1,0 +1,496 @@
+25/395 17s
+50/395 29s
+75/395 38s
+100/395 50s
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+125/395 63s
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+150/395 72s
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+175/395 83s
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+200/395 105s
+225/395 134s
+250/395 178s
+275/395 187s
+300/395 200s
+325/395 209s
+350/395 222s
+375/395 235s
+done: 395 runs in 246s -> results/2026-11-12_test_injected_leaklens_v1/findings.jsonl

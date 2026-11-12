@@ -1,0 +1,13 @@
+tool,type,files,tp,fp,fn,claimed
+"Yang et al. (notebooks converted to .py first, as its README requires)",preprocessing,30,7,1,23,True
+"Yang et al. (notebooks converted to .py first, as its README requires)",overlap,10,6,0,4,True
+"Yang et al. (notebooks converted to .py first, as its README requires)",multi_test,8,3,0,5,True
+"Yang et al. (notebooks converted to .py first, as its README requires)",group,10,0,0,10,False
+"Yang et al. (notebooks converted to .py first, as its README requires)",temporal,24,3,0,21,False
+"Yang et al. (notebooks converted to .py first, as its README requires)",target_derived,6,0,0,6,False
+"LeakLens, static",preprocessing,30,30,0,0,True
+"LeakLens, static",overlap,10,8,0,2,True
+"LeakLens, static",multi_test,8,8,0,0,True
+"LeakLens, static",group,10,3,0,7,True
+"LeakLens, static",temporal,24,24,0,0,True
+"LeakLens, static",target_derived,6,6,0,0,True

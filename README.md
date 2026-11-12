@@ -6,14 +6,14 @@
 
 [![CI](https://github.com/bytes06runner/LeakLens/actions/workflows/ci.yml/badge.svg)](https://github.com/bytes06runner/LeakLens/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/python-3.12-blue)
-![Status: Phases 0-6 built, TEST not scored](https://img.shields.io/badge/status-Phases%200--6%20built%2C%20TEST%20not%20scored-orange)
+![Status: injected TEST scored, real notebooks unlabelled](https://img.shields.io/badge/status-injected%20TEST%20scored%2C%20real%20set%20unlabelled-orange)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
 [The problem](#the-problem) ·
 [What is different](#what-leaklens-does-that-existing-tools-do-not) ·
 [Leakage types](#the-six-leakage-types) ·
 [How it works](#how-it-works) ·
-[Results so far](#results-so-far-dev-split-only) ·
+[Results so far](#results-so-far) ·
 [Status](#project-status) ·
 [Phase 0 results](#phase-0-results-what-exists-today) ·
 [Development](#development) ·
@@ -23,12 +23,11 @@
 
 > [!IMPORTANT]
 > LeakLens is a research prototype. The static analyser, the dynamic (instrumented-run) pass and impact estimation
-> are implemented and tested. **Every result on this page is from the DEV split**, the half of the benchmark the
-> rules were written on, so the numbers are optimistic by design. The held-out TEST split has not been scored
-> (the [evaluation protocol](EVAL_PROTOCOL.md) is a proposal waiting for approval), no real notebook has been
-> labelled, and no other tool has been run on the benchmark yet. Read [`LIMITATIONS.md`](LIMITATIONS.md) first.
-> Every number comes from a logged run in [`results/`](results/) or a source in
-> [`literature/related_work.csv`](literature/related_work.csv).
+> are implemented and tested. Results exist for the project's own **injected benchmark** only: the held-out TEST
+> half was scored once on 2026-11-12 after the [evaluation protocol](EVAL_PROTOCOL.md) was frozen. **There is no
+> result on real notebooks** (none has been labelled), and the benchmark and the tool have the same author. Read
+> [`LIMITATIONS.md`](LIMITATIONS.md) first. Every number comes from a logged run in [`results/`](results/) or a
+> source in [`literature/related_work.csv`](literature/related_work.csv).
 
 > [!WARNING]
 > **Name clash.** An unrelated package called `leaklens` has been on PyPI since June 2026 (data-level checks, a
@@ -67,7 +66,7 @@ The table summarises our Phase 0 survey (details and sources: [`docs/PHASE0_REPO
 "Code" means the tool reads your `.py` / `.ipynb` source; "data" means you must export the train and test tables
 yourself and hand them over.
 
-| Capability | Code-level analysers<br><sub>Yang et al., NBLyzer, LeakageDetector, LeakCheck, scicode-lint</sub> | Data-level checkers<br><sub>Deepchecks, leakcheck-ml, LeakHound, dataleaks, leaklens (PyPI)</sub> | **LeakLens (implemented; evaluated on DEV only)** |
+| Capability | Code-level analysers<br><sub>Yang et al., NBLyzer, LeakageDetector, LeakCheck, scicode-lint</sub> | Data-level checkers<br><sub>Deepchecks, leakcheck-ml, LeakHound, dataleaks, leaklens (PyPI)</sub> | **LeakLens (implemented; evaluated on its own injected benchmark only)** |
 |---|:-:|:-:|:-:|
 | Points to the line of code responsible | ✅ | ❌ | ✅ |
 | Preprocessing / overlap / multi-test leakage | ✅ | partial | ✅ |
@@ -146,7 +145,68 @@ the data proxy `dp.kaggle.net` stays reachable. A child running as root could re
 drop privileges or while the network is reachable. Evidence:
 [`results/`](results/) (`00_smoke_offline`, `01b_sandbox_hardening_probe`, `01_sandbox_check`).
 
-## Results so far (DEV split only)
+## Results so far
+
+### Held-out TEST split, scored once
+
+Run: [`results/2026-11-12_test_injected_leaklens_v1`](results/2026-11-12_test_injected_leaklens_v1), at the
+commit that froze the protocol. Tool: LeakLens. Split: **TEST** of the injected benchmark: 79 files from 6 base
+pipelines that were not used for development, 73 labelled leaks, 9 files with no leak. Findings of medium or high
+confidence; a finding counts only with the right type on overlapping lines in the right cell.
+
+| Leakage type | Labelled leaks | Static: found | Static: recall (95% CI) | Static + dynamic: found | Static + dynamic: recall (95% CI) | False positives (either mode) |
+|---|---|---|---|---|---|---|
+| Preprocessing | 22 | 21 | 0.95 (0.84 to 1.00) | 21 | 0.95 (0.84 to 1.00) | 0 |
+| Overlap / duplicates | 9 | 7 | 0.78 (0.44 to 1.00) | 9 | 1.00 (1.00 to 1.00) | 0 |
+| Multi-test | 6 | 5 | 0.83 (0.43 to 1.00) | 5 | 0.83 (0.43 to 1.00) | 0 |
+| Group (entity) | 7 | 3 | 0.43 (0.00 to 0.83) | 7, of which 3 name the right column | 1.00 by the matching rule; 0.43 strictly | 0 |
+| Temporal | 25 | 20 | 0.80 (0.62 to 0.95) | 20 | 0.80 (0.62 to 0.95) | 0 |
+| Target-derived | 4 | 3 | 0.75 (0.00 to 1.00) | 3 | 0.75 (0.00 to 1.00) | 0 |
+| **All types** | 73 | 59 | 0.81 | 65 | 0.89 | 0 |
+
+No finding on any of the 9 leak-free files. What this does and does not show:
+
+- **It is a held-out result on synthetic files.** The rules were never tuned on these files, but the files come
+  from this project's own leak generator and are short. Precision 1.00 will not hold on real code.
+- **Group leakage: right line, wrong column in 4 of 7.** The static pass guessed a column called `visit` at low
+  confidence; the run "confirmed" it (visit numbers always repeat across a split) and never looked at
+  `patient_id`. The matching rule checks type and line only, so the table says 7; strictly it is 3.
+- **Eight leaks missed**, from two causes: a slice that drops the last row (`data.iloc[:-1]`) was mistaken for a
+  train/test split (five temporal leaks reported only at low confidence, one multi-test leak missed), and a
+  feature list built with a `startswith` filter could not be resolved (one target-encoding leak and one
+  target-derived feature missed). None of this has been fixed: a fix followed by a re-run would be a second look
+  at TEST ([`EVAL_CHANGES.md`](EVAL_CHANGES.md) #7).
+- **Impact estimates on TEST** ([report](results/2026-11-12_test_injected_leaklens_v1/IMPACT_REPORT.md)): an
+  estimate for 34 of 70 located leaks. On 26 single-leak findings with a bounded metric, averaged over five data
+  seeds: mean absolute error 0.035, rank correlation 0.58. Exact where the fix is the same operation as the
+  benchmark's corrected file; **wrong direction for hold-out group splits** (the wrong-column fault above).
+  Injected inflation is by construction and is not evidence of real-world severity.
+
+Full account: [`docs/PHASE7_TEST_REPORT.md`](docs/PHASE7_TEST_REPORT.md).
+
+### One measured baseline: Yang et al. (ASE 2022) on the same TEST files
+
+The reference static analyser was built from source and run with its default command on the 79 TEST files
+([run](results/2026-11-12_kaggle_05_yang_test_injected), [details](docs/PHASE7_TEST_REPORT.md)). It reports the
+affected evaluation line, not the leaking line, so both tools are scored **per file and type** here (a looser
+rule than the one above, logged in `EVAL_CHANGES.md` #6). LeakLens is in static mode, like the baseline.
+
+| Leakage type | Files with this leak | Yang et al.: files found | Yang: false alarms | LeakLens (static): files found | LeakLens: false alarms |
+|---|---|---|---|---|---|
+| Preprocessing | 22 | 10 | 1 | 21 | 0 |
+| Overlap / duplicates | 9 | 7 | 0 | 7 | 0 |
+| Multi-test | 6 | 3 | 0 | 5 | 0 |
+| Group (entity) | 7 | 0 (not a type it claims) | 0 | 3 | 0 |
+| Temporal | 24 | 3 (not a type it claims) | 0 | 19 | 0 |
+| Target-derived | 4 | 0 (not a type it claims) | 0 | 3 | 0 |
+
+Neither tool was tuned on these files. They are still files generated by this project, with the kinds of
+leak LeakLens was built for, in a style that may differ from the notebooks the Yang analyser was designed on,
+so the comparison favours LeakLens. The numbers its authors report on their own data (precision 97.6%, recall
+67.8%) are a different measurement and cannot be compared with this table. Temporal has 24 files, not 25
+leaks, because one file holds two temporal leaks.
+
+### DEV split (the files the rules were written on)
 
 Run: [`results/2026-11-12_dev_injected_leaklens_v2`](results/2026-11-12_dev_injected_leaklens_v2) (laptop, own
 generated pipelines only). Tool: LeakLens. Split: **DEV** of the injected benchmark, 96 files,
@@ -182,9 +242,7 @@ these files.** What they do show:
 
 **Negative results so far.** On the companion project CalibraEEG the static analyser found nothing in any of the
 three evaluation regimes: correct for the leave-one-patient-out regime, a miss for the two leaky ones, because that
-code splits with hand-written NumPy masks over custom objects rather than scikit-learn splitters. The Yang et al.
-baseline, which built on Kaggle in September, did not build there on 2026-11-12
-([run](results/2026-11-12_kaggle_04_yang_dev_injected)). Details: [`docs/PHASE3_6_REPORT.md`](docs/PHASE3_6_REPORT.md).
+code splits with hand-written NumPy masks over custom objects rather than scikit-learn splitters. Details: [`docs/PHASE3_6_REPORT.md`](docs/PHASE3_6_REPORT.md).
 
 ### Try it
 
@@ -204,11 +262,11 @@ internet outside the sandbox described below.
 | 0 | Setup, novelty check, baseline runnability | ✅ done ([report](docs/PHASE0_REPORT.md)) |
 | 1 | Taxonomy, specification, sandbox | ✅ done ([report](docs/PHASE1_REPORT.md)) |
 | 2 | Benchmark (injected + real, DEV/TEST split frozen before rules) | 🔄 injected done; real notebooks sampled, **not labelled** |
-| 3 | Evaluation protocol | 📝 [proposed](EVAL_PROTOCOL.md), **not frozen** (owner approval pending) |
-| 4 | Static analyser | ✅ built, DEV results above |
-| 5 | Dynamic analyser | ✅ built, DEV results above |
+| 3 | Evaluation protocol | ✅ [frozen](EVAL_PROTOCOL.md), version 1.0, 2026-11-12 |
+| 4 | Static analyser | ✅ built |
+| 5 | Dynamic analyser | ✅ built |
 | 6 | Impact estimation | 🔄 built for six kinds of fix; about half of the leaks have no automatic fix yet |
-| 7 | Evaluation on TEST, baselines, CalibraEEG case study, ablations | ⏳ TEST not scored; case study run (negative result) |
+| 7 | Evaluation on TEST, baselines, CalibraEEG case study, ablations | 🔄 injected TEST scored once; Yang et al. baseline run; case study negative; real set and other baselines pending |
 | 8 | Mining study of public notebooks | ⏳ |
 | 9 | Release: PyPI, pre-commit hook, GitHub Action, SARIF | 🔄 CLI, JSON and SARIF done; packaging not started; name clash to resolve |
 
@@ -289,7 +347,7 @@ results/             one folder per run, never overwritten; registry.csv maps ru
 docs/                phase reports, taxonomy, spec
 integrations/        pre-commit hook and GitHub Action (Phase 9)
 CLAUDE.md            build instructions and integrity rules for the AI pair-programmer
-EVAL_PROTOCOL.md     evaluation protocol (proposed, not frozen)
+EVAL_PROTOCOL.md     evaluation protocol (frozen, version 1.0)
 EVAL_CHANGES.md      what was seen and changed, and when
 LIMITATIONS.md       what the tool and the results cannot do
 ```

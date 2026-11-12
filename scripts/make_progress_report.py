@@ -1,14 +1,16 @@
 """Build docs/report/LeakLens_Chapter3_Progress_Report.pdf in the style of Chapters 1 and 2.
 
-    uv run --with reportlab python scripts/make_progress_report.py RUN_DIR
+    uv run --with reportlab python scripts/make_progress_report.py DEV_RUN_DIR TEST_RUN_DIR [YANG_FILE_LEVEL_CSV]
 
-Every result number in the PDF is read from RUN_DIR (summary.json and impact_summary.json written by
-benchmark/injected/score.py and score_impact.py), so the report cannot drift from the logged run. Text that
-states what was not done is written by hand and must be kept true.
+Result numbers in the PDF are read from the run folders (summary.json and impact_summary.json written by
+benchmark/injected/score.py and score_impact.py, findings.jsonl, and the file-level CSV of the Yang baseline), so
+the report cannot drift from the logged runs. Text that states what was not done, and the description of the
+misses, is written by hand and must be kept true.
 """
 
 from __future__ import annotations
 
+import csv
 import json
 import sys
 from pathlib import Path
@@ -22,6 +24,12 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, Tabl
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = (Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "results" / "2026-11-12_dev_injected_leaklens_v2").resolve()
+TEST_RUN = (
+    Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "results" / "2026-11-12_test_injected_leaklens_v1"
+).resolve()
+YANG_CSV = (
+    Path(sys.argv[3]) if len(sys.argv) > 3 else ROOT / "results" / "2026-11-12_kaggle_05_yang_test_injected" / "file_level.csv"
+).resolve()
 OUT = ROOT / "docs" / "report" / "LeakLens_Chapter3_Progress_Report.pdf"
 FOOT = "LeakLens | Chapter 3: Implementation and Results to Date | GNIT, IT"
 
@@ -89,25 +97,65 @@ def ci(v) -> str:
     return "n/a" if v is None else f"{v[0]:.2f} to {v[1]:.2f}"
 
 
-summary = json.loads((RUN / "summary.json").read_text())
-impact = json.loads((RUN / "impact_summary.json").read_text())
-st_rows = {r["type"]: r for r in summary["modes"]["static"]["medium"]}
-dy_rows = {r["type"]: r for r in summary["modes"]["static+dynamic"]["medium"]}
 TYPES = ["preprocessing", "overlap", "multi_test", "group", "temporal", "target_derived"]
 NAMES = {"preprocessing": "Preprocessing", "overlap": "Overlap / duplicates", "multi_test": "Multi-test",
          "group": "Group (entity)", "temporal": "Temporal", "target_derived": "Target-derived"}
-n_leaks = summary["labels"]
-tp_static = sum(st_rows[t]["tp"] for t in TYPES)
-tp_dyn = sum(dy_rows[t]["tp"] for t in TYPES)
-fp_static = sum(st_rows[t]["fp"] for t in TYPES)
-fp_dyn = sum(dy_rows[t]["fp"] for t in TYPES)
-clean = summary["modes"]["static+dynamic"]["clean_files"]
-status = impact["status"]
-measured = sum(v for k, v in status.items() if k.endswith("|measured"))
-unknown = sum(v for k, v in status.items() if k.endswith("|unknown"))
-unreliable = sum(v for k, v in status.items() if k.endswith("|unreliable"))
-static_s = summary["static_seconds"]
-dyn_s = summary.get("dynamic_seconds", {})
+
+
+def load(run: Path) -> dict:
+    s = json.loads((run / "summary.json").read_text())
+    i = json.loads((run / "impact_summary.json").read_text())
+    st = {r["type"]: r for r in s["modes"]["static"]["medium"]}
+    dy = {r["type"]: r for r in s["modes"]["static+dynamic"]["medium"]}
+    lo = {r["type"]: r for r in s["modes"]["static+dynamic"]["low"]}
+    status = i["status"]
+    return {"s": s, "i": i, "st": st, "dy": dy, "lo": lo, "n": s["labels"], "files": s["items"],
+            "tp_st": sum(st[t]["tp"] for t in TYPES), "tp_dy": sum(dy[t]["tp"] for t in TYPES),
+            "fp": sum(max(st[t]["fp"], dy[t]["fp"]) for t in TYPES), "clean": s["modes"]["static+dynamic"]["clean_files"],
+            "measured": sum(v for k, v in status.items() if k.endswith("|measured")),
+            "no_est": sum(v for k, v in status.items() if not k.endswith("|measured")), "status": status,
+            "cat": s["modes"]["static+dynamic"]["recall_by_category"]}
+
+
+def detection_table(d: dict) -> Table:
+    rows = [["Leakage type", "Labelled leaks", "Static: found", "Static: recall (95% CI)", "Static + dynamic: found",
+             "Static + dynamic: recall (95% CI)", "False positives (either mode)"]]
+    for t in TYPES:
+        a, b = d["st"][t], d["dy"][t]
+        rows.append([NAMES[t], a["labels"], a["tp"], f"{f3(a['recall'])} ({ci(a['recall_ci'])})", b["tp"],
+                     f"{f3(b['recall'])} ({ci(b['recall_ci'])})", max(a["fp"], b["fp"])])
+    rows.append(["All types", d["n"], d["tp_st"], f3(d["tp_st"] / d["n"]), d["tp_dy"], f3(d["tp_dy"] / d["n"]), d["fp"]])
+    return table(rows, [30, 17, 16, 32, 20, 32, 23], bold_last=True)
+
+
+DEV = load(RUN)
+TEST = load(TEST_RUN)
+static_s, dyn_s = TEST["s"]["static_seconds"], TEST["s"].get("dynamic_seconds", {})
+cat = TEST["cat"]
+
+
+def group_columns_right(run: Path) -> tuple[int, int]:
+    """Group findings (medium or higher, not refuted) that name the base pipeline's true entity column."""
+    import yaml
+
+    entity = {b: v.get("entity") for b, v in yaml.safe_load((ROOT / "benchmark/injected/bases.yaml").read_text()).items()}
+    right = total = 0
+    for line in (run / "findings.jsonl").open():
+        rec = json.loads(line)
+        if rec["seed"] != 0:
+            continue
+        for f in rec.get("dynamic", []):
+            if f["type"] == "group" and f["confidence"] != "low" and f["dynamic"]["status"] != "refuted":
+                total += 1
+                right += f["dynamic"].get("details", {}).get("column") == entity[rec["base"]]
+    return right, total
+
+
+grp_right, grp_total = group_columns_right(TEST_RUN)
+assert grp_total == TEST["dy"]["group"]["tp"], "group findings on TEST do not match the summary"
+yang_rows = []
+if YANG_CSV.exists():
+    yang_rows = list(csv.DictReader(YANG_CSV.open()))
 
 story: list = []
 story += [Paragraph("Chapter 3: Implementation and Results to Date", H1),
@@ -124,35 +172,40 @@ story += [Paragraph("3.1 Summary", H2),
           p("Chapters 1 and 2 proposed a tool that finds data leakage in Python ML code, confirms it on the data, and "
             "measures how much each leak inflates the reported score. On 29 September the repository held the "
             "taxonomy, the specification, a sandbox and a labelled benchmark, and <b>no detector</b>. This chapter "
-            "reports what exists on 12 November: a working static analyser for all six leakage types, a dynamic "
+            "reports what exists on 12 November: a static analyser for all six leakage types, a dynamic "
             "(instrumented-run) pass, per-finding impact estimation, a command-line tool with JSON and SARIF "
-            "output, and first results."),
-          p(f"<b>The main result so far, on the development (DEV) half of the injected benchmark:</b> reading the "
-            f"code alone, LeakLens finds {tp_static} of {n_leaks} labelled leaks with {fp_static} false positives; "
-            f"with the instrumented run added it finds {tp_dyn} of {n_leaks} with {fp_dyn} false positives, and "
-            f"raises no finding on {clean['n'] - clean['with_finding']} of {clean['n']} files that have no leak. "
-            "<b>These are DEV numbers.</b> The rules were written while looking at these files, so they show that "
-            "the method works end to end; they are not an estimate of accuracy on unseen code. The held-out TEST "
-            "half has not been scored, no real notebook has been labelled, and no other tool has been run on our "
-            "benchmark yet. Section 3.7 lists what went wrong or is still missing.")]
+            "output, a frozen evaluation protocol, and the first held-out results."),
+          p(f"<b>Main result, on the held-out TEST half of the injected benchmark</b> ({TEST['files']} files, "
+            f"{TEST['n']} labelled leaks; scored once, after the protocol was frozen; the tool's rules were never "
+            f"tuned on these files): reading the code alone, LeakLens finds {TEST['tp_st']} of {TEST['n']} leaks "
+            f"({TEST['tp_st'] / TEST['n']:.0%}); with the instrumented run, {TEST['tp_dy']} of {TEST['n']} "
+            f"({TEST['tp_dy'] / TEST['n']:.0%}). It reports {TEST['fp']} false positives and nothing on the "
+            f"{TEST['clean']['n']} files that have no leak."),
+          p(f"<b>Three cautions belong next to that number.</b> (1) In 4 of the 7 group leaks it finds on TEST, the "
+            f"tool points at the right line but names the wrong column (a visit number instead of the patient "
+            f"identifier); only {grp_right} of 7 are right for the right reason, and the impact estimate for those 4 "
+            "is wrong. (2) The benchmark files are generated by this project; they are simpler than real notebooks "
+            "and contain the kinds of leak the tool was built for. (3) No real notebook has been labelled, so there "
+            "is no result on real code. On the companion project's own code the tool found nothing (section 3.8).")]
 
 story += [Paragraph("3.2 Progress against the plan", H2),
           table([["Phase", "Deliverable", "29 September", "12 November"],
-                 ["0", "Setup, novelty check, baseline runnability", "done", "done; novelty search repeated today (3.7)"],
+                 ["0", "Setup, novelty check, baseline runnability", "done", "done; novelty search repeated today (3.8)"],
                  ["1", "Taxonomy of six types, specification, sandbox", "done", "done"],
                  ["2", "Benchmark: 175 injected files (162 leaks) and 150 real notebooks, DEV/TEST split frozen "
                        "before any rule", "injected done; real set sampled, unlabelled",
                   "unchanged: real notebooks still need two human labellers"],
-                 ["3", "Evaluation protocol", "not started", "written as a proposal; <b>not frozen</b>, waits for approval"],
+                 ["3", "Evaluation protocol", "not started", "<b>frozen</b> (version 1.0, approved by the project owner)"],
                  ["4", "Static analyser", "not started", "<b>built</b>: all six types, 150+ rule tests"],
                  ["5", "Dynamic analyser", "not started", "<b>built</b>: confirms, refutes, and finds data-only leaks"],
                  ["6", "Impact estimation", "not started", "<b>built</b> for six kinds of fix; about half of the "
                                                          "leaks have no automatic fix yet"],
                  ["7", "Evaluation on TEST, baselines, case study", "not started",
-                  "DEV only; TEST untouched; CalibraEEG case study run (static): negative result"],
+                  "<b>injected TEST scored once</b>; one baseline run (Yang et al.); CalibraEEG case study: negative "
+                  "result; real set and other baselines pending"],
                  ["8", "Mining study of public notebooks", "not started", "not started"],
                  ["9", "Release (PyPI, pre-commit, GitHub Action)", "not started",
-                  "CLI, JSON, SARIF done; packaging not started; name clash found (3.7)"]],
+                  "CLI, JSON, SARIF done; packaging not started; name clash found (3.8)"]],
                 [12, 62, 40, 56])]
 
 story += [Paragraph("3.3 What was built", H2),
@@ -176,9 +229,10 @@ story += [Paragraph("3.3 What was built", H2),
                  ["Reporting", "Terminal output, JSON (validated against a schema), SARIF 2.1.0 for GitHub code "
                                "scanning, CI exit codes, inline suppression comments."],
                  ["Evaluation", "One matching rule and bootstrap confidence intervals shared by every tool; a runner "
-                                "that refuses to touch TEST until the protocol is frozen."]],
+                                "that refuses TEST until the protocol is frozen and refuses a second TEST run unless "
+                                "it is logged."]],
                 [34, 136]),
-          Paragraph("About 5,200 lines of Python in the package and 1,500 lines of tests (359 tests pass, including "
+          Paragraph("About 5,200 lines of Python in the package and 1,500 lines of tests (360 tests pass, including "
                     "property-based tests that the analyser never crashes and is deterministic).", NOTE)]
 
 story += [Paragraph("3.4 A worked example", H2),
@@ -192,91 +246,106 @@ story += [Paragraph("3.4 A worked example", H2),
                   "fix: Split by entity: use GroupShuffleSplit with groups=`site` (same folds, test size and seed)."]],
                 [170], header=False),
           Paragraph("This is the sentence Chapter 1 asked for (\"line 42 lets the same patient into both training "
-                    "and test, and fixing it drops your score from X to Y\"). The size of the drop here is a "
-                    "property of our synthetic data, not evidence about real studies; and section 3.6 shows this "
-                    "particular kind of estimate is the least accurate one.", NOTE)]
+                    "and test, and fixing it drops your score from X to Y\"). The size of the drop is a property of "
+                    "our synthetic data, not evidence about real studies, and section 3.7 shows that this kind of "
+                    "estimate is the least accurate one.", NOTE)]
 
-det = [["Leakage type", "Labelled leaks", "Static: found", "Static: recall (95% CI)", "Static + dynamic: found",
-        "Static + dynamic: recall (95% CI)", "False positives (either mode)"]]
-for t in TYPES:
-    s, d = st_rows[t], dy_rows[t]
-    det.append([NAMES[t], s["labels"], s["tp"], f"{f3(s['recall'])} ({ci(s['recall_ci'])})", d["tp"],
-                f"{f3(d['recall'])} ({ci(d['recall_ci'])})", max(s["fp"], d["fp"])])
-det.append(["All types", n_leaks, tp_static, f3(tp_static / n_leaks), tp_dyn, f3(tp_dyn / n_leaks),
-            max(fp_static, fp_dyn)])
-story += [Paragraph("3.5 Detection results on the DEV split", H2),
-          p(f"Injected benchmark, DEV half: {summary['items']} files generated from 7 base pipelines, {n_leaks} "
-            "labelled leaks, 10 files without a leak (7 clean, 3 traps that look leaky but are correct). A finding "
-            "counts only if it has the right type and overlaps the labelled lines in the right cell. Findings of "
-            "medium or high confidence are counted. Intervals: bootstrap over files, 2,000 resamples."),
-          table(det, [30, 17, 16, 32, 20, 32, 23], bold_last=True),
-          Paragraph("DEV numbers are optimistic by design: the rules were tuned on these files. With no false "
-                    "positive, precision is 1.00 for every type on DEV; that will not hold on real code.", NOTE)]
+story += [Paragraph("3.5 Detection results on the held-out TEST split", H2),
+          p(f"Injected benchmark, TEST half: {TEST['files']} files from 6 base pipelines that are different from the "
+            f"7 used for development, {TEST['n']} labelled leaks, {TEST['clean']['n']} files without a leak. A finding "
+            "counts only if it has the right type and overlaps the labelled lines in the right cell; findings of "
+            "medium or high confidence are counted. Intervals: bootstrap over files, 2,000 resamples. With so few "
+            "leaks per type the intervals are wide."),
+          detection_table(TEST),
+          Paragraph("Precision is 1.00 for every type (no false positive). The files are synthetic and short; this "
+                    "will not hold on real code.", NOTE)]
 story += bullets([
-    "<b>Why static-only group recall is low.</b> In 7 of the 10 group leaks the entity column is in the data file "
-    "but never named in the code. The static pass finds the 3 where the entity comes from file paths in the code. "
-    "The instrumented run finds the other 7. This is the measured value of linking the two passes.",
-    "<b>Temporal leakage</b> is found for all three benchmark categories (common 7 of 7, differentiating 6 of 6, "
-    "hard 12 of 12), including the default shuffle of train_test_split, unshuffled KFold and a time column whose "
-    "name gives no hint. The temporal baseline (scicode-lint) has not been run, so this is not yet a comparison.",
-    f"<b>Speed.</b> Static analysis took a median of {static_s['median'] * 1000:.1f} ms per file (laptop, Apple "
-    f"M5). An instrumented run costs one execution of the script (median {dyn_s.get('median', 0):.1f} s here).",
-    "<b>Real notebooks (unlabelled, DEV half only).</b> The static analyser ran on all 71 real Kaggle notebooks "
-    "without a crash (7 had cells it had to skip). It reported medium-or-higher findings in 19 notebooks for "
-    "preprocessing, 10 for multi-test, 3 each for overlap, group and temporal. These counts are descriptive only: "
-    "nobody has labelled the notebooks, so no precision or recall can be stated."])
+    f"<b>What was missed ({TEST['n'] - TEST['tp_dy']} leaks).</b> Five temporal leaks (a scaler or statistic fitted "
+    "over a whole time series) were reported only at low confidence, and one multi-test leak was not reported, "
+    "all in one pipeline that drops its last row with <font face='Courier'>data.iloc[:-1]</font>: the analyser "
+    "mistook that slice for a train/test split. One target-encoding leak and one target-derived feature were "
+    "missed because the feature list was built with a <font face='Courier'>startswith</font> filter the analyser "
+    "cannot resolve, and it reports nothing rather than guess. With low-confidence findings included, temporal "
+    f"recall is {f3(TEST['lo']['temporal']['recall'])}.",
+    f"<b>Group leakage: right line, wrong column in 4 of 7.</b> For the EEG-style pipeline the entity comes from "
+    "file names and is found from the code alone (3 of 3). For the patient-visits pipeline the static pass made a "
+    "low-confidence guess on a column called <font face='Courier'>visit</font>; the run then \"confirmed\" it, "
+    "because visit numbers repeat on both sides of any split, and never looked at <font face='Courier'>"
+    "patient_id</font>. Under the frozen matching rule (type and line) these count as found, and the table shows "
+    f"7 of 7. Counted strictly, group recall on TEST is {grp_right} of 7.",
+    f"<b>Temporal categories:</b> common {cat['temporal_common'][0]} of {sum(cat['temporal_common'])}, "
+    f"differentiating {cat['temporal_differentiating'][0]} of {sum(cat['temporal_differentiating'])} (default "
+    "shuffle of train_test_split, unshuffled KFold, a time column with an uninformative name), hard "
+    f"{cat['temporal_hard'][0]} of {sum(cat['temporal_hard'])}. The temporal baseline (scicode-lint) has not been run.",
+    f"<b>Speed.</b> Static analysis: median {static_s['median'] * 1000:.1f} ms per file (laptop, Apple M5). An "
+    f"instrumented run costs one execution of the script (median {dyn_s.get('median', 0):.1f} s).",
+    "<b>These three causes have not been fixed.</b> Fixing them now and re-running TEST would be a second look at "
+    "the test set; it is logged as an open decision, not done."])
 
-imp = [["Leakage type", "Estimated", "No estimate", "Why no estimate"]]
+story += [Paragraph("3.6 Results on the DEV split (the files the rules were written on)", H2),
+          detection_table(DEV),
+          Paragraph(f"DEV: {DEV['files']} files, {DEV['n']} leaks, {DEV['clean']['n']} files without a leak, no false "
+                    "positive. These numbers are optimistic by design and are shown only to make the gap to TEST "
+                    f"visible: {DEV['tp_dy'] / DEV['n']:.0%} on DEV against {TEST['tp_dy'] / TEST['n']:.0%} on TEST "
+                    "with the run. The static analyser also ran on the 71 real DEV notebooks without a crash; nobody "
+                    "has labelled them, so no precision or recall can be stated for real code.", NOTE)]
+
+imp = [["Leakage type", "Estimated (TEST)", "No estimate (TEST)", "Why no estimate"]]
 why = {"preprocessing": "pandas statistics, or data that is cross-validated",
        "overlap": "resampling before the split has no automatic fix",
-       "multi_test": "nested validation is not automated", "group": "", "temporal": "forward-looking features and "
-       "whole-series statistics have no automatic fix", "target_derived": ""}
+       "multi_test": "nested validation is not automated", "group": "",
+       "temporal": "forward-looking features and whole-series statistics have no automatic fix", "target_derived": ""}
 for t in TYPES:
-    imp.append([NAMES[t], status.get(f"{t}|measured", 0), status.get(f"{t}|unknown", 0) + status.get(f"{t}|unreliable", 0),
-                why[t]])
-imp.append(["All types", measured, unknown + unreliable, ""])
+    imp.append([NAMES[t], TEST["status"].get(f"{t}|measured", 0),
+                TEST["status"].get(f"{t}|unknown", 0) + TEST["status"].get(f"{t}|unreliable", 0), why[t]])
+imp.append(["All types", TEST["measured"], TEST["no_est"], ""])
 acc = [["Leakage type", "Metric", "Findings", "Mean true inflation", "Mean estimate", "Mean absolute error",
         "Direction right"]]
-for g in impact["groups"]:
+for g in TEST["i"]["seed_averaged"]:
     sa = g["sign_agreement"]
     acc.append([NAMES[g["type"]], g["metric"], g["n"], f"{g['mean_true']:+.4f}", f"{g['mean_estimate']:+.4f}",
                 f"{g['mae']:.4f}", "n/a" if sa is None else f"{sa:.0%}"])
-ov = impact.get("overall", {})
-story += [Paragraph("3.6 Impact estimation: coverage and accuracy", H2),
+ovt, ovd = TEST["i"]["overall_seed_averaged"], DEV["i"]["overall"]
+story += [Paragraph("3.7 Impact estimation: coverage and accuracy", H2),
           p("For an injected file the true inflation is known: the metric of the leaky file minus the metric of its "
             "hand-written correct version, on the same data. LeakLens's estimate is the metric of the original run "
-            "minus the metric when the run is repeated with the finding's fix. The instrumented run printed exactly "
-            "the same metric as the plain run in all 96 files, so the instrumentation does not disturb the pipeline."),
-          Paragraph("Coverage: for how many correctly found leaks an estimate could be produced", CAP),
-          table(imp, [34, 20, 22, 94], bold_last=True),
-          Paragraph("Accuracy of the estimates (files with a single leak, DEV, data seed 0)", CAP),
+            "minus the metric when the run is repeated with the finding's fix. On TEST both are averaged over five "
+            "data seeds. In every one of the 395 TEST runs the instrumented script printed exactly the metric the "
+            "plain script prints, so the instrumentation does not disturb the pipeline."),
+          Paragraph("Coverage on TEST: for how many correctly located leaks an estimate could be produced", CAP),
+          table(imp, [34, 24, 26, 86], bold_last=True),
+          Paragraph("Accuracy on TEST (files with a single leak, averaged over data seeds 0 to 4)", CAP),
           table(acc, [32, 20, 17, 28, 25, 26, 22]),
-          p(f"Over the {ov.get('n_bounded', 0)} estimates on bounded metrics (AUC, average precision, R2) the mean "
-            f"absolute error is {ov.get('mae_bounded', 0):.3f} and the rank correlation with the true inflation is "
-            f"{f3(ov.get('spearman_bounded'))}. Three things must be said about these numbers:")]
+          p(f"Over the {ovt['n_bounded']} TEST estimates on bounded metrics (AUC, R2) the mean absolute error is "
+            f"{ovt['mae_bounded']:.3f} and the rank correlation with the true inflation is "
+            f"{f3(ovt['spearman_bounded'])} (DEV, one seed: {ovd['mae_bounded']:.3f} and "
+            f"{f3(ovd['spearman_bounded'])}). What these numbers mean:")]
 story += bullets([
-    "<b>Most errors are zero because the fix is the same operation as the benchmark's own correct version</b>, run "
-    "on the same seed. That shows the fixing machinery is right; it is not a hard test of estimation.",
-    "The 0% in the first row is a single file: its true inflation is 0.03 in average precision and the estimate "
-    "was 0, because the benchmark's correct version fits the selector after oversampling and ours before it.",
-    "<b>Hold-out group splits are the weak case</b> (test_auc row for group: error about 0.30). With only 12 sites, "
-    "the score depends strongly on which sites are held out, and LeakLens's group split holds out different sites "
-    "from the reference. The direction and ranking are right; the size is not reliable. Averaging over several "
-    "group splits is the planned remedy.",
-    f"<b>Coverage is partial:</b> {measured} of {measured + unknown + unreliable} found leaks got an estimate. The "
-    "rest are reported as \"impact unknown\" with the reason, not dropped. LeakHound's proxy estimate, the "
-    "baseline for this task, has not been run yet.",
+    "<b>Where the fix is the same operation as the benchmark's own correct version</b> (overlap, temporal splits, "
+    "target-derived features), the error is zero. That shows the fixing machinery is right; it is not a hard test.",
+    "<b>Hold-out group splits fail on TEST</b> (group, test_auc: estimate -0.08 against a true +0.21, wrong "
+    "direction). This is the wrong-column problem of section 3.5: the fix grouped by visit number, not by patient. "
+    "On DEV the same kind of estimate had the right direction but was off by 0.30 for a different reason (few "
+    "sites, different sites held out). Group impact under cross-validation is accurate on both splits.",
+    "<b>Preprocessing leaks barely move the score</b> (true inflation about 0.000 on TEST), which agrees with [5]; "
+    "the sign of such a small number is noise.",
+    f"<b>Coverage is partial:</b> an estimate for {TEST['measured']} of {TEST['measured'] + TEST['no_est']} located "
+    "leaks on TEST. The rest are reported as \"impact unknown\" with the reason, not dropped. LeakHound's proxy "
+    "estimate, the baseline for this task, has not been run.",
     "Injected inflation is built into our synthetic data. It is used only to check the estimates; it is not "
     "evidence of how severe any leakage type is in practice."])
 
-story += [Paragraph("3.7 What went wrong, and what is missing", H2)]
+story += [Paragraph("3.8 What went wrong, and what is missing", H2)]
 story += bullets([
+    "<b>TEST exposed three faults</b> that DEV did not: a positional slice mistaken for a split, an unresolved "
+    "column filter, and a weak guess at the entity column that the run confirmed instead of correcting "
+    "(section 3.5). They are recorded in EVAL_CHANGES.md and are not fixed.",
     "<b>CalibraEEG case study: LeakLens found nothing.</b> We ran the static analyser on the companion project's "
     "78 Python files. Expected: leakage flagged in regime A (random windows) and B (within-patient), nothing in C. "
-    "Result: 0 findings in all three. That is correct for C and a miss for A and B. The reason is that this code "
-    "splits with hand-written NumPy masks over custom recording objects, not with scikit-learn splitters on data "
-    "frames, which is all the analyser models today. The motivating example of Chapter 1 is therefore not yet "
-    "detected in its own code base.",
+    "Result: 0 findings in all three. That is correct for C and a miss for A and B: this code splits with "
+    "hand-written NumPy masks over custom recording objects, not with scikit-learn splitters on data frames, "
+    "which is all the analyser models today. The motivating example of Chapter 1 is not yet detected in its own "
+    "code base.",
     "<b>The name is taken.</b> The novelty search found an unrelated package called <font face='Courier'>leaklens"
     "</font> on PyPI (first release June 2026, by another author): data-level checks plus a simple syntax check for "
     "preprocessing before a split. It does not detect group leakage from code and does not estimate impact, so the "
@@ -284,22 +353,16 @@ story += bullets([
     "<b>A related idea exists for impact.</b> Leakly (2026) re-runs a user's pipeline on shuffled labels to test for "
     "leakage. It does not locate a leak or apply a fix, but our claim must be worded as per-finding impact, and "
     "Leakly must be cited.",
-    "<b>The reference baseline could not be run today.</b> Yang et al.'s analyser built and ran on Kaggle in "
-    "September; on 12 November its Datalog engine no longer installs on Kaggle's current image, so it analysed 0 "
-    "of the 96 DEV files. A second attempt that builds the engine from source was started. Until it succeeds there "
-    "is no measured comparison with any other tool.",
-    "<b>Evaluation still to do:</b> TEST (needs the protocol approved), human labels for real notebooks and their "
-    "agreement, baselines, the mining study, packaging. One test-split detail was seen by accident (column names "
-    "of the TEST pipelines); it is logged in EVAL_CHANGES.md.",
+    "<b>Still to do:</b> human labels for real notebooks and their agreement, the other baselines (scicode-lint, "
+    "the data-level tools, LeakHound, splitguard), the mining study, packaging. One test-split detail was seen by "
+    "accident while the rules were being written (column names of the TEST pipelines); it is logged.",
     "<b>The benchmark and the detector have one author.</b> TEST uses other pipelines but the same kinds of "
-    "injected leak, so even TEST will not show how the tool copes with leaks written by other people. Only the "
+    "injected leak, so TEST does not show how the tool copes with leaks written by other people. Only the "
     "human-labelled real notebooks can show that."])
 
-story += [Paragraph("3.8 Comparison with existing systems", H2),
-          p("The table extends Table 2.2 with the tools found since Chapter 2 and replaces \"proposed\" by what is "
-            "implemented. It compares <b>capabilities</b>, read from each tool's paper or documentation. It does "
-            "not compare accuracy: no other tool has been scored on our benchmark, and numbers that papers report "
-            "on their own data (for example precision 97.6% and recall 67.8% for [3]) cannot be set against ours."),
+story += [Paragraph("3.9 Comparison with existing systems", H2),
+          p("First, capabilities, read from each tool's paper or documentation (Table 2.2 extended with the tools "
+            "found since Chapter 2, and \"proposed\" replaced by what is implemented)."),
           table([["System", "Reads", "Types detected", "Group leakage", "Temporal leakage", "Impact estimate"],
                  ["Yang et al. [3]; LeakageDetector [6][13]", "code", "preprocessing, overlap, multi-test", "no", "no", "no"],
                  ["LeakCheck, Draoui et al. [7]", "code + LLM", "preprocessing, overlap", "not reported", "not reported", "no"],
@@ -311,35 +374,71 @@ story += [Paragraph("3.8 Comparison with existing systems", H2),
                  ["Leakly [18]", "re-run on shuffled labels", "any (not located, not typed)", "no", "no", "indirect, whole pipeline"],
                  ["<b>LeakLens (this work, implemented)</b>", "<b>code, then a run</b>",
                   "<b>all six, with line and suggested fix</b>",
-                  "<b>yes: from file paths or names in code; from the data at run time with nothing declared</b>",
+                  "<b>yes: from file paths or names in code; from the data at run time with nothing declared "
+                  "(column choice not yet reliable, 3.5)</b>",
                   "<b>yes: split and feature level, by data flow; confirmed on the data</b>",
                   "<b>yes, per finding, by re-running the user's script with the fix (6 kinds of fix)</b>"]],
                 [36, 20, 31, 32, 27, 24]),
           Paragraph("\"no\" and \"not reported\" mean the source we read does not state support. Tools known only from "
-                    "PyPI were read from package metadata and README (literature/related_work.csv).",
-                    NOTE)]
+                    "PyPI were read from package metadata and README (literature/related_work.csv).", NOTE)]
+if yang_rows:
+    split = "TEST" if "test" in YANG_CSV.parent.name else "DEV"
+    yt = [["Leakage type", "Files with this leak", "Yang et al. [3]: files found", "Yang: false alarms",
+           "LeakLens (static): files found", "LeakLens: false alarms"]]
+    ya = {r["type"]: r for r in yang_rows if r["tool"].startswith("Yang")}
+    la = {r["type"]: r for r in yang_rows if r["tool"].startswith("LeakLens")}
+    for t in TYPES:
+        claimed = ya[t]["claimed"] == "True"
+        yt.append([NAMES[t], la[t]["files"], ya[t]["tp"] + ("" if claimed else " (not a type it claims)"),
+                   ya[t]["fp"], la[t]["tp"], la[t]["fp"]])
+    story += [Paragraph(f"Measured: Yang et al.'s analyser and LeakLens on the same {split} files, per file and type", CAP),
+              p("Second, one measured comparison. The reference analyser [3] was built from source on Kaggle and run "
+                "with its default command on our benchmark files (notebooks converted to scripts, as its README "
+                "requires). It reports the line of the affected evaluation call, not the leaking line, so both "
+                "tools are scored here per file: does the tool report this leak type in a file that has it. "
+                "LeakLens is in static mode, like the baseline."),
+              table(yt, [32, 24, 34, 22, 36, 22]),
+              Paragraph(("Neither tool was tuned on these files, but they are generated by this project with the "
+                         "kinds of leak LeakLens was built for, and their style may differ from the notebooks [3] was "
+                         "designed on, so this favours LeakLens. " if split == "TEST" else
+                         "DEV files: LeakLens's rules were written on them, so this is not a fair accuracy "
+                         "comparison. ")
+                        + "Numbers that [3] reports on its own data (precision 97.6%, recall 67.8%) are a different "
+                          "measurement and are not comparable with this table.", NOTE)]
+else:
+    story += [Paragraph("No measured comparison with another tool is available yet: the reference analyser [3] was "
+                        "still running on the TEST files when this report was built. Numbers that [3] reports on its "
+                        "own data (precision 97.6%, recall 67.8%) cannot be set against ours.", NOTE)]
 
-story += [Paragraph("3.9 Objectives of Chapter 1", H2),
+shared = [TEST["st"][t] for t in ("preprocessing", "overlap", "multi_test")]
+story += [Paragraph("3.10 Objectives of Chapter 1", H2),
           table([["#", "Objective", "Status on 12 November"],
                  ["O1", "Taxonomy of six types with a rule per type", "Met (docs/TAXONOMY.md), with runnable examples that are part of the test suite."],
-                 ["O2", "Hybrid static + dynamic analyser with line, type and fix", "Built and working on DEV. Not yet evaluated on unseen code."],
-                 ["O3", "Impact of each finding by fixing and re-running", f"Built for six kinds of fix; an estimate for {measured} of {measured + unknown + unreliable} DEV leaks."],
+                 ["O2", "Hybrid static + dynamic analyser with line, type and fix", "Built; evaluated on held-out injected files. Not yet evaluated on real notebooks."],
+                 ["O3", "Impact of each finding by fixing and re-running",
+                  f"Built for six kinds of fix; an estimate for {TEST['measured']} of {TEST['measured'] + TEST['no_est']} located TEST leaks; wrong for hold-out group splits (3.7)."],
                  ["O4", "Labelled benchmark; precision of at least 0.90 and recall above 67.8% on shared types",
-                  "Benchmark built. On DEV the targets are exceeded, but DEV is the tuning split: <b>the target is not yet demonstrated</b>. It must be shown on TEST and on labelled real notebooks."],
+                  "Benchmark built. On injected TEST, static mode: precision 1.00; recall "
+                  + ", ".join(f"{NAMES[r['type']].lower()} {f3(r['recall'])}" for r in shared)
+                  + ". The point estimates meet the target, but the intervals are wide (for example overlap "
+                  + ci(TEST["st"]["overlap"]["recall_ci"]) + "), the files are our own, and 67.8% was measured on "
+                    "other data. <b>Met on our injected benchmark only.</b>"],
                  ["O5", "Empirical study on public notebooks", "Not started. 150 notebooks sampled; none labelled."],
                  ["O6", "Usable software", "CLI, JSON, SARIF and exit codes done. No PyPI release, pre-commit hook or GitHub Action yet."]],
                 [10, 62, 98])]
 
-story += [Paragraph("3.10 Next steps and decisions needed", H2)]
+story += [Paragraph("3.11 Next steps and decisions needed", H2)]
 story += bullets([
-    "<b>Approve (or change) the evaluation protocol</b> (docs/EVAL_PROTOCOL_SUMMARY.md, one page). TEST is scored "
-    "once, straight after approval.",
-    "<b>Label real notebooks:</b> two people, in the prepared random order, without seeing the tool's output.",
+    "<b>Decide on a second look at TEST.</b> The three faults found on TEST have obvious fixes. Fixing them and "
+    "re-running TEST is allowed only as a logged second look, reported next to the first result, never instead of it.",
+    "<b>Label real notebooks:</b> two people, in the prepared random order, without seeing the tool's output. "
+    "This is the only route to a result on real code.",
     "<b>Decide the project name</b> in the light of the existing PyPI package.",
-    "Get at least one baseline running on the benchmark (Yang et al. from source; data-level tools on the splits "
-    "the instrumented run materialises; LeakHound for impact).",
+    "Run the remaining baselines: data-level tools on the splits the instrumented run materialises, LeakHound for "
+    "impact, scicode-lint for temporal leakage.",
     "Extend the analyser to hand-written splits (NumPy masks, custom loaders) so that the CalibraEEG case is found; "
-    "average group-split impact over several splits; add fixes for the leak kinds that have none."])
+    "at run time, check every candidate entity column instead of trusting the static guess; add fixes for the "
+    "leak kinds that have none."])
 
 story += [Paragraph("References", CAP)]
 for r in [
@@ -358,7 +457,7 @@ for r in [
 ]:
     story.append(Paragraph(r, REF))
 story.append(Paragraph(f"[1] to [14] as in Chapters 1 and 2. [16] to [18]: package metadata and README only. Result "
-                       f"numbers are read from {RUN.relative_to(ROOT)}.", REF))
+                       f"numbers are read from {TEST_RUN.relative_to(ROOT)} and {RUN.relative_to(ROOT)}.", REF))
 
 OUT.parent.mkdir(parents=True, exist_ok=True)
 doc = SimpleDocTemplate(str(OUT), pagesize=A4, leftMargin=20 * mm, rightMargin=20 * mm, topMargin=15 * mm,

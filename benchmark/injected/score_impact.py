@@ -53,8 +53,10 @@ def main() -> None:
         labels[r["item_id"]].append(label_from_row(r))
     rows, status = [], Counter()
     fidelity = []
-    for line in (run / "findings.jsonl").open():
-        rec = json.loads(line)
+    records = [json.loads(line) for line in (run / "findings.jsonl").open()]
+    first_seed = min(r["seed"] for r in records)
+    seeds = sorted({r["seed"] for r in records})
+    for rec in records:
         item, seed = rec["item_id"], rec["seed"]
         t = truth.get((item, seed))
         if t and rec.get("metric"):
@@ -66,7 +68,8 @@ def main() -> None:
             if lab is None or f["dynamic"]["status"] == "refuted":
                 continue  # impact accuracy is defined for findings that match a labelled leak
             imp = f["impact"]
-            status[(lab.type, imp["status"])] += 1
+            if seed == first_seed:  # coverage is counted once per finding, on the seed used for detection
+                status[(lab.type, imp["status"])] += 1
             if imp["status"] not in ("measured", "unreliable") or t is None:
                 continue
             sign = -1 if lower_is_better(imp["metric"]) else 1
@@ -163,7 +166,61 @@ def main() -> None:
             f"mean absolute error {summary['overall']['mae_bounded']:.4f}, Spearman rank correlation "
             f"{'n/a' if rho is None else f'{rho:.2f}'}. Error metrics (MAE) are listed per row above, not pooled.",
         ]
-    multi = [r for r in rows if not r["single_leak"]]
+    if len(seeds) > 1 and single:
+        # EVAL_PROTOCOL section 5: inflation and estimate averaged over the data seeds, then compared per finding
+        per: dict[tuple, list] = defaultdict(list)
+        for r in single:
+            per[(r["type"], r["metric"], r["item_id"])].append(r)
+        avg = defaultdict(list)
+        for (t, metric, _), rs in per.items():
+            avg[(t, metric)].append(
+                (statistics.mean(r["estimate"] for r in rs), statistics.mean(r["true_inflation"] for r in rs), len(rs))
+            )
+        md += [
+            "",
+            f"## Accuracy after averaging over data seeds {seeds} (one row per finding, then per type and metric)",
+            "",
+            "| type | metric | findings | mean true inflation | mean estimate | mean abs. error | "
+            "sign agreement | Spearman |",
+            "|---|---|---|---|---|---|---|---|",
+        ]
+        summary["seed_averaged"] = []
+        allb = []
+        for (t, metric), vals in sorted(avg.items(), key=lambda kv: (types.index(kv[0][0]), kv[0][1])):
+            est, tru = [v[0] for v in vals], [v[1] for v in vals]
+            errs = [abs(e - x) for e, x in zip(est, tru, strict=True)]
+            nz = [(e, x) for e, x in zip(est, tru, strict=True) if abs(x) > 1e-9]
+            agree = sum(1 for e, x in nz if (e > 0) == (x > 0)) / len(nz) if nz else None
+            rho = spearman(est, tru)
+            summary["seed_averaged"].append(
+                {
+                    "type": t,
+                    "metric": metric,
+                    "n": len(vals),
+                    "mean_true": statistics.mean(tru),
+                    "mean_estimate": statistics.mean(est),
+                    "mae": statistics.mean(errs),
+                    "sign_agreement": agree,
+                    "spearman": rho,
+                }
+            )
+            if not lower_is_better(metric):
+                allb += list(zip(est, tru, strict=True))
+            md.append(
+                f"| {t} | {metric} | {len(vals)} | {statistics.mean(tru):+.4f} | {statistics.mean(est):+.4f} | "
+                f"{statistics.mean(errs):.4f} | {'n/a' if agree is None else f'{agree:.0%}'} | "
+                f"{'n/a' if rho is None else f'{rho:.2f}'} |"
+            )
+        if allb:
+            rho = spearman([e for e, _ in allb], [x for _, x in allb])
+            mae = statistics.mean(abs(e - x) for e, x in allb)
+            summary["overall_seed_averaged"] = {"n_bounded": len(allb), "mae_bounded": mae, "spearman_bounded": rho}
+            md += [
+                "",
+                f"Seed-averaged, all {len(allb)} single-leak findings with a bounded metric: mean absolute error "
+                f"{mae:.4f}, Spearman {'n/a' if rho is None else f'{rho:.2f}'}.",
+            ]
+    multi = [r for r in rows if not r["single_leak"] and r["seed"] == first_seed]
     if multi:
         md += [
             "",

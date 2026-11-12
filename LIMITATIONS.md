@@ -5,16 +5,21 @@ read before the results. It will be extended in Phase 9.
 
 ## What has and has not been measured
 
-- **All detection numbers so far are DEV numbers.** The rules were written looking at the DEV files, so DEV
-  results are optimistic by design. TEST has not been scored: the evaluation protocol is a proposal waiting for
-  the project owner's approval (`EVAL_PROTOCOL.md`).
+- **Results exist for the project's own injected benchmark only.** DEV numbers are optimistic by design (the
+  rules were written on those files). TEST was scored once on 2026-11-12, after the protocol was frozen; it uses
+  other pipelines but the same kinds of injected leak.
+- **TEST exposed three faults that are not fixed** (`docs/PHASE7_TEST_REPORT.md`): a positional slice such as
+  `data.iloc[:-1]` is mistaken for a train/test split; a feature list built with a `startswith` filter is not
+  resolved, and then nothing is reported; and when the static pass nominates a weak entity column, the run
+  confirms that column instead of looking for a better one, so 4 of 7 TEST group findings name the wrong column
+  and their impact estimate is wrong.
 - **No number on real notebooks yet.** The 150 sampled Kaggle notebooks have no human labels. The analyser has
   been run on the 71 real DEV notebooks only to check that it does not crash and to read what it flags; those
   findings are not labels and no precision is claimed from them.
 - **The injected benchmark and the detector have the same author.** TEST uses different base pipelines and data
   but the same mutation operators as DEV. Injected results measure generalisation across pipelines, not across
   the ways people actually write leaks.
-- **No baseline has been scored on TEST.** The published numbers of other tools (for example Yang et al.:
+- **Only one baseline has been run** (Yang et al., scored per file, not by the protocol's line rule). The published numbers of other tools (for example Yang et al.:
   precision 97.6%, recall 67.8%) were measured on their own data and cannot be compared with ours.
 - **Injected inflation is by construction** (CLAUDE.md Rule 12). It is used to check that impact estimates are
   accurate. It says nothing about how severe leakage is in real code.

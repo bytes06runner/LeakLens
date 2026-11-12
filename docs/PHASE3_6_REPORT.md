@@ -3,6 +3,9 @@
 Date: 2026-11-12. Status: **static analyser, dynamic pass and impact estimation built and measured on DEV.
 Stopped before TEST: the evaluation protocol needs your approval.**
 
+*Update, same day: you approved the protocol; TEST was scored once and the Yang et al. baseline was run. See
+[`PHASE7_TEST_REPORT.md`](PHASE7_TEST_REPORT.md). The text below is the report as written before TEST.*
+
 You asked for the phases to be implemented in one session. I did not stop for a "go" between Phases 4, 5 and 6,
 but I did stop at the one gate that cannot be undone: scoring TEST. Nothing has touched TEST.
 
