@@ -98,29 +98,129 @@ _TOKEN = re.compile(r"[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+")
 _SUPPRESS = re.compile(r"#\s*leaklens:\s*ignore(?:\[([\w,\s]+)\])?(?:\s*--\s*(.*))?")
 _STRONG_TIME = {"date", "datetime", "timestamp"}
 _PASSTHROUGH_FUNCS = {
-    "Series", "array", "asarray", "asanyarray", "ascontiguousarray", "from_numpy", "tensor", "as_tensor", "Tensor",
-    "FloatTensor", "LongTensor", "squeeze", "ravel", "copy", "deepcopy", "nan_to_num", "log", "log1p", "log2",
-    "log10", "exp", "expm1", "sqrt", "square", "absolute", "sign", "rint", "float32", "float64", "int32", "int64",
-    "to_numeric", "DMatrix", "Dataset", "Pool", "TensorDataset", "atleast_2d", "atleast_1d", "reshape", "where",
-    "clip", "isnan", "isfinite", "to_categorical", "csr_matrix", "csc_matrix", "factorize", "cut", "qcut",
+    "Series",
+    "array",
+    "asarray",
+    "asanyarray",
+    "ascontiguousarray",
+    "from_numpy",
+    "tensor",
+    "as_tensor",
+    "Tensor",
+    "FloatTensor",
+    "LongTensor",
+    "squeeze",
+    "ravel",
+    "copy",
+    "deepcopy",
+    "nan_to_num",
+    "log",
+    "log1p",
+    "log2",
+    "log10",
+    "exp",
+    "expm1",
+    "sqrt",
+    "square",
+    "absolute",
+    "sign",
+    "rint",
+    "float32",
+    "float64",
+    "int32",
+    "int64",
+    "to_numeric",
+    "DMatrix",
+    "Dataset",
+    "Pool",
+    "TensorDataset",
+    "atleast_2d",
+    "atleast_1d",
+    "reshape",
+    "where",
+    "clip",
+    "isnan",
+    "isfinite",
+    "to_categorical",
+    "csr_matrix",
+    "csc_matrix",
+    "factorize",
+    "cut",
+    "qcut",
 }
-_CONCAT_FUNCS = {"concat", "vstack", "hstack", "concatenate", "column_stack", "row_stack", "c_", "r_", "stack",
-                 "append"}
+_CONCAT_FUNCS = {
+    "concat",
+    "vstack",
+    "hstack",
+    "concatenate",
+    "column_stack",
+    "row_stack",
+    "c_",
+    "r_",
+    "stack",
+    "append",
+}
 _PATH_FUNCS = {"glob", "iglob", "listdir", "scandir", "walk", "rglob", "iterdir"}
 _SEQ_FUNCS = {"list", "tuple", "set", "reversed", "iter", "frozenset"}
 _SCORE_KEEP = {"mean", "median", "sum", "std", "round", "abs", "average", "nanmean", "float", "sqrt", "var"}
 _PREDICT = {"predict", "predict_proba", "decision_function", "predict_log_proba", "predict_classes"}
-_FRAME_PROPS_UNKNOWN = {"shape", "dtypes", "size", "ndim", "empty", "dtype", "name", "names", "nbytes", "axes",
-                        "attrs", "flags"}
+_FRAME_PROPS_UNKNOWN = {
+    "shape",
+    "dtypes",
+    "size",
+    "ndim",
+    "empty",
+    "dtype",
+    "name",
+    "names",
+    "nbytes",
+    "axes",
+    "attrs",
+    "flags",
+}
 _COMPARE_METHODS = {"eq", "ne", "lt", "gt", "le", "ge", "between"}
-_COMBINE_METHODS = {"map", "replace", "fillna", "clip", "where", "mask", "sub", "add", "div", "mul", "subtract",
-                    "divide", "multiply", "truediv", "floordiv", "mod", "pow", "combine_first", "corrwith", "dot",
-                    "update", "isin", "reindex_like", "align"} | _COMPARE_METHODS
+_COMBINE_METHODS = {
+    "map",
+    "replace",
+    "fillna",
+    "clip",
+    "where",
+    "mask",
+    "sub",
+    "add",
+    "div",
+    "mul",
+    "subtract",
+    "divide",
+    "multiply",
+    "truediv",
+    "floordiv",
+    "mod",
+    "pow",
+    "combine_first",
+    "corrwith",
+    "dot",
+    "update",
+    "isin",
+    "reindex_like",
+    "align",
+} | _COMPARE_METHODS
 _FUNC_METHODS = {"apply", "transform", "pipe", "map", "applymap", "agg", "aggregate", "progress_apply"}
 _CUM = {"cumsum", "cumprod", "cummax", "cummin"}
-_DATASET_MAKERS = {"make_classification", "make_regression", "make_blobs", "make_moons", "make_circles",
-                   "load_iris", "load_wine", "load_breast_cancer", "load_diabetes", "load_digits",
-                   "fetch_california_housing", "fetch_openml"}
+_DATASET_MAKERS = {
+    "make_classification",
+    "make_regression",
+    "make_blobs",
+    "make_moons",
+    "make_circles",
+    "load_iris",
+    "load_wine",
+    "load_breast_cancer",
+    "load_diabetes",
+    "load_digits",
+    "fetch_california_housing",
+    "fetch_openml",
+}
 
 
 class Budget(Exception):
@@ -154,8 +254,12 @@ def time_name(name: str) -> bool:
 
 
 def is_metric(name: str) -> bool:
-    return ((name.endswith(METRIC_SUFFIXES) or name in METRIC_NAMES) and name not in CV_HELPERS
-            and name not in NON_SCALAR_METRICS and name != "make_scorer")
+    return (
+        (name.endswith(METRIC_SUFFIXES) or name in METRIC_NAMES)
+        and name not in CV_HELPERS
+        and name not in NON_SCALAR_METRICS
+        and name != "make_scorer"
+    )
 
 
 def is_model_name(name: str) -> bool:
@@ -234,6 +338,7 @@ class Analyzer:
         self.steps = 0
         self.manual: dict[tuple, Split] = {}
         self.cat_names: set[str] = set()
+        self.origins: list[Origin] = []
         self.truncated = False
 
     # ------------------------------------------------------------------ driver
@@ -257,9 +362,9 @@ class Analyzer:
             if cell_end != cell:  # a finding never spans cells
                 f.flat_line_end, line_end = f.flat_line_start, line
             f.cell, f.line_start, f.line_end = cell, line, line_end
-            text = "\n".join(" ".join(ln.split()) for ln in lines[f.flat_line_start - 1:f.flat_line_end])
+            text = "\n".join(" ".join(ln.split()) for ln in lines[f.flat_line_start - 1 : f.flat_line_end])
             f.set_id(text)
-            for ln in lines[f.flat_line_start - 1:f.flat_line_end]:
+            for ln in lines[f.flat_line_start - 1 : f.flat_line_end]:
                 m = _SUPPRESS.search(ln)
                 if m:
                     kinds = {k.strip() for k in m.group(1).split(",")} if m.group(1) else None
@@ -283,7 +388,9 @@ class Analyzer:
 
     def new_origin(self, source: str) -> Origin:
         self.n_origin += 1
-        return Origin(self.n_origin, self.stmt_line[0], source)
+        o = Origin(self.n_origin, self.stmt_line[0], source)
+        self.origins.append(o)
+        return o
 
     def fresh(self, source: str, kind: str = "frame") -> Data:
         o = self.new_origin(source)
@@ -372,7 +479,9 @@ class Analyzer:
             self.loops.append(id(s))
             try:
                 elem = self.path_hint(s.target, elem)
-                if isinstance(elem, PathV) or (isinstance(elem, ListV) and any(isinstance(i, PathV) for i in elem.items)):
+                if isinstance(elem, PathV) or (
+                    isinstance(elem, ListV) and any(isinstance(i, PathV) for i in elem.items)
+                ):
                     self.path_loops.add(id(s))
                 self.assign(s.target, elem)
                 self.block(s.body)
@@ -428,10 +537,16 @@ class Analyzer:
 
     def path_hint(self, target: ast.expr, elem: AVal) -> AVal:
         """A loop variable named like a file name is treated as file-derived when nothing better is known."""
+
         def hinted(t: ast.expr, v: AVal) -> AVal:
-            if isinstance(t, ast.Name) and not isinstance(v, Data | PathV | Est | Score) and set(tokens(t.id)) & PATH_NAMES:
+            if (
+                isinstance(t, ast.Name)
+                and not isinstance(v, Data | PathV | Est | Score)
+                and set(tokens(t.id)) & PATH_NAMES
+            ):
                 return PathV("whole", True)
             return v
+
         if isinstance(target, ast.Name):
             return hinted(target, elem)
         if isinstance(target, ast.Tuple | ast.List):
@@ -485,8 +600,9 @@ class Analyzer:
             key = (value.origin.id, value.rows, "hint")
             sp = self.manual.get(key)
             if sp is None:
-                sp = self.manual[key] = self.new_split("manual subset", value.rows, value.origin, row_level=False,
-                                                       checked=True, info={"hint": True})
+                sp = self.manual[key] = self.new_split(
+                    "manual subset", value.rows, value.origin, row_level=False, checked=True, info={"hint": True}
+                )
             return replace(value, rows=Rows(role, sp, value.origin.id), subset=False)
         return value
 
@@ -548,8 +664,11 @@ class Analyzer:
             cur = self.get(node.id)
             if isinstance(cur, Data) and cur.cols is not None:
                 cols = cur.cols
-                cols = (replace(cols, names=cols.names + (c,)) if cols.names is not None and c not in cols.names
-                        else replace(cols, base=cols.base | {c}, minus=cols.minus - {c}))
+                cols = (
+                    replace(cols, names=cols.names + (c,))
+                    if cols.names is not None and c not in cols.names
+                    else replace(cols, base=cols.base | {c}, minus=cols.minus - {c})
+                )
                 self.set(node.id, replace(cur, cols=cols))
 
     def taint_frame(self, node: ast.expr, data: Data, value: AVal) -> None:
@@ -689,8 +808,16 @@ class Analyzer:
     def stat_taint(self, s: Data) -> Taint | None:
         if s.stat_src is None:
             return None
-        return Taint("pre", self.stmt_line[0], self.stmt_line[1], "a statistic computed over rows is applied to the data",
-                     s.stat_src, confidence="medium", stat_cols=s.stat_cols, subtype="pandas_stats")
+        return Taint(
+            "pre",
+            self.stmt_line[0],
+            self.stmt_line[1],
+            "a statistic computed over rows is applied to the data",
+            s.stat_src,
+            confidence="medium",
+            stat_cols=s.stat_cols,
+            subtype="pandas_stats",
+        )
 
     def combine(self, a: Data, b: Data) -> Data:
         """Result of an operation on two data values: `a`'s rows unless `a` is only a statistic."""
@@ -703,9 +830,15 @@ class Analyzer:
             primary = b
             t = self.stat_taint(a)
             taints |= {t} if t else set()
-        return replace(primary, taints=taints, deps=a.deps | b.deps, fwd=tuple(dict.fromkeys(a.fwd + b.fwd)),
-                       shifted=a.shifted or b.shifted, thresholded=a.thresholded or b.thresholded,
-                       is_stat=a.is_stat and b.is_stat)
+        return replace(
+            primary,
+            taints=taints,
+            deps=a.deps | b.deps,
+            fwd=tuple(dict.fromkeys(a.fwd + b.fwd)),
+            shifted=a.shifted or b.shifted,
+            thresholded=a.thresholded or b.thresholded,
+            is_stat=a.is_stat and b.is_stat,
+        )
 
     def combine_args(self, d: Data, args: list[AVal], kw: dict[str, AVal]) -> Data:
         out = d
@@ -727,8 +860,21 @@ class Analyzer:
             if attr == "best_estimator_":
                 return base.inner or base
             if attr == "best_score_" and base.fit is not None:
-                return Score(frozenset({EvalEvent(base.fit.line, base.fit.end_line, "cv", base.fit.rows, (), False,
-                                                  f"{base.cls}.best_score_")}))
+                return Score(
+                    frozenset(
+                        {
+                            EvalEvent(
+                                base.fit.line,
+                                base.fit.end_line,
+                                "cv",
+                                base.fit.rows,
+                                (),
+                                False,
+                                f"{base.cls}.best_score_",
+                            )
+                        }
+                    )
+                )
             return Bound(base, attr)
         if isinstance(base, PathV):
             return PathV("group" if attr in ("parent", "parents", "parts") else base.part, base.multi)
@@ -760,7 +906,12 @@ class Analyzer:
             if attr == "target":
                 return replace(d, kind="series", col="target")
             return UNKNOWN
-        if d.kind == "frame" and attr.isidentifier() and not attr.startswith("_") and attr not in ("str", "cat", "plot"):
+        if (
+            d.kind == "frame"
+            and attr.isidentifier()
+            and not attr.startswith("_")
+            and attr not in ("str", "cat", "plot")
+        ):
             return self.read_col(d, attr)
         return d
 
@@ -772,8 +923,18 @@ class Analyzer:
     def read_col(self, d: Data, c: str) -> Data:
         o = d.origin
         self.note_col(o, c)
-        return replace(d, kind="series", col=c, cols=None, deps=frozenset({c}), fwd=(),
-                       is_time=o.time_cols.get(c) == "parsed", is_stat=False, thresholded=False, shifted=False)
+        return replace(
+            d,
+            kind="series",
+            col=c,
+            cols=None,
+            deps=frozenset({c}),
+            fwd=(),
+            is_time=o.time_cols.get(c) == "parsed",
+            is_stat=False,
+            thresholded=False,
+            shifted=False,
+        )
 
     # -- subscripts ------------------------------------------------------------
 
@@ -833,8 +994,15 @@ class Analyzer:
         sp = self.manual.get(key)
         if sp is None:
             chrono = d.origin.shuffled_line is None
-            sp = self.manual[key] = self.new_split("positional slice", d.rows, d.origin, row_level=True,
-                                                   chronological=chrono, checked=True, info={"positional": True})
+            sp = self.manual[key] = self.new_split(
+                "positional slice",
+                d.rows,
+                d.origin,
+                row_level=True,
+                chronological=chrono,
+                checked=True,
+                info={"positional": True},
+            )
         return sp
 
     def row_slice(self, d: Data, sl: ast.Slice) -> Data:
@@ -887,8 +1055,13 @@ class Analyzer:
     def ev_comp(self, node: ast.ListComp | ast.GeneratorExp | ast.SetComp | ast.DictComp) -> AVal:
         gen = node.generators[0]
         it = self.ev(gen.iter)
-        if (not isinstance(node, ast.DictComp) and len(node.generators) == 1 and isinstance(node.elt, ast.Name)
-                and isinstance(gen.target, ast.Name) and node.elt.id == gen.target.id):
+        if (
+            not isinstance(node, ast.DictComp)
+            and len(node.generators) == 1
+            and isinstance(node.elt, ast.Name)
+            and isinstance(gen.target, ast.Name)
+            and node.elt.id == gen.target.id
+        ):
             t = gen.target.id
             if isinstance(it, Cols) and it.names is None:
                 minus, uncertain = set(), it.uncertain
@@ -952,7 +1125,12 @@ class Analyzer:
         if isinstance(cond, ast.UnaryOp) and isinstance(cond.op, ast.Not):
             r = self.truth(cond.operand, t, value)
             return None if r is None else not r
-        if isinstance(cond, ast.Compare) and len(cond.ops) == 1 and isinstance(cond.left, ast.Name) and cond.left.id == t:
+        if (
+            isinstance(cond, ast.Compare)
+            and len(cond.ops) == 1
+            and isinstance(cond.left, ast.Name)
+            and cond.left.id == t
+        ):
             names = str_list(self.ev(cond.comparators[0]))
             if names is None:
                 return None
@@ -961,9 +1139,15 @@ class Analyzer:
                 return value in names
             if isinstance(op, ast.NotIn | ast.NotEq):
                 return value not in names
-        if (isinstance(cond, ast.Call) and isinstance(cond.func, ast.Attribute) and isinstance(cond.func.value, ast.Name)
-                and cond.func.value.id == t and cond.args and isinstance(cond.args[0], ast.Constant)
-                and isinstance(cond.args[0].value, str)):
+        if (
+            isinstance(cond, ast.Call)
+            and isinstance(cond.func, ast.Attribute)
+            and isinstance(cond.func.value, ast.Name)
+            and cond.func.value.id == t
+            and cond.args
+            and isinstance(cond.args[0], ast.Constant)
+            and isinstance(cond.args[0].value, str)
+        ):
             if cond.func.attr == "startswith":
                 return value.startswith(cond.args[0].value)
             if cond.func.attr == "endswith":
@@ -985,7 +1169,9 @@ class Analyzer:
 
     def fold(self, split: Split) -> ListV:
         o = split.origin or self.new_origin("split indices")
-        return ListV([Data(o, Rows("train", split, o.id), "index"), Data(o, Rows("test", split, o.id), "index")], "tuple")
+        return ListV(
+            [Data(o, Rows("train", split, o.id), "index"), Data(o, Rows("test", split, o.id), "index")], "tuple"
+        )
 
     # -- calls -----------------------------------------------------------------
 
@@ -1080,9 +1266,18 @@ class Analyzer:
         if m in ("glob", "rglob", "iterdir"):
             return Iter(PathV("whole", True))
         if m in ("fit_transform", "fit_resample", "fit_sample") and any(isinstance(a, Data) for a in args):
-            return self.est_method(Est("an unrecognised resampler" if "sample" in m else "an unrecognised transformer",
-                                       "resampler" if "sample" in m else "transformer", self.stmt_line[0], "generic"),
-                                   m, args, kw, node)
+            return self.est_method(
+                Est(
+                    "an unrecognised resampler" if "sample" in m else "an unrecognised transformer",
+                    "resampler" if "sample" in m else "transformer",
+                    self.stmt_line[0],
+                    "generic",
+                ),
+                m,
+                args,
+                kw,
+                node,
+            )
         if isinstance(recv, Str) or recv is UNKNOWN:
             pv = [a for a in args if isinstance(a, PathV)]
             if pv and m in ("join", "format", "basename", "dirname"):
@@ -1124,7 +1319,7 @@ class Analyzer:
         for p, dflt in zip(a.kwonlyargs, a.kw_defaults, strict=False):
             scope[p.arg] = kw[p.arg] if kw and p.arg in kw else (self.ev(dflt) if dflt is not None else UNKNOWN)
         if a.vararg:
-            scope[a.vararg.arg] = ListV(list(args[len(params):]), "tuple")
+            scope[a.vararg.arg] = ListV(list(args[len(params) :]), "tuple")
         self.scopes.append(scope)
         self.rets.append([])
         self.call_stack.append(f.node)
@@ -1225,8 +1420,13 @@ class Analyzer:
         if name == "unique" and args and isinstance(args[0], Data):
             return replace(args[0], unique_of=args[0].col or "?", kind="array")
         if name in REDUCTIONS and args and isinstance(args[0], Data):
-            return self.reduce(args[0], kw.get("axis", args[1] if len(args) > 1 and name not in ("quantile", "percentile",
-                                                                                                "nanpercentile") else None))
+            return self.reduce(
+                args[0],
+                kw.get(
+                    "axis",
+                    args[1] if len(args) > 1 and name not in ("quantile", "percentile", "nanpercentile") else None,
+                ),
+            )
         if name == "clone" and args and isinstance(args[0], Est):
             e = args[0]
             return Est(e.cls, e.kind, self.stmt_line[0], e.flavour, list(e.steps), None, e.inner, e.cv, set(e.params))
@@ -1240,8 +1440,14 @@ class Analyzer:
         if is_metric(name):
             return self.do_metric(name, args, kw, node)
         if name in _PASSTHROUGH_FUNCS:
-            d = next((self.to_data(a, n.id if isinstance(n, ast.Name) else None)
-                      for a, n in zip(args, node.args, strict=False) if self.to_data(a) is not None), None)
+            d = next(
+                (
+                    self.to_data(a, n.id if isinstance(n, ast.Name) else None)
+                    for a, n in zip(args, node.args, strict=False)
+                    if self.to_data(a) is not None
+                ),
+                None,
+            )
             if d is not None:
                 return self.combine_args(d, [a for a in args if a is not d], kw)
         return self.opaque(args, kw)
@@ -1281,8 +1487,19 @@ class Analyzer:
             accs = [v for v in first.items if isinstance(v, ListV) and v.acc is not None]
             o = self.new_origin("DataFrame")
             if datas:
-                base = replace(datas[0], origin=o, kind="frame", cols=None, col=None, deps=frozenset(), fwd=(),
-                               is_stat=False, pred_of=None, shifted=False, thresholded=False)
+                base = replace(
+                    datas[0],
+                    origin=o,
+                    kind="frame",
+                    cols=None,
+                    col=None,
+                    deps=frozenset(),
+                    fwd=(),
+                    is_stat=False,
+                    pred_of=None,
+                    shifted=False,
+                    thresholded=False,
+                )
             elif accs:
                 base = Data(accs[0].acc, Rows("all", None, accs[0].acc.id), "frame")
             else:
@@ -1324,10 +1541,16 @@ class Analyzer:
 
         if name in COMPOSITE:
             steps = found(list(args) + list(kw.values()))
-            flav = ("supervised" if any(s.flavour == "supervised" and s.kind == "transformer" for s in steps)
-                    else "statistical" if any(s.flavour == "statistical" and s.kind == "transformer" for s in steps)
-                    else "vocabulary")
-            is_model = bool(steps) and steps[-1].kind in ("model", "search") and "olumn" not in name and "nion" not in name
+            flav = (
+                "supervised"
+                if any(s.flavour == "supervised" and s.kind == "transformer" for s in steps)
+                else "statistical"
+                if any(s.flavour == "statistical" and s.kind == "transformer" for s in steps)
+                else "vocabulary"
+            )
+            is_model = (
+                bool(steps) and steps[-1].kind in ("model", "search") and "olumn" not in name and "nion" not in name
+            )
             return Est(name, "model" if is_model else "transformer", line, flav, steps, params=params)
         if name in SEARCH:
             inner = next((a for a in list(args) + list(kw.values()) if isinstance(a, Est)), None)
@@ -1355,8 +1578,14 @@ class Analyzer:
             return replace(d, kind="series", cols=None)
         if d.is_stat or d.pred_of is not None:
             return d
-        return replace(d, is_stat=True, stat_src=d.rows, stat_cols=d.deps | ({d.col} if d.col else set()),
-                       kind="array", subset=False)
+        return replace(
+            d,
+            is_stat=True,
+            stat_src=d.rows,
+            stat_cols=d.deps | ({d.col} if d.col else set()),
+            kind="array",
+            subset=False,
+        )
 
     def add_fwd(self, d: Data, op: str, confidence: str) -> Data:
         f = (self.stmt_line[0], self.stmt_line[1], op, confidence)
@@ -1367,13 +1596,27 @@ class Analyzer:
         o = self.new_origin("groupby aggregate")
         o.aggregated_by = set(d.gkeys)
         o.time_cols, o.time_index = dict(d.origin.time_cols), d.origin.time_index
-        return Data(o, Rows("all", None, o.id), "frame", is_stat=True, stat_src=d.rows,
-                    stat_cols=d.deps | set(d.gkeys) | ({d.col} if d.col else set()), taints=d.taints)
+        return Data(
+            o,
+            Rows("all", None, o.id),
+            "frame",
+            is_stat=True,
+            stat_src=d.rows,
+            stat_cols=d.deps | set(d.gkeys) | ({d.col} if d.col else set()),
+            taints=d.taints,
+        )
 
     def group_stat(self, d: Data, what: str) -> Data:
-        t = Taint("pre", self.stmt_line[0], self.stmt_line[1], f"{what}: a per-group statistic over rows", d.rows,
-                  confidence="medium", stat_cols=frozenset(d.deps | set(d.gkeys) | ({d.col} if d.col else set())),
-                  subtype="pandas_stats")
+        t = Taint(
+            "pre",
+            self.stmt_line[0],
+            self.stmt_line[1],
+            f"{what}: a per-group statistic over rows",
+            d.rows,
+            confidence="medium",
+            stat_cols=frozenset(d.deps | set(d.gkeys) | ({d.col} if d.col else set())),
+            subtype="pandas_stats",
+        )
         return replace(d, window=None, gkeys=(), taints=d.taints | {t}, is_stat=False)
 
     def merge(self, d: Data, others: list[Data], kw: dict[str, AVal]) -> Data:
@@ -1387,8 +1630,9 @@ class Analyzer:
             self.note_col(d.origin, n)
         return replace(d, taints=taints, cols=None if others else d.cols)
 
-    def data_method(self, d: Data, m: str, args: list[AVal], kw: dict[str, AVal], node: ast.Call,
-                    recv_node: ast.expr | None) -> AVal:
+    def data_method(
+        self, d: Data, m: str, args: list[AVal], kw: dict[str, AVal], node: ast.Call, recv_node: ast.expr | None
+    ) -> AVal:
         o = d.origin
         if m in ORDERED_OPS and d.gkeys:
             o.panel_keys |= set(d.gkeys)
@@ -1461,8 +1705,11 @@ class Analyzer:
             c = args[0].value
             if isinstance(recv_node, ast.Name):
                 cols = self.cols_of(d)
-                cols = (replace(cols, names=tuple(n for n in cols.names if n != c)) if cols.names is not None
-                        else replace(cols, minus=cols.minus | {c}))
+                cols = (
+                    replace(cols, names=tuple(n for n in cols.names if n != c))
+                    if cols.names is not None
+                    else replace(cols, minus=cols.minus | {c})
+                )
                 self.set(recv_node.id, replace(d, cols=cols))
             return self.read_col(d, c)
         if m in ("unique", "drop_duplicates"):
@@ -1489,18 +1736,33 @@ class Analyzer:
         if m == "assign":
             for k, v in kw.items():
                 self.assign_col(d, k, self.call_func(v, [d]) if isinstance(v, FuncV) else v, None)
-            return d if d.cols is None else replace(d, cols=replace(d.cols, base=d.cols.base | set(kw),
-                                                                    names=None if d.cols.names is None
-                                                                    else d.cols.names + tuple(k for k in kw
-                                                                                              if k not in d.cols.names)))
+            return (
+                d
+                if d.cols is None
+                else replace(
+                    d,
+                    cols=replace(
+                        d.cols,
+                        base=d.cols.base | set(kw),
+                        names=None
+                        if d.cols.names is None
+                        else d.cols.names + tuple(k for k in kw if k not in d.cols.names),
+                    ),
+                )
+            )
         if m in _FUNC_METHODS:
             f = args[0] if args else kw.get("func", UNKNOWN)
             if isinstance(f, FuncV):
                 r = self.call_func(f, [replace(d, subset=False)])
                 if isinstance(r, Data):
-                    return replace(d, taints=d.taints | r.taints, fwd=tuple(dict.fromkeys(d.fwd + r.fwd)),
-                                   deps=d.deps | r.deps, shifted=d.shifted or r.shifted,
-                                   thresholded=d.thresholded or r.thresholded)
+                    return replace(
+                        d,
+                        taints=d.taints | r.taints,
+                        fwd=tuple(dict.fromkeys(d.fwd + r.fwd)),
+                        deps=d.deps | r.deps,
+                        shifted=d.shifted or r.shifted,
+                        thresholded=d.thresholded or r.thresholded,
+                    )
                 return d
             if m in ("agg", "aggregate"):
                 return self.reduce(d, kw.get("axis"))
@@ -1512,8 +1774,20 @@ class Analyzer:
             return Iter(ListV([UNKNOWN, d], "tuple"))
         if m in ("to_numpy", "to_frame", "flatten", "ravel", "squeeze", "reshape", "todense", "toarray", "numpy"):
             return replace(d, kind="array" if m != "to_frame" else "frame")
-        if m in ("to_csv", "to_pickle", "to_parquet", "to_excel", "plot", "hist", "info", "boxplot", "to_json",
-                 "to_string", "to_markdown", "to_latex"):
+        if m in (
+            "to_csv",
+            "to_pickle",
+            "to_parquet",
+            "to_excel",
+            "plot",
+            "hist",
+            "info",
+            "boxplot",
+            "to_json",
+            "to_string",
+            "to_markdown",
+            "to_latex",
+        ):
             return UNKNOWN
         if m in ("tolist", "to_list", "to_dict", "keys"):
             return d
@@ -1529,12 +1803,21 @@ class Analyzer:
                     return replace(d, window=None, gkeys=())
                 if r.is_stat:
                     return self.group_stat(d, f"groupby({keys}).{m}(...)") if m == "transform" else self.aggregated(d)
-                return replace(d, window=None, gkeys=(), taints=d.taints | r.taints, deps=d.deps | r.deps,
-                               fwd=tuple(dict.fromkeys(d.fwd + r.fwd)), shifted=d.shifted or r.shifted)
+                return replace(
+                    d,
+                    window=None,
+                    gkeys=(),
+                    taints=d.taints | r.taints,
+                    deps=d.deps | r.deps,
+                    fwd=tuple(dict.fromkeys(d.fwd + r.fwd)),
+                    shifted=d.shifted or r.shifted,
+                )
             fname = f.value if isinstance(f, Str) else f.name if isinstance(f, Ref) else None
             if m == "transform":
                 if fname in FWD_FILL:
-                    return self.add_fwd(replace(d, window=None, gkeys=(), shifted=True), f"transform('{fname}')", "medium")
+                    return self.add_fwd(
+                        replace(d, window=None, gkeys=(), shifted=True), f"transform('{fname}')", "medium"
+                    )
                 if fname is None or fname in GROUPBY_STATS or fname in REDUCTIONS:
                     return self.group_stat(d, f"groupby({keys}).transform({fname or '...'})")
                 return replace(d, window=None, gkeys=(), shifted=True)
@@ -1553,8 +1836,14 @@ class Analyzer:
         o = d.origin
         frac = num(kw.get("frac"))
         if is_true(kw.get("replace")):
-            t = Taint("dup", self.stmt_line[0], self.stmt_line[1], "sample(replace=True) copies rows", d.rows,
-                      subtype="resample_before_split")
+            t = Taint(
+                "dup",
+                self.stmt_line[0],
+                self.stmt_line[1],
+                "sample(replace=True) copies rows",
+                d.rows,
+                subtype="resample_before_split",
+            )
             return replace(d, taints=d.taints | {t}, subset=True)
         if frac == 1:
             o.shuffled_line, o.sorted_by_time = self.stmt_line[0], False
@@ -1562,15 +1851,17 @@ class Analyzer:
         if d.window is not None or d.is_stat:
             return d
         side = "train" if frac is not None and frac >= 0.5 else "test"
-        sp = self.new_split("DataFrame.sample (random rows)", d.rows, o, row_level=True, checked=False,
-                            info={"manual": True, "X": d})
+        sp = self.new_split(
+            "DataFrame.sample (random rows)", d.rows, o, row_level=True, checked=False, info={"manual": True, "X": d}
+        )
         return replace(d, rows=Rows(side, sp, o.id), subset=False)
 
     def drop(self, d: Data, args: list[AVal], kw: dict[str, AVal]) -> Data:
         axis = kw.get("axis", args[1] if len(args) > 1 else None)
         by_col = num(axis) == 1 or (isinstance(axis, Str) and axis.value == "columns")
-        cols = kw.get("columns", args[0] if args and (by_col or str_list(args[0]) is not None) and "index" not in kw
-                      else None)
+        cols = kw.get(
+            "columns", args[0] if args and (by_col or str_list(args[0]) is not None) and "index" not in kw else None
+        )
         if cols is not None and not isinstance(cols, Data):
             names = str_list(cols)
             cur = self.cols_of(d)
@@ -1578,11 +1869,19 @@ class Analyzer:
                 return replace(d, cols=replace(cur, uncertain=True))
             for n in names:
                 self.note_col(d.origin, n)
-            cur = (replace(cur, names=tuple(n for n in cur.names if n not in names)) if cur.names is not None
-                   else replace(cur, minus=cur.minus | set(names)))
+            cur = (
+                replace(cur, names=tuple(n for n in cur.names if n not in names))
+                if cur.names is not None
+                else replace(cur, minus=cur.minus | set(names))
+            )
             return replace(d, cols=cur)
         idx = kw.get("index", args[0] if args else None)
-        if isinstance(idx, Data) and idx.rows.split is not None and idx.rows.role in ("train", "test") and idx.rows != d.rows:
+        if (
+            isinstance(idx, Data)
+            and idx.rows.split is not None
+            and idx.rows.role in ("train", "test")
+            and idx.rows != d.rows
+        ):
             sp = idx.rows.split
             if sp.info.get("manual") and not sp.info.get("confirmed"):
                 sp.info["confirmed"] = True  # the complement of a random sample makes it a real split
@@ -1660,18 +1959,36 @@ class Analyzer:
                 return UNKNOWN
             yd = self.to_data(y)
             if est.flavour == "undersampler":
-                return ListV([replace(X, subset=True), replace(yd, subset=True) if yd is not None
-                              else replace(X, kind="series", subset=True)], "tuple")
-            t = Taint("dup", self.stmt_line[0], self.stmt_line[1], f"{est.cls} creates copied or synthetic rows", X.rows,
-                      subtype="resample_before_split", confidence="low" if est.flavour == "generic" else "high")
-            return ListV([replace(X, taints=X.taints | {t}),
-                          replace(yd, taints=yd.taints | {t}) if yd is not None else replace(X, kind="series")], "tuple")
+                return ListV(
+                    [
+                        replace(X, subset=True),
+                        replace(yd, subset=True) if yd is not None else replace(X, kind="series", subset=True),
+                    ],
+                    "tuple",
+                )
+            t = Taint(
+                "dup",
+                self.stmt_line[0],
+                self.stmt_line[1],
+                f"{est.cls} creates copied or synthetic rows",
+                X.rows,
+                subtype="resample_before_split",
+                confidence="low" if est.flavour == "generic" else "high",
+            )
+            return ListV(
+                [
+                    replace(X, taints=X.taints | {t}),
+                    replace(yd, taints=yd.taints | {t}) if yd is not None else replace(X, kind="series"),
+                ],
+                "tuple",
+            )
         if m in _PREDICT:
             if X is None:
                 return UNKNOWN
             self.check_overlap(est, X)
-            return replace(X, kind="array", pred_of=est, cols=None, col=None, taints=frozenset(), deps=frozenset(),
-                           is_stat=False)
+            return replace(
+                X, kind="array", pred_of=est, cols=None, col=None, taints=frozenset(), deps=frozenset(), is_stat=False
+            )
         if m in ("score", "evaluate"):
             if X is None:
                 return UNKNOWN
@@ -1694,8 +2011,16 @@ class Analyzer:
         if fit is None or est.kind == "model" or est.flavour == "stateless":
             return X
         conf = {"statistical": "high", "supervised": "high", "vocabulary": "low", "generic": "low"}[est.flavour]
-        t = Taint("pre", fit.line, fit.end_line, f"{est.cls} is fitted here", fit.rows, supervised=fit.supervised,
-                  confidence=conf, subtype="supervised" if fit.supervised else "scaler")
+        t = Taint(
+            "pre",
+            fit.line,
+            fit.end_line,
+            f"{est.cls} is fitted here",
+            fit.rows,
+            supervised=fit.supervised,
+            confidence=conf,
+            subtype="supervised" if fit.supervised else "scaler",
+        )
         return replace(X, taints=X.taints | {t})
 
     def do_fit(self, est: Est, X: Data, y: AVal | None, kw: dict[str, AVal], node: ast.Call) -> None:
@@ -1718,17 +2043,23 @@ class Analyzer:
             if v is None:
                 continue
             knode = next((k.value for k in node.keywords if k.arg == key), None)
-            named_val = knode is not None and any(isinstance(n, ast.Name) and set(tokens(n.id)) & HINT_VAL
-                                                  for n in ast.walk(knode))
+            named_val = knode is not None and any(
+                isinstance(n, ast.Name) and set(tokens(n.id)) & HINT_VAL for n in ast.walk(knode)
+            )
             for d in self.datas_in(v):
                 if self.final_test(d.rows):
-                    self.emit("multi_test", "LL-MUL-002", self.stmt_line, "early_stopping",
-                              "medium" if stops and not named_val else "low",
-                              f"Evaluation rows are passed as `{key}` while fitting; if they stop or select the "
-                              "training run, the score reported on the same rows is optimistic.",
-                              [{"kind": "fit_call", "detail": f"{est.cls}.fit({key}=...) receives evaluation rows"}],
-                              "Use a separate validation split for early stopping and score once on the test rows.",
-                              "holdout_validation_split")
+                    self.emit(
+                        "multi_test",
+                        "LL-MUL-002",
+                        self.stmt_line,
+                        "early_stopping",
+                        "medium" if stops and not named_val else "low",
+                        f"Evaluation rows are passed as `{key}` while fitting; if they stop or select the "
+                        "training run, the score reported on the same rows is optimistic.",
+                        [{"kind": "fit_call", "detail": f"{est.cls}.fit({key}=...) receives evaluation rows"}],
+                        "Use a separate validation split for early stopping and score once on the test rows.",
+                        "holdout_validation_split",
+                    )
                     break
 
     def datas_in(self, v: AVal, depth: int = 0) -> list[Data]:
@@ -1755,15 +2086,32 @@ class Analyzer:
         if sp.info.get("manual") and not sp.info.get("confirmed"):
             return
         if covers(fit.rows, E.rows) and fit.rows != E.rows:  # same rows fitted and scored: a training score
-            how = ("train and evaluation rows concatenated" if fit.rows.role == "mixed"
-                   else "the evaluation rows themselves" if fit.rows.role == "test" else "all rows, before or regardless of the split")
-            self.emit("overlap", "LL-OVL-003" if fit.rows.role == "mixed" else "LL-OVL-001", (fit.line, fit.end_line),
-                      "test_in_fit", "high",
-                      f"The model is fitted on {how}, then scored on evaluation rows it has already seen.",
-                      [{"kind": "fit_call", "detail": f"{est.cls}.fit on rows that include the evaluation rows"},
-                       {"kind": "data_flow", "detail": f"evaluated at line {self.stmt_line[0]} on the test side of "
-                                                       f"the split at line {sp.line}"}],
-                      "Fit on the training rows only.", "fit_on_train_only")
+            how = (
+                "train and evaluation rows concatenated"
+                if fit.rows.role == "mixed"
+                else "the evaluation rows themselves"
+                if fit.rows.role == "test"
+                else "all rows, before or regardless of the split"
+            )
+            self.emit(
+                "overlap",
+                "LL-OVL-003" if fit.rows.role == "mixed" else "LL-OVL-001",
+                (fit.line, fit.end_line),
+                "test_in_fit",
+                "high",
+                f"The model is fitted on {how}, then scored on evaluation rows it has already seen.",
+                [
+                    {"kind": "fit_call", "detail": f"{est.cls}.fit on rows that include the evaluation rows"},
+                    {
+                        "kind": "data_flow",
+                        "detail": f"evaluated at line {self.stmt_line[0]} on the test side of "
+                        f"the split at line {sp.line}",
+                    },
+                ],
+                "Fit on the training rows only.",
+                "fit_on_train_only",
+                {"eval_lines": [self.stmt_line[0]]},
+            )
 
     # -- splits ----------------------------------------------------------------
 
@@ -1775,27 +2123,48 @@ class Analyzer:
         second = next((d for d in datas if d is not None and d is not first), None)
         entity_level = first.unique_of is not None
         chrono = is_false(kw.get("shuffle")) and first.origin.shuffled_line is None
-        split = self.new_split("train_test_split" + ("(shuffle=False)" if is_false(kw.get("shuffle")) else ""),
-                               first.rows, first.origin, row_level=not entity_level, chronological=chrono,
-                               info={"stratify": "stratify" in kw})
+        split = self.new_split(
+            "train_test_split" + ("(shuffle=False)" if is_false(kw.get("shuffle")) else ""),
+            first.rows,
+            first.origin,
+            row_level=not entity_level,
+            chronological=chrono,
+            info={"stratify": "stratify" in kw},
+        )
         self.check_split(split, first, second)
         self.sink(first, second, split)
         out: list[AVal] = []
         for d in datas:
             d = d if d is not None else replace(first, kind="array", cols=None, col=None, taints=frozenset())
-            out += [replace(d, rows=Rows("train", split, d.origin.id), subset=False),
-                    replace(d, rows=Rows("test", split, d.origin.id), subset=False)]
+            out += [
+                replace(d, rows=Rows("train", split, d.origin.id), subset=False),
+                replace(d, rows=Rows("test", split, d.origin.id), subset=False),
+            ]
         return ListV(out, "tuple")
 
     def cv_split(self, cv: AVal | None, groups: AVal | None, X: Data, call: str) -> Split:
         given = groups is not None and not (isinstance(groups, Const) and groups.value is None)
         if cv is None or isinstance(cv, Num | Const):
-            return self.new_split(f"{call} (default or integer cv)", X.rows, X.origin, row_level=True,
-                                  group_aware=given, is_cv=True, info={"default_cv": True})
+            return self.new_split(
+                f"{call} (default or integer cv)",
+                X.rows,
+                X.origin,
+                row_level=True,
+                group_aware=given,
+                is_cv=True,
+                info={"default_cv": True},
+            )
         if isinstance(cv, SplitterV):
-            return self.new_split(f"{call} with {cv.cls}", X.rows, X.origin, row_level=cv.kind != "group",
-                                  group_aware=cv.kind == "group" or given, chronological=cv.kind == "time",
-                                  is_cv=True, info={"splitter": cv.cls, "shuffle": cv.shuffle})
+            return self.new_split(
+                f"{call} with {cv.cls}",
+                X.rows,
+                X.origin,
+                row_level=cv.kind != "group",
+                group_aware=cv.kind == "group" or given,
+                chronological=cv.kind == "time",
+                is_cv=True,
+                info={"splitter": cv.cls, "shuffle": cv.shuffle},
+            )
         return self.new_split(f"{call} (unresolved cv)", X.rows, X.origin, row_level=False, is_cv=True, checked=True)
 
     def do_cv_helper(self, name: str, args: list[AVal], kw: dict[str, AVal], node: ast.Call) -> AVal:
@@ -1820,9 +2189,16 @@ class Analyzer:
         if X is None:
             X = self.fresh("unknown data", "array")
         y = args[1] if len(args) > 1 else kw.get("y")
-        split = self.new_split(f"{sp.cls}.split", X.rows, X.origin, row_level=sp.kind != "group" and X.unique_of is None,
-                               group_aware=sp.kind == "group", chronological=sp.kind == "time", is_cv=True,
-                               info={"splitter": sp.cls, "shuffle": sp.shuffle})
+        split = self.new_split(
+            f"{sp.cls}.split",
+            X.rows,
+            X.origin,
+            row_level=sp.kind != "group" and X.unique_of is None,
+            group_aware=sp.kind == "group",
+            chronological=sp.kind == "time",
+            is_cv=True,
+            info={"splitter": sp.cls, "shuffle": sp.shuffle},
+        )
         self.check_split(split, X, y)
         self.sink(X, y, split)
         return SplitIter(split)
@@ -1857,29 +2233,44 @@ class Analyzer:
                 conf = "medium" if strength == "strong" and not split.chronological else "low"
                 base = "default_cv" if split.info.get("default_cv") else "row_cv" if split.is_cv else "row_split"
                 rule = "LL-GRP-003" if is_file else "LL-GRP-002" if split.info.get("default_cv") else "LL-GRP-001"
-                fix = ("GroupKFold" if split.is_cv else "GroupShuffleSplit")
-                self.emit("group", rule, loc, base + ("+file_path_entity" if is_file else ""), conf,
-                          f"Rows are split without regard to `{col}`; the same {col} can be in training and "
-                          "evaluation rows, so the score does not measure performance on new entities.",
-                          [{"kind": "split_call", "detail": f"{split.call}: row-level, not group-aware"}]
-                          + [{"kind": "entity_column", "detail": e} for _, e, _ in cands[:3]],
-                          f"Split by entity: use {fix} with groups=`{col}` (same folds, test size and seed).",
-                          f"replace_splitter:{fix}", {"entity_columns": [c for c, _, _ in cands]})
+                fix = "GroupKFold" if split.is_cv else "GroupShuffleSplit"
+                self.emit(
+                    "group",
+                    rule,
+                    loc,
+                    base + ("+file_path_entity" if is_file else ""),
+                    conf,
+                    f"Rows are split without regard to `{col}`; the same {col} can be in training and "
+                    "evaluation rows, so the score does not measure performance on new entities.",
+                    [{"kind": "split_call", "detail": f"{split.call}: row-level, not group-aware"}]
+                    + [{"kind": "entity_column", "detail": e} for _, e, _ in cands[:3]],
+                    f"Split by entity: use {fix} with groups=`{col}` (same folds, test size and seed).",
+                    f"replace_splitter:{fix}",
+                    {"entity_columns": [c for c, _, _ in cands], "entity_strengths": {c: s for c, _, s in cands}},
+                )
         if split.row_level and not split.chronological and not split.group_aware:
             if X.shifted:
                 o.ordered_ops.add("lag or window values in the split data")
             strength = o.time_strength()
             if strength is not None:
                 how = split.info.get("splitter") or split.call
-                self.emit("temporal", "LL-TMP-001", loc, "T1", "medium" if strength == "strong" else "low",
-                          "Time-ordered rows are split without respecting time; the model trains on rows that are "
-                          "later than rows it is evaluated on.",
-                          [{"kind": "split_call", "detail": f"{how}: not a forward-chaining split"},
-                           {"kind": "time_column", "detail": o.time_evidence()}],
-                          "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the "
-                          "same number of folds.",
-                          "replace_splitter:TimeSeriesSplit" if split.is_cv else "replace_splitter:chronological",
-                          {"time_columns": sorted(o.time_cols)})
+                self.emit(
+                    "temporal",
+                    "LL-TMP-001",
+                    loc,
+                    "T1",
+                    "medium" if strength == "strong" else "low",
+                    "Time-ordered rows are split without respecting time; the model trains on rows that are "
+                    "later than rows it is evaluated on.",
+                    [
+                        {"kind": "split_call", "detail": f"{how}: not a forward-chaining split"},
+                        {"kind": "time_column", "detail": o.time_evidence()},
+                    ],
+                    "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the "
+                    "same number of folds.",
+                    "replace_splitter:TimeSeriesSplit" if split.is_cv else "replace_splitter:chronological",
+                    {"time_columns": sorted(o.time_cols)},
+                )
 
     # -- sinks -----------------------------------------------------------------
 
@@ -1938,17 +2329,22 @@ class Analyzer:
             return
         ycols = self.ycols(y)
         o = X.origin
-        nested = (split is not None and split.parent.role == "train" and split.parent.split is not None
-                  and not split.parent.split.info.get("hint"))
+        nested = (
+            split is not None
+            and split.parent.role == "train"
+            and split.parent.split is not None
+            and not split.parent.split.info.get("hint")
+        )
 
         def leaks(t: Taint) -> bool:
             if split is not None:
                 return covers(t.src, split.parent)
             return covers(t.src, r.split.parent) or (t.src.role in ("mixed", "test") and t.src.split is r.split)
 
+        at = split.line if split is not None else r.split.line
         for t in X.taints:
             if leaks(t):
-                self.emit_taint(t, o, ycols, nested)
+                self.emit_taint(t, o, ycols, nested, at)
         for f in X.fwd:
             self.emit_fwd(f, None)
         resolved = bool(ycols) if X.cols is None else (X.cols.names is not None or not X.cols.uncertain)
@@ -1961,17 +2357,25 @@ class Analyzer:
             taints, fwd, pure = self.effective(o, c)
             for t in taints:
                 if leaks(t):
-                    self.emit_taint(t, o, ycols, nested)
+                    self.emit_taint(t, o, ycols, nested, at)
             for f in fwd:
                 self.emit_fwd(f, c)
             hit = ycols & pure
             if hit and fact.assigned and not any(t.kind == "pre" and t.stat_cols & ycols for t in taints):
                 tgt = sorted(hit)[0]
-                self.emit("target_derived", "LL-TGT-001", (fact.line, fact.end_line), "computed_from_target", "medium",
-                          f"Feature `{c}` is computed from the target `{tgt}`; it will not be available, or will not "
-                          "mean the same, at prediction time.",
-                          [{"kind": "data_flow", "detail": f"`{c}` depends on `{tgt}` and is among the model's features"}],
-                          f"Remove `{c}` from the features.", f"drop_feature:{c}", {"feature": c})
+                self.emit(
+                    "target_derived",
+                    "LL-TGT-001",
+                    (fact.line, fact.end_line),
+                    "computed_from_target",
+                    "medium",
+                    f"Feature `{c}` is computed from the target `{tgt}`; it will not be available, or will not "
+                    "mean the same, at prediction time.",
+                    [{"kind": "data_flow", "detail": f"`{c}` depends on `{tgt}` and is among the model's features"}],
+                    f"Remove `{c}` from the features.",
+                    f"drop_feature:{c}",
+                    {"feature": c, "target": tgt},
+                )
         for tgt in ycols:
             tf = o.cols.get(tgt)
             if tf is None or not tf.assigned or tf.shifted or tf.fwd:
@@ -1981,56 +2385,111 @@ class Analyzer:
             for dcol in sorted(pure - ycols):
                 if explicit and self.frame_has(X, dcol):
                     conf = "medium" if tf.thresholded and len(pure - ycols) == 1 else "low"
-                    self.emit("target_derived", "LL-TGT-001", (tf.line, tf.end_line), "target_from_feature", conf,
-                              f"The target `{tgt}` is computed from `{dcol}`, which is also among the features.",
-                              [{"kind": "data_flow", "detail": f"`{tgt}` depends on `{dcol}`; `{dcol}` stays in the features"}],
-                              f"Remove `{dcol}` from the features.", f"drop_feature:{dcol}", {"feature": dcol})
+                    self.emit(
+                        "target_derived",
+                        "LL-TGT-001",
+                        (tf.line, tf.end_line),
+                        "target_from_feature",
+                        conf,
+                        f"The target `{tgt}` is computed from `{dcol}`, which is also among the features.",
+                        [
+                            {
+                                "kind": "data_flow",
+                                "detail": f"`{tgt}` depends on `{dcol}`; `{dcol}` stays in the features",
+                            }
+                        ],
+                        f"Remove `{dcol}` from the features.",
+                        f"drop_feature:{dcol}",
+                        {"feature": dcol, "target": tgt},
+                    )
 
     def emit_fwd(self, f: tuple[int, int, str, str], col: str | None) -> None:
         line, end, op, conf = f
         what = f"Feature `{col}`" if col else "A feature"
-        self.emit("temporal", "LL-TMP-002", (line, end), "T2", conf,
-                  f"{what} is computed from values later in time ({op}); at prediction time those values do not exist yet.",
-                  [{"kind": "forward_op", "detail": op},
-                   {"kind": "data_flow", "detail": "the result is among the features of an evaluated model"}],
-                  "Use the backward-looking counterpart (positive shift, center=False, ffill), computed on past rows only.",
-                  "replace_forward_op", {"feature": col})
+        self.emit(
+            "temporal",
+            "LL-TMP-002",
+            (line, end),
+            "T2",
+            conf,
+            f"{what} is computed from values later in time ({op}); at prediction time those values do not exist yet.",
+            [
+                {"kind": "forward_op", "detail": op},
+                {"kind": "data_flow", "detail": "the result is among the features of an evaluated model"},
+            ],
+            "Use the backward-looking counterpart (positive shift, center=False, ffill), computed on past rows only.",
+            "replace_forward_op",
+            {"feature": col},
+        )
 
-    def emit_taint(self, t: Taint, o: Origin, ycols: set[str], nested: bool) -> None:
+    def emit_taint(self, t: Taint, o: Origin, ycols: set[str], nested: bool, at: int) -> None:
+        ctx = {"split_lines": [at]}
         conf = "low" if nested else t.confidence
         loc = (t.line, t.end_line)
         if t.kind == "dup":
-            self.emit("overlap", "LL-OVL-002", loc, t.subtype or "resample_before_split", conf,
-                      "Rows are copied or synthesised before the split, so copies of the same row can land in both "
-                      "training and evaluation rows.",
-                      [{"kind": "data_flow", "detail": t.detail},
-                       {"kind": "split_call", "detail": "the resampled rows are split afterwards"}],
-                      "Split first, then resample the training rows only.", "resample_after_split")
+            self.emit(
+                "overlap",
+                "LL-OVL-002",
+                loc,
+                t.subtype or "resample_before_split",
+                conf,
+                "Rows are copied or synthesised before the split, so copies of the same row can land in both "
+                "training and evaluation rows.",
+                [
+                    {"kind": "data_flow", "detail": t.detail},
+                    {"kind": "split_call", "detail": "the resampled rows are split afterwards"},
+                ],
+                "Split first, then resample the training rows only.",
+                "resample_after_split",
+                ctx,
+            )
             return
         supervised = t.supervised or bool(t.stat_cols & ycols)
         if o.time_strength() == "strong" and not supervised:
-            self.emit("temporal", "LL-TMP-002", loc, "T2_whole_series", conf,
-                      "A statistic is computed over the whole time series, including rows later than the training "
-                      "period, and applied to the features.",
-                      [{"kind": "fit_call", "detail": t.detail}, {"kind": "time_column", "detail": o.time_evidence()}],
-                      "Fit the transformation on the training period only (for example inside a Pipeline).",
-                      "fit_on_train_only")
+            self.emit(
+                "temporal",
+                "LL-TMP-002",
+                loc,
+                "T2_whole_series",
+                conf,
+                "A statistic is computed over the whole time series, including rows later than the training "
+                "period, and applied to the features.",
+                [{"kind": "fit_call", "detail": t.detail}, {"kind": "time_column", "detail": o.time_evidence()}],
+                "Fit the transformation on the training period only (for example inside a Pipeline).",
+                "fit_on_train_only",
+                {**ctx, "instrumented": t.subtype != "pandas_stats"},
+            )
             return
         rule = "LL-PRE-003" if supervised else "LL-PRE-002" if t.subtype == "pandas_stats" else "LL-PRE-001"
-        msg = ("A target-dependent transformation is fitted on rows that include the evaluation rows."
-               if supervised else
-               "A data-dependent transformation is fitted on rows that include the evaluation rows.")
-        self.emit("preprocessing", rule, loc, "supervised" if supervised else t.subtype, conf, msg,
-                  [{"kind": "fit_call", "detail": t.detail},
-                   {"kind": "data_flow", "detail": "the transformed data is split or cross-validated afterwards"}],
-                  "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted "
-                  "inside each fold.", "fit_on_train_only")
+        msg = (
+            "A target-dependent transformation is fitted on rows that include the evaluation rows."
+            if supervised
+            else "A data-dependent transformation is fitted on rows that include the evaluation rows."
+        )
+        self.emit(
+            "preprocessing",
+            rule,
+            loc,
+            "supervised" if supervised else t.subtype,
+            conf,
+            msg,
+            [
+                {"kind": "fit_call", "detail": t.detail},
+                {"kind": "data_flow", "detail": "the transformed data is split or cross-validated afterwards"},
+            ],
+            "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted "
+            "inside each fold.",
+            "fit_on_train_only",
+            {**ctx, "instrumented": t.subtype != "pandas_stats"},
+        )
 
     # -- scores and selection --------------------------------------------------
 
     def event(self, kind: str, rows: Rows, node: ast.AST, what: str) -> Score:
         hint = any(isinstance(n, ast.Name) and set(tokens(n.id)) & HINT_VAL for n in ast.walk(node))
-        return Score(frozenset({EvalEvent(self.stmt_line[0], self.stmt_line[1], kind, rows, tuple(self.loops), hint, what)}))
+        return Score(
+            frozenset({EvalEvent(self.stmt_line[0], self.stmt_line[1], kind, rows, tuple(self.loops), hint, what)})
+        )
 
     def do_metric(self, name: str, args: list[AVal], kw: dict[str, AVal], node: ast.Call) -> AVal:
         datas = [a for a in list(args) + list(kw.values()) if isinstance(a, Data)]
@@ -2054,19 +2513,33 @@ class Analyzer:
                 if not self.final_test(e.rows) or e.val_hint:
                     continue
                 sub = "cv_selection_reported" if e.rows.split.is_cv else "test_set_tuning"
-                msg = ("Several candidates are scored on the same evaluation rows and the best one is selected; its "
-                       "score on those rows is an optimistic estimate.")
+                msg = (
+                    "Several candidates are scored on the same evaluation rows and the best one is selected; its "
+                    "score on those rows is an optimistic estimate."
+                )
             else:
                 if e.rows.role != "all":
                     continue
                 sub = "cv_selection_reported"
-                msg = ("Several candidates are compared by cross-validation on all rows and the best score is kept; "
-                       "no rows remain that were not used for the selection.")
-            self.emit("multi_test", "LL-MUL-001", (e.line, e.end_line), sub, "medium", msg,
-                      [{"kind": "selection", "detail": f"scores from this line are compared by {how}"},
-                       {"kind": "data_flow", "detail": f"{e.what} on evaluation rows, repeated for several candidates"}],
-                      "Select with a separate validation split or nested cross-validation, then score the chosen "
-                      "candidate once on untouched rows.", "nested_validation")
+                msg = (
+                    "Several candidates are compared by cross-validation on all rows and the best score is kept; "
+                    "no rows remain that were not used for the selection."
+                )
+            self.emit(
+                "multi_test",
+                "LL-MUL-001",
+                (e.line, e.end_line),
+                sub,
+                "medium",
+                msg,
+                [
+                    {"kind": "selection", "detail": f"scores from this line are compared by {how}"},
+                    {"kind": "data_flow", "detail": f"{e.what} on evaluation rows, repeated for several candidates"},
+                ],
+                "Select with a separate validation split or nested cross-validation, then score the chosen "
+                "candidate once on untouched rows.",
+                "nested_validation",
+            )
 
     # -- resampling and concatenation ------------------------------------------
 
@@ -2074,8 +2547,14 @@ class Analyzer:
         out: list[AVal] = []
         for a in args:
             if isinstance(a, Data) and not is_false(kw.get("replace")):
-                t = Taint("dup", self.stmt_line[0], self.stmt_line[1], "resample() draws rows with replacement", a.rows,
-                          subtype="resample_before_split")
+                t = Taint(
+                    "dup",
+                    self.stmt_line[0],
+                    self.stmt_line[1],
+                    "resample() draws rows with replacement",
+                    a.rows,
+                    subtype="resample_before_split",
+                )
                 out.append(replace(a, taints=a.taints | {t}, subset=True))
             else:
                 out.append(replace(a, subset=True) if isinstance(a, Data) else a)
@@ -2083,7 +2562,11 @@ class Analyzer:
 
     def do_concat(self, name: str, args: list[AVal], kw: dict[str, AVal]) -> AVal:
         axis = kw.get("axis", args[1] if len(args) > 1 and isinstance(args[1], Num) else None)
-        by_col = num(axis) == 1 or (isinstance(axis, Str) and axis.value == "columns") or name in ("hstack", "column_stack", "c_")
+        by_col = (
+            num(axis) == 1
+            or (isinstance(axis, Str) and axis.value == "columns")
+            or name in ("hstack", "column_stack", "c_")
+        )
         items = args[0].items if args and isinstance(args[0], ListV) else list(args)
         datas = [d for d in (self.to_data(i) for i in items) if d is not None]
         if not datas:
@@ -2096,29 +2579,62 @@ class Analyzer:
         if by_col:
             names = None
             if all(d.cols is not None and d.cols.names is not None or d.col for d in datas):
-                names = tuple(n for d in datas for n in (d.cols.names if d.cols is not None and d.cols.names else (d.col,)))
+                names = tuple(
+                    n for d in datas for n in (d.cols.names if d.cols is not None and d.cols.names else (d.col,))
+                )
             for d in datas:
                 if d.is_stat and not first.is_stat:
                     t = self.stat_taint(d)
                     taints |= {t} if t else set()
-            return replace(first, taints=taints, fwd=fwd, deps=deps, col=None, kind="frame" if first.kind != "array" else "array",
-                           cols=Cols(names) if names else None)
+            return replace(
+                first,
+                taints=taints,
+                fwd=fwd,
+                deps=deps,
+                col=None,
+                kind="frame" if first.kind != "array" else "array",
+                cols=Cols(names) if names else None,
+            )
         rows = first.rows
         splits = {d.rows.split for d in datas}
         if len(splits) == 1 and None not in splits and {"train", "test"} <= {d.rows.role for d in datas}:
             rows = Rows("mixed", first.rows.split, first.origin.id)
         same = [d for d in datas if d.origin is first.origin and d.rows == first.rows]
-        if (len(same) >= 2 and any(not d.subset for d in same) and not any(t.kind == "dup" for t in taints)
-                and first.rows.role != "mixed" and not first.is_stat):
-            taints |= {Taint("dup", self.stmt_line[0], self.stmt_line[1],
-                             "rows are concatenated with a copy or subset of themselves", first.rows,
-                             confidence="medium", subtype="resample_before_split")}
+        if (
+            len(same) >= 2
+            and any(not d.subset for d in same)
+            and not any(t.kind == "dup" for t in taints)
+            and first.rows.role != "mixed"
+            and not first.is_stat
+        ):
+            taints |= {
+                Taint(
+                    "dup",
+                    self.stmt_line[0],
+                    self.stmt_line[1],
+                    "rows are concatenated with a copy or subset of themselves",
+                    first.rows,
+                    confidence="medium",
+                    subtype="resample_before_split",
+                )
+            }
         return replace(first, rows=rows, taints=taints, fwd=fwd, deps=deps, subset=False)
 
     # ------------------------------------------------------------------ findings
 
-    def emit(self, type_: str, rule: str, loc: tuple[int, int], subtype: str | None, confidence: str, message: str,
-             evidence: list[dict], fix: str, canonical: str | None, context: dict | None = None) -> None:
+    def emit(
+        self,
+        type_: str,
+        rule: str,
+        loc: tuple[int, int],
+        subtype: str | None,
+        confidence: str,
+        message: str,
+        evidence: list[dict],
+        fix: str,
+        canonical: str | None,
+        context: dict | None = None,
+    ) -> None:
         key = (type_, loc[0])
         cur = self.findings.get(key)
         if cur is not None:
@@ -2127,9 +2643,26 @@ class Analyzer:
             for e in evidence:
                 if e not in cur.evidence:
                     cur.evidence.append(e)
+            for k, v in (context or {}).items():
+                if isinstance(v, list):
+                    cur.context[k] = list(dict.fromkeys(cur.context.get(k, []) + v))
+                else:
+                    cur.context.setdefault(k, v)
             return
-        self.findings[key] = Finding(rule, type_, subtype, confidence, self.src.path, loc[0], max(loc[1], loc[0]),
-                                     message, list(evidence), fix, canonical, context=dict(context or {}))
+        self.findings[key] = Finding(
+            rule,
+            type_,
+            subtype,
+            confidence,
+            self.src.path,
+            loc[0],
+            max(loc[1], loc[0]),
+            message,
+            list(evidence),
+            fix,
+            canonical,
+            context=dict(context or {}),
+        )
 
 
 def analyze(src: Source) -> tuple[list[Finding], bool]:
@@ -2137,3 +2670,32 @@ def analyze(src: Source) -> tuple[list[Finding], bool]:
     a = Analyzer(src)
     findings = a.run()
     return findings, a.truncated
+
+
+def analyze_with_hints(src: Source) -> tuple[list[Finding], dict]:
+    """Findings plus what the static pass learned that the instrumented run can use: the columns it nominated
+    as entity or time columns, and the columns it knows are not entities (one-hot encoded, or the key of
+    per-entity lag features in a panel forecast)."""
+    a = Analyzer(src)
+    findings = a.run()
+    not_entities = set(a.cat_names)
+    for o in a.origins:
+        if o.time_strength() is not None:
+            not_entities |= o.panel_keys
+        not_entities |= o.aggregated_by
+    hints = {
+        "entity_columns": {
+            c: s for f in findings if f.type == "group" for c, s in f.context.get("entity_strengths", {}).items()
+        },
+        "time_columns": sorted(
+            {c for f in findings if f.type == "temporal" for c in f.context.get("time_columns", [])}
+        ),
+        "not_entities": sorted(not_entities),
+        "features": sorted(
+            {f.context["feature"] for f in findings if f.type == "target_derived" and f.context.get("feature")}
+        ),
+        "target": next(
+            (f.context["target"] for f in findings if f.type == "target_derived" and f.context.get("target")), None
+        ),
+    }
+    return findings, hints

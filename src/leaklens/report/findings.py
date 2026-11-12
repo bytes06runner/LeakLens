@@ -9,8 +9,14 @@ SEVERITY_ORDER = {"info": 0, "low": 1, "medium": 2, "high": 3}
 CONFIDENCE_ORDER = {"low": 0, "medium": 1, "high": 2}
 
 # Severity priors by type (SPEC section 4, following the measured ranking in Roth, arXiv:2604.04199).
-SEVERITY_PRIOR = {"preprocessing": "low", "overlap": "high", "multi_test": "medium", "group": "high",
-                  "temporal": "high", "target_derived": "low"}
+SEVERITY_PRIOR = {
+    "preprocessing": "low",
+    "overlap": "high",
+    "multi_test": "medium",
+    "group": "high",
+    "temporal": "high",
+    "target_derived": "low",
+}
 
 
 @dataclass
@@ -55,9 +61,14 @@ class Finding:
             "subtype": self.subtype,
             "severity": self.severity,
             "confidence": self.confidence,
-            "location": {"file": self.file, "line_start": self.line_start, "line_end": self.line_end,
-                         "cell": self.cell, "flat_line_start": self.flat_line_start,
-                         "flat_line_end": self.flat_line_end},
+            "location": {
+                "file": self.file,
+                "line_start": self.line_start,
+                "line_end": self.line_end,
+                "cell": self.cell,
+                "flat_line_start": self.flat_line_start,
+                "flat_line_end": self.flat_line_end,
+            },
             "message": self.message,
             "evidence": self.evidence,
             "related": self.related,
@@ -72,5 +83,7 @@ def passes(f: Finding, fail_on: str = "high", min_confidence: str = "medium") ->
     """True when the finding counts towards a non-zero exit code (SPEC section 7)."""
     if f.suppressed is not None or fail_on == "never":
         return False
-    return (SEVERITY_ORDER[f.severity] >= SEVERITY_ORDER[fail_on]
-            and CONFIDENCE_ORDER[f.confidence] >= CONFIDENCE_ORDER[min_confidence])
+    return (
+        SEVERITY_ORDER[f.severity] >= SEVERITY_ORDER[fail_on]
+        and CONFIDENCE_ORDER[f.confidence] >= CONFIDENCE_ORDER[min_confidence]
+    )

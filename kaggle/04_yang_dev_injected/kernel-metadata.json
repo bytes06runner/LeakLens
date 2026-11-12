@@ -1,0 +1,14 @@
+{
+  "id": "srijeetbanerjee/leaklens-04-yang-dev-injected",
+  "title": "leaklens-04-yang-dev-injected",
+  "code_file": "run_yang_dev.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

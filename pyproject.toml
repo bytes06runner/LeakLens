@@ -50,7 +50,7 @@ addopts = "-q"
 [tool.ruff]
 line-length = 120
 # Benchmark items and base pipelines imitate real notebooks (unused imports, long lines) on purpose.
-extend-exclude = ["benchmark/injected/bases", "benchmark/injected/items", "benchmark/injected/_groundtruth", "leaklens"]
+extend-exclude = ["benchmark/injected/bases", "benchmark/injected/items", "benchmark/injected/_groundtruth"]
 target-version = "py312"
 
 [tool.ruff.lint]

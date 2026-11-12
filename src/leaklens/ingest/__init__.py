@@ -16,7 +16,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 _MAGIC = re.compile(r"^(\s*)(%|!)")
-_OTHER_LANGUAGE = re.compile(r"^\s*%%(bash|sh|sql|html|javascript|js|latex|perl|ruby|R|writefile|script|cmd|svg|markdown)\b")
+_OTHER_LANGUAGE = re.compile(
+    r"^\s*%%(bash|sh|sql|html|javascript|js|latex|perl|ruby|R|writefile|script|cmd|svg|markdown)\b"
+)
 _SKIP_DIRS = {".venv", "venv", "site-packages", ".ipynb_checkpoints", "__pycache__", "node_modules", ".git"}
 
 

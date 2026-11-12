@@ -1,0 +1,39 @@
+# Thresholds of the dynamic pass (Phase 5) and impact estimation (Phase 6). Tuned on DEV only (CLAUDE.md Rule 4).
+
+# Duplicate rows across a split (LL-OVL-004). A split is reported when at least `min_test_in_train` of the
+# evaluation rows have an identical row among the training rows AND the data is mostly unique rows overall
+# (`min_distinct_frac`), so naturally repeated rows (few low-cardinality columns) are not flagged.
+duplicates:
+  min_test_in_train: 0.02
+  min_distinct_frac: 0.5
+  round_decimals: 6            # numeric values are rounded before hashing (near-duplicate grid)
+
+# Entity overlap (LL-GRP-004). A column is checked when its name gives entity evidence (configs/static.yaml) or
+# the static pass named it. Confirmed when values repeat and at least `min_test_rows_shared` of the evaluation
+# rows belong to an entity that also has training rows.
+entities:
+  min_test_rows_shared: 0.05
+  max_columns_checked: 25
+
+# Time overlap (LL-TMP-003). Confirmed when at least this share of training rows is dated strictly after the
+# earliest evaluation row, in any fold.
+time:
+  min_train_after_test: 0.01
+
+# Model fitted on evaluation rows (LL-OVL-001/003): share of scored rows that are identical to a fitted row.
+fit_overlap:
+  confirm_at: 0.5
+  refute_below: 0.01
+
+# Single-feature score (evidence for LL-TGT-001): in-sample AUC or R2 of a depth-2 tree on one feature.
+single_feature:
+  confirm_at: 0.9
+
+max_folds_recorded: 10
+max_rows_hashed: 2000000
+
+# Severity from a measured impact (EVAL_PROTOCOL.md section 5).
+severity_from_impact:
+  high: 0.05
+  medium: 0.01
+lower_is_better_tokens: [mae, mse, rmse, rmsle, mape, smape, loss, error, err, deviance, brier, logloss]

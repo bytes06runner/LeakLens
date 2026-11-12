@@ -57,3 +57,42 @@ covered. C2's mechanism (checking entity overlap at the split call, per fold, po
 splitguard once groups are declared; LeakLens's remaining novelty in C2 is that the static pass supplies the
 entity column so no declaration is needed. C3 is not covered. The README's claim "no code-level tool detects group
 leakage" must be qualified: splitguard detects it at runtime with declared groups.
+
+## 2026-11-12, Phase 3/4 boundary (before the static analyser was evaluated) and Phase 5/6 boundary
+
+Searched: web ("group leakage detection static analysis Python notebook GroupKFold entity column inferred tool
+2026"; "data leakage detection machine learning code impact estimation re-execute pipeline with fix metric
+inflation per finding 2026"; "arXiv 2026 data leakage Jupyter notebooks detection static dynamic instrumentation
+temporal leakage subject-wise split"; "pypi leakage detection library train test split group overlap runtime
+instrument scikit-learn October November 2026"), then the PyPI JSON metadata of every package name the searches
+returned: `leaklens`, `foldguard`, `noleak`, `targetleak`, `verascan`, `featureleakagelens`, `Leakly`,
+`leakproof-ml`, `leakyblobs`, `leakage-buster`. The project name was not put into any query.
+
+| New item | Level | Touches | Finding |
+|---|---|---|---|
+| **`leaklens` on PyPI** (Prajwal, MIT, first release 2026-06-30, 1.3.0 on 2026-07-11) | data, plus one AST check | **the project's name**; preprocessing type | A different tool with **the same name and the same `leaklens` command**. Takes `train_df, test_df, target`: target leakage, identical rows, drift, date chronology between the given splits, data-quality checks. Its AST check flags scalers, encoders, PCA, SMOTE and selectors fitted before `train_test_split()` in a script the user names. No group leakage, no entity inference, no data-flow, no cross-validation, no impact estimate. |
+| **Leakly** 0.1.2 (DeMONLab-BioFINDER, MIT, 2026-05-13) | re-execution | **C3 (neighbouring idea)** | Re-runs the user's whole pipeline on label-permuted data; an above-chance score suggests leakage somewhere. It does not locate or type the leak, applies no fix and gives no per-finding metric change; the user wraps the pipeline by hand. |
+| foldguard 0.1.0 (MIT, 2026-08-11) | runtime, user marks the evaluation fold | multi-test | Checkpoint pick, calibrator fit and threshold tuning on the evaluation fold. No group, temporal or impact. |
+| targetleak 0.3.2, featureleakagelens 0.2.0, leakage-buster 1.0.2 | data | – | Target-leakage and related checks on a table. leakage-buster hints at GroupKFold from duplicated columns; none reads code for group leakage. |
+| leakproof-ml 0.0.2 | prevention framework | – | Enforces splitter, nested CV and in-fold fitting. Not detection. |
+| noleak, verascan, leakyblobs | – | – | Text-corpus contamination and clustering quality: out of scope. |
+
+No new arXiv paper on group or temporal leakage from code, or on per-finding impact by re-execution, was found by
+these queries (the first pages of results were Yang et al. 2022, LeakageDetector 2.0 and Draoui et al. 2026).
+
+**Missed earlier:** the PyPI `leaklens` package predates Phase 0 by three months. The Phase 0 to 2 searches
+looked for capabilities and never checked whether the project's own name was taken.
+
+**Verdict: no stop condition for C1 or C3** (neither is covered), **but two things must go to the project
+owner:**
+
+1. **Name collision.** The PyPI name `leaklens` is taken by an unrelated leakage tool with a `leaklens` CLI and
+   a GitHub Action. Phase 9 cannot publish under this name, and a paper titled "LeakLens" will be confused with
+   it. Options: rename the project, or keep the name for the paper and publish the package under a different
+   distribution name (the command would still clash). **Decision pending; nothing has been published.**
+2. **C3 wording.** Leakly shows that re-running the user's own pipeline to measure leakage is not new as an idea.
+   C3 should be worded as *per-finding* impact: a located finding, its canonical fix, and the change in the
+   user's own metric. Related work must cite Leakly.
+
+All entries are in `literature/related_work.csv` (now 37 rows) with `verified = partial` (metadata and README
+read, source not read, not run).

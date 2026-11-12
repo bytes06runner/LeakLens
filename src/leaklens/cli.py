@@ -29,8 +29,9 @@ EXIT_UNANALYSABLE = 3
 def _commit() -> str | None:
     try:
         root = Path(__file__).resolve().parents[2]
-        out = subprocess.run(["git", "-C", str(root), "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
-                             timeout=5)
+        out = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--short", "HEAD"], capture_output=True, text=True, timeout=5
+        )
         return out.stdout.strip() or None
     except (OSError, subprocess.SubprocessError):
         return None
@@ -48,8 +49,10 @@ def info() -> None:
     console.print(f"[bold]LeakLens[/bold] {__version__}")
     console.print(f"Python {sys.version.split()[0]}")
     console.print("Leakage types (docs/TAXONOMY.md): " + ", ".join(LEAKAGE_TYPES))
-    console.print("Status: static analyser, dynamic confirmation and impact estimation implemented; results so far "
-                  "are on the DEV split only (see README).")
+    console.print(
+        "Status: static analyser, dynamic confirmation and impact estimation implemented; results so far "
+        "are on the DEV split only (see README)."
+    )
 
 
 @main.command()
@@ -60,12 +63,25 @@ def info() -> None:
 @click.option("--min-confidence", type=click.Choice(["low", "medium", "high"]), default="medium", show_default=True)
 @click.option("--strict", is_flag=True, help="Exit 3 when any input could not be analysed.")
 @click.option("--dynamic", is_flag=True, help="Also run each file, instrumented, to confirm or refute findings.")
-@click.option("--impact", is_flag=True, help="Also re-run each file with the canonical fix and report the metric change.")
+@click.option(
+    "--impact", is_flag=True, help="Also re-run each file with the canonical fix and report the metric change."
+)
 @click.option("--trust-code", is_flag=True, help="Required with --dynamic/--impact: the code is yours and safe to run.")
 @click.option("--timeout", type=int, default=600, show_default=True, help="Seconds per run in dynamic/impact mode.")
 @click.option("-v", "--verbose", is_flag=True)
-def scan(paths: tuple[str, ...], fmt: str, output: str | None, fail_on: str, min_confidence: str, strict: bool,
-         dynamic: bool, impact: bool, trust_code: bool, timeout: int, verbose: bool) -> None:
+def scan(
+    paths: tuple[str, ...],
+    fmt: str,
+    output: str | None,
+    fail_on: str,
+    min_confidence: str,
+    strict: bool,
+    dynamic: bool,
+    impact: bool,
+    trust_code: bool,
+    timeout: int,
+    verbose: bool,
+) -> None:
     """Scan .py / .ipynb files or directories for data leakage."""
     from leaklens.config import load_config
     from leaklens.ingest import collect, load
@@ -77,9 +93,11 @@ def scan(paths: tuple[str, ...], fmt: str, output: str | None, fail_on: str, min
         console.print("[red]No path given.[/red] Usage: leaklens scan PATH...")
         sys.exit(EXIT_USAGE)
     if (dynamic or impact) and not trust_code:
-        console.print("[red]--dynamic and --impact execute the analysed code.[/red] Pass --trust-code for your own "
-                      "code. Notebooks from the internet must only be run inside an offline Kaggle session through "
-                      "leaklens.sandbox (see README).")
+        console.print(
+            "[red]--dynamic and --impact execute the analysed code.[/red] Pass --trust-code for your own "
+            "code. Notebooks from the internet must only be run inside an offline Kaggle session through "
+            "leaklens.sandbox (see README)."
+        )
         sys.exit(EXIT_UNANALYSABLE)
     files = collect(list(paths))
     sources, findings = [], []

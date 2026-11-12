@@ -1,6 +1,6 @@
 """Measure the true inflation of every injected item: metric(leaky) vs metric(fixed) on the same data.
 
-Usage: python measure_inflation.py OUT_CSV --seeds 0 1 2 3 4 [--workers 4] [--items PATTERN]
+Usage: python measure_inflation.py OUT_CSV --seeds 0 1 2 3 4 [--workers 4] [--items PATTERN] [--split DEV]
 
 Runs our own generated code (trusted) through leaklens.sandbox with trusted_code=True. For each item and data
 seed, the dataset is generated, the item's data transform applied (column rename: both versions; duplicated
@@ -79,8 +79,10 @@ def main() -> None:
     ap.add_argument("--seeds", type=int, nargs="+", required=True)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--items", default="")
+    ap.add_argument("--split", choices=["DEV", "TEST"], help="only items of this split (default: all)")
     a = ap.parse_args()
-    rows = [r for r in csv.DictReader((HERE / "manifest.csv").open()) if a.items in r["item_id"]]
+    rows = [r for r in csv.DictReader((HERE / "manifest.csv").open())
+            if a.items in r["item_id"] and a.split in (None, r["split"])]
     jobs = [(r, s) for r in rows for s in a.seeds]
     fields = ["item_id", "split", "seed", "metric", "leaky_value", "fixed_value", "inflation", "leaky_rc",
               "fixed_rc", "leaky_seconds", "fixed_seconds", "leaky_error", "fixed_error"]
