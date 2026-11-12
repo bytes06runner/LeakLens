@@ -1,0 +1,105 @@
+# Catalogues and thresholds for the static analyser (Phase 4). No magic values in code: rules read this file.
+# Every list was written from the scikit-learn / pandas / imbalanced-learn public API and docs/TAXONOMY.md,
+# and tuned on the DEV split only (CLAUDE.md Rule 4). Nothing here comes from another leakage tool (Rule 11).
+
+# Transformers whose fit learns statistics from rows (TAXONOMY section 2).
+transformers:
+  statistical:            # scaling, imputing, projection, binning, text vocabularies
+    [StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler, QuantileTransformer, PowerTransformer,
+     KBinsDiscretizer, SimpleImputer, KNNImputer, IterativeImputer, MissingIndicator, PCA, IncrementalPCA,
+     KernelPCA, SparsePCA, TruncatedSVD, NMF, FastICA, FactorAnalysis, LatentDirichletAllocation, TSNE, UMAP,
+     Isomap, LocallyLinearEmbedding, CountVectorizer, TfidfVectorizer, TfidfTransformer, VarianceThreshold,
+     SplineTransformer, Nystroem, RBFSampler]
+  vocabulary:             # learn only the category list: reported at low confidence
+    [OneHotEncoder, OrdinalEncoder, LabelEncoder, LabelBinarizer, MultiLabelBinarizer]
+  supervised:             # fit uses the target: severity prior high (subtype supervised)
+    [SelectKBest, SelectPercentile, SelectFpr, SelectFdr, SelectFwe, GenericUnivariateSelect, RFE, RFECV,
+     SelectFromModel, SequentialFeatureSelector, TargetEncoder,
+     NeighborhoodComponentsAnalysis, LeaveOneOutEncoder, CatBoostEncoder, WOEEncoder,
+     MEstimateEncoder, JamesSteinEncoder]
+  stateless: [PolynomialFeatures, FunctionTransformer, Normalizer, Binarizer, HashingVectorizer, FeatureHasher]
+  composite: [Pipeline, make_pipeline, ColumnTransformer, make_column_transformer, FeatureUnion, make_union]
+
+# Resamplers that create copied or synthetic rows (TAXONOMY section 3).
+resamplers:
+  [SMOTE, SMOTENC, SMOTEN, ADASYN, BorderlineSMOTE, SVMSMOTE, KMeansSMOTE, RandomOverSampler, SMOTETomek, SMOTEENN]
+
+# Under-samplers remove rows; they do not create copies, so they are not overlap leakage.
+undersamplers: [RandomUnderSampler, TomekLinks, NearMiss, EditedNearestNeighbours, RepeatedEditedNearestNeighbours,
+                AllKNN, CondensedNearestNeighbour, OneSidedSelection, NeighbourhoodCleaningRule, ClusterCentroids,
+                InstanceHardnessThreshold]
+
+splitters:
+  row_level: [KFold, StratifiedKFold, ShuffleSplit, StratifiedShuffleSplit, RepeatedKFold, RepeatedStratifiedKFold,
+              LeaveOneOut, LeavePOut]
+  group_aware: [GroupKFold, StratifiedGroupKFold, GroupShuffleSplit, LeaveOneGroupOut, LeavePGroupsOut]
+  time_aware: [TimeSeriesSplit]
+  always_shuffled: [ShuffleSplit, StratifiedShuffleSplit]
+
+cv_helpers:               # functions that split internally; index of X among positional arguments is 1
+  [cross_val_score, cross_validate, cross_val_predict, learning_curve, validation_curve, permutation_test_score]
+search_estimators: [GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV, HalvingRandomSearchCV, BayesSearchCV]
+cv_estimators:            # estimators with built-in CV over the rows they are fitted on
+  [LogisticRegressionCV, RidgeCV, LassoCV, ElasticNetCV, RidgeClassifierCV, LarsCV, LassoLarsCV, CalibratedClassifierCV]
+
+# Names that mark a callable as a fitted predictive model when the class is not in any list above.
+model_suffixes: [Classifier, Regressor, Regression, SVC, SVR, NB, Booster, Perceptron, Ridge, Lasso, ElasticNet,
+                 SGD, Lars, LGBM, XGB, CatBoost, Network, Model, Sequential, Machine, Forest, Tree, Estimator,
+                 KNeighbors, Bayes, Discriminant, GLM, OLS, ARIMA, Prophet]
+
+readers: [read_csv, read_table, read_excel, read_parquet, read_feather, read_json, read_pickle, read_hdf,
+          read_sql, read_sql_query, read_sql_table, read_stata, read_sas, read_spss, read_orc, read_fwf,
+          load_dataset, genfromtxt, loadtxt]
+
+# Reductions over rows: their result is a statistic of the rows they were computed on.
+reductions: [mean, std, var, median, min, max, sum, quantile, mode, sem, skew, kurt, kurtosis, describe,
+             value_counts, nunique, count, nanmean, nanstd, nanmedian, nanmin, nanmax, nanvar, percentile,
+             nanpercentile, average, ptp, corr, cov]
+groupby_stat_functions: [mean, std, var, median, min, max, sum, count, size, nunique, sem, skew, first, last,
+                         prod, quantile]
+
+# Forward-looking operations (TAXONOMY section 6, T2). Each needs a negative or centred argument, or is listed
+# as always forward-looking.
+forward_fill_methods: [bfill, backfill]
+low_confidence_forward: [interpolate]
+ordered_ops: [shift, diff, pct_change, rolling, expanding, ewm, cumsum, cumprod, cummax, cummin, resample, asfreq,
+              ffill, bfill, backfill, pad]
+
+metric_suffixes: [_score, _error, _loss, _deviance]
+metric_names: [auc, log_loss, mean_absolute_error, mean_squared_error, r2_score, accuracy]
+# Reports and curves: not a single number a candidate can be selected by.
+non_scalar_metrics: [classification_report, confusion_matrix, roc_curve, precision_recall_curve,
+                     precision_recall_fscore_support, multilabel_confusion_matrix, det_curve]
+selection_functions: [max, min, sorted, argmax, argmin, nanargmax, nanargmin, amax, amin, nanmax, nanmin, argsort]
+selection_methods: [idxmax, idxmin, sort_values, nlargest, nsmallest, argmax, argmin, sort, max, min]
+
+# Entity-column evidence by name (TAXONOMY section 5). A name is split into tokens on case and punctuation.
+# strong: the token names a unit a model is normally asked to generalise across.
+# weak: the token often names a unique row key (one row per customer) or a categorical feature.
+entity_tokens:
+  strong: [patient, patients, subject, subjects, subj, participant, participants, user, users, uid, person,
+           individual, donor, animal, mouse, rat, speaker, writer, author, driver, player, student, session,
+           sessions, recording, recordings, site, sites, hospital, clinic, household, group, groups, encounter,
+           engine, slide, specimen, device, machine, vehicle, respondent, pid, sid]
+  weak: [customer, client, member, account, record, case, file, filename, fname, store, shop, company, firm,
+         ticker, symbol, stock, station, sensor, id, ids, name, key, scan, image, img, sample, passenger, employee,
+         product, item, order, transaction, loan, policy, house, property, cohort, trial, visit, unit, well,
+         plate, batch, family, centre, center]
+  strong_only_with_id_suffix: [device, machine, vehicle, engine, group, session, sessions]
+  id_suffixes: [id, ids, no, num, number, nr, code, key, idx, index, uid, guid, uuid, name, label, tag]
+
+# Time-column evidence by name (TAXONOMY section 6, T1). Name evidence alone is weak.
+time_tokens: [date, datetime, time, timestamp, ts, year, month, day, week, quarter, hour, minute, period, dt]
+
+# Variable-name hints for the role of a manually created row subset.
+role_hints:
+  train: [train, trn, tr, fit]
+  test: [test, tst, te, holdout, heldout, eval, evaluation]
+  validation: [val, valid, validation, dev]
+
+# Path-like variable names (file-derived entity evidence when no glob/listdir call is visible).
+path_name_tokens: [file, files, fname, filename, filenames, path, paths, fpath, filepath, dir, folder]
+
+limits:
+  max_inline_depth: 4          # user-function inlining depth
+  max_statements: 200000       # give up on pathological inputs instead of hanging
