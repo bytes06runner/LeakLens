@@ -80,9 +80,17 @@ def main() -> None:
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--items", default="")
     ap.add_argument("--timeout", type=float, default=600)
+    ap.add_argument("--second-look", action="store_true", help="TEST only: a logged re-run")
     a = ap.parse_args()
     if a.split == "TEST" and not protocol_frozen():
         sys.exit("Refused: EVAL_PROTOCOL.md is not frozen. TEST is scored once, after the owner approves the protocol.")
+    if a.split == "TEST":
+        earlier = [p for p in (ROOT / "results").glob("*test_injected*") if (p / "findings.jsonl").exists()]
+        if earlier and not a.second_look:
+            sys.exit(
+                f"Refused: TEST was already scored ({earlier[0].name}). A further run is a second look and must be "
+                "logged in EVAL_CHANGES.md first; then pass --second-look."
+            )
     rows = [
         r for r in csv.DictReader((HERE / "manifest.csv").open()) if r["split"] == a.split and a.items in r["item_id"]
     ]

@@ -1,6 +1,6 @@
 # Evaluation protocol: one-page summary for approval
 
-Full text: [`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md). **Nothing is scored on TEST until you approve this page.**
+Full text: [`EVAL_PROTOCOL.md`](../EVAL_PROTOCOL.md). **Approved by the project owner on 2026-11-12 ("Approve, score TEST"). The protocol is frozen at version 1.0.**
 
 **What we measure.** For each of the six leakage types separately: precision (of the leaks the tool reports, how
 many are real), recall (of the real leaks, how many the tool finds) and F1, each with a 95% confidence interval.
@@ -38,5 +38,4 @@ counted, not hidden. Numbers other papers report on their own data are never mix
 different pipelines but the same kinds of injected leak). Some types have few TEST leaks, so intervals are wide.
 The names of the entity columns in TEST pipelines were seen once by accident (logged).
 
-**Decision needed from you:** approve as is, or tell me what to change. After approval I commit "Freeze evaluation
-protocol" and run TEST once.
+**Decision (2026-11-12):** approved as is. TEST is scored once for this release.

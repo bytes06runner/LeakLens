@@ -1,10 +1,10 @@
 # LeakLens evaluation protocol
 
-**Status: PROPOSED (version 1.0-draft, 2026-11-12). Not frozen.** CLAUDE.md Phase 3 requires the project owner to
-approve the one-page summary ([`docs/EVAL_PROTOCOL_SUMMARY.md`](docs/EVAL_PROTOCOL_SUMMARY.md)) before the commit
-"Freeze evaluation protocol". Until then **no tool is scored on TEST**. This draft was written on the same day as
-the first detector, after DEV results had been seen (DEV is the tuning split, so that is allowed); it was written
-**before any TEST result exists**. Changes after the freeze go in [`EVAL_CHANGES.md`](EVAL_CHANGES.md).
+**Status: FROZEN (version 1.0, 2026-11-12).** Approved by the project owner on 2026-11-12 in the working session,
+after the one-page summary ([`docs/EVAL_PROTOCOL_SUMMARY.md`](docs/EVAL_PROTOCOL_SUMMARY.md)) was put to them; the
+owner's reply was "Approve, score TEST". The text below is unchanged from the proposal of the same day except for
+this status paragraph. It was written after DEV results had been seen (DEV is the tuning split, so that is
+allowed) and **before any TEST result existed**. Every later change goes in [`EVAL_CHANGES.md`](EVAL_CHANGES.md).
 
 ## 1. What is evaluated
 
