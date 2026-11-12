@@ -59,3 +59,5 @@ select = ["E", "F", "I", "B", "UP"]
 [tool.ruff.lint.per-file-ignores]
 # Kaggle job scripts are kept byte-identical to what ran; long embedded child programs are allowed there.
 "kaggle/**" = ["E501"]
+# The progress-report script is mostly prose in table cells.
+"scripts/make_progress_report.py" = ["E501"]

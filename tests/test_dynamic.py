@@ -253,3 +253,29 @@ def test_severity_from_a_measured_impact():
     assert severity_from_delta("test_auc", 0.80, 0.78) == "medium"
     assert severity_from_delta("test_auc", 0.801, 0.800) == "low"
     assert severity_from_delta("cv_mae", 9.0, 10.0) == "high"  # relative change for error metrics
+
+
+def test_duplicate_impact_is_measured_by_removing_copies_before_the_split(tmp_path):
+    grouped(tmp_path, unique=True, duplicates=True)
+    f = run(tmp_path, HOLDOUT, impact=True)[("overlap", 3)]
+    assert f.impact["status"] == "measured" and "duplicated rows removed before the split" in f.impact["note"]
+    assert f.impact["value_leaky"] > f.impact["value_fixed"]
+
+
+def test_cli_dynamic_and_impact_end_to_end(tmp_path):
+    import json
+
+    from click.testing import CliRunner
+
+    from leaklens.cli import EXIT_FINDINGS, main
+
+    grouped(tmp_path)
+    p = tmp_path / "pipeline.py"
+    p.write_text(HEAD + textwrap.dedent(HOLDOUT).strip("\n") + "\n")
+    res = CliRunner().invoke(main, ["scan", str(p), "--dynamic", "--impact", "--trust-code", "--format", "json"])
+    assert res.exit_code == EXIT_FINDINGS
+    report = json.loads(res.output)
+    assert report["scan"]["mode"] == "impact"
+    (f,) = report["findings"]
+    assert f["rule_id"] == "LL-GRP-004" and f["dynamic"]["status"] == "confirmed"
+    assert f["impact"]["status"] == "measured" and f["impact"]["value_leaky"] > f["impact"]["value_fixed"]

@@ -88,12 +88,28 @@ def analyse(path: Path, env: dict) -> dict:
 node_bin = f"/tmp/node-v{NODE_VERSION}-linux-x64/bin"
 path_env = {"PATH": f"{node_bin}:/tmp/yang-venv/bin:" + os.environ["PATH"]}
 
+# Souffle. The tool's Dockerfile installs it from the Souffle apt PPA. That worked on 2026-09-29 and failed on
+# 2026-11-12 on Kaggle's current image ("held broken packages", results/2026-11-12_kaggle_04_yang_dev_injected).
+# So: try the PPA first (as released); if that fails, build Souffle 2.4.1 from source. Which route worked is
+# recorded; the fallback is a deviation from the released build and is reported as such.
+SOUFFLE_SRC = "2.4.1"
 ok = step("apt_souffle", "set -e; apt-get update -qq; apt-get install -y -qq wget gnupg ca-certificates; "
           "wget -q https://souffle-lang.github.io/ppa/souffle-key.public "
           "-O /usr/share/keyrings/souffle-archive-keyring.gpg; "
           "echo 'deb [signed-by=/usr/share/keyrings/souffle-archive-keyring.gpg] "
           "https://souffle-lang.github.io/ppa/ubuntu/ stable main' > /etc/apt/sources.list.d/souffle.list; "
-          "apt-get update -qq; apt-get install -y -qq souffle; souffle --version")
+          "apt-get update -qq; apt-get install -y souffle 2>&1 | tail -40; souffle --version")
+report["souffle_route"] = "apt PPA (as released)" if ok else None
+if not ok:
+    step("apt_souffle_cleanup", "rm -f /etc/apt/sources.list.d/souffle.list; apt-get update -qq; true")
+    ok = step("souffle_from_source",
+              "set -e; apt-get install -y -qq bison build-essential cmake flex libffi-dev libncurses5-dev "
+              "libsqlite3-dev mcpp sqlite3 zlib1g-dev git >/dev/null; cd /tmp; "
+              f"git clone -q --depth 1 --branch {SOUFFLE_SRC} https://github.com/souffle-lang/souffle.git souffle-src; "
+              "cd souffle-src; cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DSOUFFLE_ENABLE_TESTING=OFF "
+              "-DSOUFFLE_GIT=OFF >/dev/null; cmake --build build -j4 2>&1 | tail -5; cmake --install build >/dev/null; "
+              "souffle --version", timeout=3300)
+    report["souffle_route"] = f"built from source, tag {SOUFFLE_SRC} (fallback)" if ok else None
 ok &= step("node", f"set -e; cd /tmp; wget -q https://nodejs.org/dist/v{NODE_VERSION}/node-v{NODE_VERSION}"
            f"-linux-x64.tar.xz; tar xf node-v{NODE_VERSION}-linux-x64.tar.xz; {node_bin}/node --version")
 ok &= step("clone", f"set -e; git clone -q {YANG_REPO} {TOOL}; cd {TOOL}; git checkout -q {YANG_COMMIT}; "

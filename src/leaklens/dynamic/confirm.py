@@ -448,6 +448,12 @@ def fix_for_finding(f: Finding, log: dict) -> tuple[dict | None, str | None]:
         return {"kind": "fit_drop_test_rows", "line": f.flat_line_start}, None
     if f.type == "target_derived" and f.context.get("feature"):
         return {"kind": "drop_feature", "line": None, "column": f.context["feature"]}, None
+    if f.rule_id == "LL-OVL-004":
+        if not split_lines:
+            return None, "the split call was not reached at run time"
+        return {"kind": "dedupe_split", "line": split_lines[0]}, None
+    if f.canonical_fix == "fit_on_train_only" and f.context.get("instrumented") is False:
+        return None, "a pandas/NumPy statistic cannot be re-fitted on training rows automatically"
     if f.canonical_fix == "fit_on_train_only" and f.context.get("instrumented", True) and f.rule_id != "LL-PRE-002":
         fits = [
             e

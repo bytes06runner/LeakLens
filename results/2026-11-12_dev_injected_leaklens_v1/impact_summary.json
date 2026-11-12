@@ -1,0 +1,153 @@
+{
+ "status": {
+  "preprocessing|unknown": 23,
+  "multi_test|unknown": 8,
+  "group|measured": 10,
+  "target_derived|measured": 6,
+  "preprocessing|measured": 7,
+  "overlap|measured": 6,
+  "overlap|unknown": 4,
+  "temporal|measured": 10,
+  "temporal|unknown": 15
+ },
+ "groups": [
+  {
+   "type": "preprocessing",
+   "metric": "test_ap",
+   "n": 4,
+   "mean_true": 0.008425,
+   "mean_estimate": 0.0,
+   "mae": 0.008425,
+   "median_ae": 0.0,
+   "sign_agreement": 0.0,
+   "spearman": null
+  },
+  {
+   "type": "preprocessing",
+   "metric": "test_auc",
+   "n": 3,
+   "mean_true": 0.0,
+   "mean_estimate": 0.0,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": null,
+   "spearman": null
+  },
+  {
+   "type": "overlap",
+   "metric": "test_ap",
+   "n": 2,
+   "mean_true": 0.46585,
+   "mean_estimate": 0.4662,
+   "mae": 0.00035,
+   "median_ae": 0.00035,
+   "sign_agreement": 1.0,
+   "spearman": null
+  },
+  {
+   "type": "overlap",
+   "metric": "test_auc",
+   "n": 2,
+   "mean_true": 0.35285,
+   "mean_estimate": 0.35285,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": null
+  },
+  {
+   "type": "overlap",
+   "metric": "test_r2",
+   "n": 2,
+   "mean_true": 0.0349,
+   "mean_estimate": 0.0349,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": null
+  },
+  {
+   "type": "group",
+   "metric": "cv_auc",
+   "n": 6,
+   "mean_true": 0.07618333333333334,
+   "mean_estimate": 0.07618333333333334,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": 1.0
+  },
+  {
+   "type": "group",
+   "metric": "test_auc",
+   "n": 3,
+   "mean_true": 0.09356666666666666,
+   "mean_estimate": 0.39326666666666665,
+   "mae": 0.2997,
+   "median_ae": 0.2997,
+   "sign_agreement": 1.0,
+   "spearman": 1.0
+  },
+  {
+   "type": "temporal",
+   "metric": "cv_mae",
+   "n": 3,
+   "mean_true": 0.012666666666666666,
+   "mean_estimate": 0.012666666666666666,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": 1.0
+  },
+  {
+   "type": "temporal",
+   "metric": "test_r2",
+   "n": 6,
+   "mean_true": 0.00325,
+   "mean_estimate": 0.00325,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": 1.0
+  },
+  {
+   "type": "target_derived",
+   "metric": "cv_auc",
+   "n": 3,
+   "mean_true": 0.37033333333333335,
+   "mean_estimate": 0.37033333333333335,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": 1.0
+  },
+  {
+   "type": "target_derived",
+   "metric": "test_ap",
+   "n": 1,
+   "mean_true": 0.5079,
+   "mean_estimate": 0.5079,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": null
+  },
+  {
+   "type": "target_derived",
+   "metric": "test_auc",
+   "n": 1,
+   "mean_true": 0.3475,
+   "mean_estimate": 0.3475,
+   "mae": 0.0,
+   "median_ae": 0.0,
+   "sign_agreement": 1.0,
+   "spearman": null
+  }
+ ],
+ "overall": {
+  "n": 36,
+  "n_bounded": 33,
+  "mae_bounded": 0.02828787878787879,
+  "spearman_bounded": 0.9507396521541375
+ }
+}

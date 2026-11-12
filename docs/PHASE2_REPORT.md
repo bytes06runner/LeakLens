@@ -32,11 +32,33 @@ Details: `docs/NOVELTY_LOG.md`, `literature/related_work.csv` (now 30 entries).
 
 ## 3. Injected set
 
-INJECTED_SECTION
+175 files generated from 13 base pipelines by `benchmark/injected/generate.py` (mutation operators in
+`operators.py`, synthetic data in `datagen.py`). Ground truth is known by construction; every leaky file has a
+ground-truth fixed version in `_groundtruth/fixed/` for measuring true inflation. Counts (details and hashes:
+`benchmark/SPLIT.md`):
+
+| | DEV | TEST | total |
+|---|---|---|---|
+| files | 96 | 79 | 175 |
+| clean / trap files | 7 / 3 | 6 / 3 | 13 / 6 |
+| labelled leaks | 89 | 73 | 162 |
+| group | 10 | 7 | 17 |
+| temporal (common / differentiating / hard) | 25 (7 / 6 / 12) | 25 (5 / 7 / 13) | 50 |
+| preprocessing | 30 | 22 | 52 |
+| overlap (of which dynamic-only raw duplicates) | 10 (2) | 9 (2) | 19 |
+| multi-test | 8 | 6 | 14 |
+| target-derived | 6 | 4 | 10 |
+
+The split is by base pipeline and was committed before any detection rule existed (`24a42e2`). The first true
+inflation run on Kaggle failed for an infrastructure reason (item 3 in section 6) and was not repeated in
+September; inflation on DEV was measured on 2026-11-12 (`results/2026-11-12_dev_injected_leaklens_v1`).
 
 ## 4. Real set
 
-REAL_SECTION
+150 Kaggle notebooks sampled on 2026-09-29 in three query-based strata of 50, split by author into DEV (71)
+and TEST (79), with a random labelling queue (`benchmark/real/manifest.csv`, `benchmark/SPLIT.md`). The labelling
+guide, a practice set with answers and the numbered renderings are ready (`benchmark/real/`). **No notebook has
+been labelled yet**, so there is no real-set result and no kappa. Licences are still `unverified`.
 
 ## 5. scicode-lint timing (details: `docs/SCICODE_TIMING.md`)
 
@@ -59,4 +81,12 @@ exact published setup (budget decision), and in parallel ask the author to run i
 
 ## 7. What I need from you
 
-DECISIONS_SECTION
+1. Wording of C2 in the light of splitguard (still open).
+2. scicode-lint: rent a small GPU for the published setup, ask the author to run it on our TEST files, or report
+   it as "not run".
+3. How many real notebooks you and a teammate will label (the queue order makes any prefix a random sample), and
+   who the second labeller is.
+4. Whether the repository should be private (it is public on GitHub today).
+
+*(This section was a placeholder in the September report and was filled in on 2026-11-12 from the commit history
+and `benchmark/SPLIT.md`; the four decisions are still open.)*

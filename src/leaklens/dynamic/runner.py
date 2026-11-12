@@ -250,6 +250,21 @@ def record_fold(site: dict, fold: int, X, train, test, frame) -> None:
 # ---------------------------------------------------------------------------------------------- fixes
 
 
+def dedupe(arrays: tuple, what: str) -> tuple:
+    """Drop rows whose values repeat an earlier row of the first array (the canonical fix for duplicated records)."""
+    import numpy as np
+    from sklearn.utils import _safe_indexing
+
+    h = row_hashes(arrays[0])
+    if h is None:
+        raise RuntimeError("fix failed: rows cannot be compared")
+    _, first = np.unique(h, return_index=True)
+    keep = np.sort(first)
+    STATE["fix_applied"].append(f"{what}: {len(h) - len(keep)} duplicated rows removed before the split")
+    n = len(h)
+    return tuple(_safe_indexing(a, keep) if a is not None and n_rows(a) == n else a for a in arrays)
+
+
 def fix_for(line: int | None, kinds: tuple[str, ...]) -> dict | None:
     fix = STATE["fix"]
     if fix and fix["kind"] in kinds and (fix.get("line") is None or fix.get("line") == line):
@@ -323,6 +338,12 @@ def patch_train_test_split(ms, split_mod) -> None:
         frame, line = user_frame()
         if STATE["depth"] or line is None or not arrays:
             return orig(*arrays, **options)
+        if fix_for(line, ("dedupe_split",)) is not None:
+            if options.get("stratify") is not None and n_rows(options["stratify"]) == n_rows(arrays[0]):
+                *arrays, strat = dedupe((*arrays, options["stratify"]), "train_test_split")
+                options = {**options, "stratify": strat}
+            else:
+                arrays = dedupe(arrays, "train_test_split")
         n = n_rows(arrays[0])
         STATE["depth"] += 1
         try:
@@ -557,6 +578,8 @@ def patch_cv_helpers(ms, val_mod) -> None:
             if fix and fix["kind"] == "drop_feature" and isinstance(X, pd.DataFrame) and fix["column"] in X.columns:
                 X = X.drop(columns=[fix["column"]])
                 STATE["fix_applied"].append(f"{name}: feature {fix['column']} removed")
+            if fix_for(line, ("dedupe_split",)) is not None:
+                X, y = dedupe((X, y), name)
             fix = fix_for(line, ("group_split", "time_split"))
             if fix is not None:
                 from sklearn.base import is_classifier

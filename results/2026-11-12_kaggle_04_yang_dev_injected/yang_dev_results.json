@@ -1,0 +1,618 @@
+{
+ "started_utc": "2026-11-12T13:50:02Z",
+ "yang_commit": "a7d038bfec6b8ddbe21d87dde54b806aecdd79f7",
+ "leaklens_commit": "4e32dd5a592c766e675707b2727c8501c31bbd7f",
+ "split": "DEV",
+ "steps": [
+  {
+   "name": "apt_souffle",
+   "rc": 100,
+   "seconds": 22.8,
+   "log_tail": ".. \n(Reading database ... 5%\n(Reading database ... 10%\n(Reading database ... 15%\n(Reading database ... 20%\n(Reading database ... 25%\n(Reading database ... 30%\n(Reading database ... 35%\n(Reading database ... 40%\n(Reading database ... 45%\n(Reading database ... 50%\n(Reading database ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 125658 files and directories currently installed.)\nPreparing to unpack .../ca-certificates_20260816ubuntu0.24.04.2_all.deb ...\nUnpacking ca-certificates (20260816ubuntu0.24.04.2) over (20260816ubuntu0.24.04.1) ...\nSetting up ca-certificates (20260816ubuntu0.24.04.2) ...\nUpdating certificates in /etc/ssl/certs...\n0 added, 0 removed; done.\nRunning hooks in /etc/ca-certificates/update.d...\ndone.\nProcessing triggers for man-db (2.12.0-4build2) ...\nProcessing triggers for ca-certificates-java (20240118) ...\ndone.\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\nE: Unable to correct problems, you have held broken packages.\n"
+  },
+  {
+   "name": "node",
+   "rc": 0,
+   "seconds": 2.6,
+   "log_tail": "v16.20.2\n"
+  },
+  {
+   "name": "clone",
+   "rc": 0,
+   "seconds": 8.3,
+   "log_tail": "Submodule path 'pyright': checked out 'e3d7d9c44ac69fa6bc66bb8a47377fcec034e503'\ne3d7d9c44ac69fa6bc66bb8a47377fcec034e503\n2022-03-28T19:51:23-04:00\nSubmodule 'pyright' (https://github.com/malusamayo/pyright) registered for path 'pyright'\nCloning into '/tmp/leakage-analysis/pyright'...\n"
+  },
+  {
+   "name": "pyright_build",
+   "rc": 0,
+   "seconds": 126.4,
+   "log_tail": "cessing SourceMapDevToolPlugin pyright-internal.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin\n<s> [webpack.Progress] 92% sealing asset processing\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 95% emitting emit CleanPlugin\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% \n\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 100% \n\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 100% \n\n"
+  },
+  {
+   "name": "python38_venv",
+   "rc": 0,
+   "seconds": 10.3,
+   "log_tail": "Python 3.8.20\n"
+  }
+ ],
+ "items": {
+  "grp_imaging__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_imaging__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_imaging__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_imaging__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__mul_cv_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__grp_cv__kfold": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__grp_cv__stratified": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__grp_cv__default_cv": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_imaging__tgt_proxy__proxy": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_sites__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_sites__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_sites__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__ovl_test_in_fit__concat": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__ovl_test_in_fit__refit_all": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__mul_holdout_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__grp_holdout__tts": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__grp_holdout__tts_stratified": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__grp_holdout__shufflesplit": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_sites__tgt_proxy__proxy": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_sites__trap_manual_scaler__fit_on_train": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__pre_target_encoding__groupby_mean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__mul_cv_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__grp_cv__kfold": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__grp_cv__stratified": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__grp_cv__default_cv": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "grp_users__tgt_proxy__proxy": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "grp_users__combo2": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_churn__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_churn__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__pre_select__kbest": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__pre_target_encoding__groupby_mean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_churn__ovl_raw_duplicates__frac30": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_churn__mul_cv_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_churn__tgt_proxy__proxy": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_churn__combo6": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__pre_select__kbest": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__ovl_oversample_before_split__resample": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__ovl_oversample_before_split__duplicate": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__ovl_test_in_fit__concat": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__ovl_test_in_fit__refit_all": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__ovl_raw_duplicates__frac30": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "tab_fraud__mul_holdout_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__tgt_proxy__proxy": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "tab_fraud__trap_manual_scaler__fit_on_train": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__ovl_test_in_fit__concat": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__ovl_test_in_fit__refit_all": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__mul_holdout_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__tmp_holdout__tts_default": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__tmp_holdout__tts_shuffle_true": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__tmp_holdout__manual_sample": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__tmp_future_feature__neg_shift": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__tmp_future_feature__centered_rolling": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__tmp_future_feature__reverse_rolling": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_energy__tmp_hidden_time__renamed_time_col": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_energy__trap_manual_scaler__fit_on_train": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__clean": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__pre_scaler__standard": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_sensor__pre_scaler__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__pre_scaler__robust": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__pre_pandas_stats__zscore": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__pre_pandas_stats__minmax": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__mul_cv_loop__loop": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__tmp_cv__kfold_shuffle": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__tmp_cv__kfold_plain": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__tmp_cv__default_cv": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__tmp_future_feature__neg_shift": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  },
+  "ts_sensor__tmp_future_feature__centered_rolling": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_sensor__tmp_future_feature__reverse_rolling": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "ipynb"
+  },
+  "ts_sensor__combo4": {
+   "rc": null,
+   "summary": null,
+   "log_tail": "tool did not build",
+   "format": "py"
+  }
+ },
+ "build_ok": false,
+ "finished_utc": "2026-11-12T13:53:05Z"
+}

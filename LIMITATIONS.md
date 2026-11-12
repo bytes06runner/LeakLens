@@ -66,7 +66,7 @@ read before the results. It will be extended in Phase 9.
 
 ## Impact estimation
 
-- **Automatic fixes exist for five situations only:** a row-level split replaced by a group-aware one, a
+- **Automatic fixes exist for six situations only:** duplicated records removed before a split, a row-level split replaced by a group-aware one, a
   non-chronological split replaced by a chronological one, evaluation rows removed from a model fit, a
   `fit_transform` on one line re-fitted on the training rows of a single hold-out split, and a feature removed.
   Everything else is reported as "impact unknown" with the reason: resampling before the split, multi-test

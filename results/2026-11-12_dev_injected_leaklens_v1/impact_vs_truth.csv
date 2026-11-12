@@ -1,0 +1,40 @@
+item_id,seed,type,subtype,rule_id,metric,status,single_leak,value_leaky,value_fixed,estimate,true_inflation,abs_error,fix
+grp_imaging__grp_cv__kfold,0,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7648,0.5433,0.2215,0.2215,0.0,KFold -> GroupKFold(groups=patient); _CVIterableWrapper -> GroupKFold(groups=patient)
+grp_imaging__grp_cv__stratified,0,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7805,0.5433,0.2372,0.2372,0.0,StratifiedKFold -> StratifiedGroupKFold(groups=patient); _CVIterableWrapper -> GroupKFold(groups=patient)
+grp_imaging__grp_cv__default_cv,0,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.478,0.5433,-0.0653,-0.0653,0.0,StratifiedKFold -> StratifiedGroupKFold(groups=patient); _CVIterableWrapper -> GroupKFold(groups=patient)
+grp_imaging__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,0.9305,0.5433,0.3872,0.3872,0.0,cross_val_score: feature radiologist_flag removed
+grp_sites__pre_scaler__standard,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6013,0.6013,0.0,0.0,0.0,"StandardScaler: fitted on 840 training rows only, then applied to all rows"
+grp_sites__pre_scaler__minmax,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6013,0.6013,0.0,0.0,0.0,"MinMaxScaler: fitted on 840 training rows only, then applied to all rows"
+grp_sites__pre_scaler__robust,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6013,0.6013,0.0,0.0,0.0,"RobustScaler: fitted on 840 training rows only, then applied to all rows"
+grp_sites__ovl_test_in_fit__concat,0,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.956,0.6013,0.3547,0.3547,0.0,RandomForestClassifier.fit: 600 evaluation rows removed from the fit
+grp_sites__ovl_test_in_fit__refit_all,0,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.9523,0.6013,0.351,0.351,0.0,RandomForestClassifier.fit: 600 evaluation rows removed from the fit
+grp_sites__grp_holdout__tts,0,group,row_split,LL-GRP-004,test_auc,measured,True,0.6865,0.3016,0.3849,0.0852,0.2997,train_test_split -> GroupShuffleSplit(groups=site)
+grp_sites__grp_holdout__tts_stratified,0,group,row_split,LL-GRP-004,test_auc,measured,True,0.7116,0.3016,0.41,0.1103,0.2997,train_test_split -> GroupShuffleSplit(groups=site)
+grp_sites__grp_holdout__shufflesplit,0,group,row_split,LL-GRP-004,test_auc,measured,True,0.6865,0.3016,0.3849,0.0852,0.2997,ShuffleSplit -> GroupShuffleSplit(groups=site)
+grp_sites__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,0.9488,0.6013,0.3475,0.3475,0.0,RandomForestClassifier.fit: feature treatment_started removed
+grp_users__grp_cv__kfold,0,group,row_cv,LL-GRP-004,cv_auc,measured,True,0.5845,0.5469,0.0376,0.0376,0.0,KFold -> GroupKFold(groups=user_id); _CVIterableWrapper -> GroupKFold(groups=user_id)
+grp_users__grp_cv__stratified,0,group,row_cv,LL-GRP-004,cv_auc,measured,True,0.5969,0.5469,0.05,0.05,0.0,StratifiedKFold -> StratifiedGroupKFold(groups=user_id); _CVIterableWrapper -> GroupKFold(groups=user_id)
+grp_users__grp_cv__default_cv,0,group,default_cv,LL-GRP-004,cv_auc,measured,True,0.523,0.5469,-0.0239,-0.0239,0.0,StratifiedKFold -> StratifiedGroupKFold(groups=user_id); _CVIterableWrapper -> GroupKFold(groups=user_id)
+grp_users__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.5469,0.4531,0.4531,0.0,cross_val_score: feature order_items removed
+grp_users__combo2,0,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,False,1.0,0.523,0.477,0.4531,0.0239,cross_val_score: feature order_items removed
+grp_users__combo2,0,group,default_cv,LL-GRP-004,cv_auc,measured,False,1.0,1.0,0.0,0.4531,0.4531,StratifiedKFold -> StratifiedGroupKFold(groups=user_id); _CVIterableWrapper -> GroupKFold(groups=user_id)
+tab_churn__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,0.9661,0.6954,0.2707,0.2707,0.0,cross_val_score: feature cancellation_calls removed
+tab_fraud__pre_scaler__standard,0,preprocessing,scaler,LL-PRE-001,test_ap,measured,True,0.4163,0.4163,0.0,0.0,0.0,"StandardScaler: fitted on 1400 training rows only, then applied to all rows"
+tab_fraud__pre_scaler__minmax,0,preprocessing,scaler,LL-PRE-001,test_ap,measured,True,0.4163,0.4163,0.0,0.0,0.0,"MinMaxScaler: fitted on 1400 training rows only, then applied to all rows"
+tab_fraud__pre_scaler__robust,0,preprocessing,scaler,LL-PRE-001,test_ap,measured,True,0.4163,0.4163,0.0,0.0,0.0,"RobustScaler: fitted on 1400 training rows only, then applied to all rows"
+tab_fraud__pre_select__kbest,0,preprocessing,supervised,LL-PRE-003,test_ap,measured,True,0.4145,0.4145,0.0,0.0337,0.0337,"SelectKBest: fitted on 1400 training rows only, then applied to all rows"
+tab_fraud__ovl_test_in_fit__concat,0,overlap,test_in_fit,LL-OVL-003,test_ap,measured,True,0.7972,0.4163,0.3809,0.3809,0.0,GradientBoostingClassifier.fit: 600 evaluation rows removed from the fit
+tab_fraud__ovl_test_in_fit__refit_all,0,overlap,test_in_fit,LL-OVL-001,test_ap,measured,True,0.9671,0.4156,0.5515,0.5508,0.0007,GradientBoostingClassifier.fit: 600 evaluation rows removed from the fit
+tab_fraud__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,test_ap,measured,True,0.9242,0.4163,0.5079,0.5079,0.0,GradientBoostingClassifier.fit: feature chargeback_filed removed
+ts_energy__pre_scaler__standard,0,temporal,T2_whole_series,LL-TMP-002,test_r2,measured,True,0.9368,0.9368,0.0,0.0,0.0,"StandardScaler: fitted on 3820 training rows only, then applied to all rows"
+ts_energy__pre_scaler__minmax,0,temporal,T2_whole_series,LL-TMP-002,test_r2,measured,True,0.9368,0.9368,0.0,0.0,0.0,"MinMaxScaler: fitted on 3820 training rows only, then applied to all rows"
+ts_energy__pre_scaler__robust,0,temporal,T2_whole_series,LL-TMP-002,test_r2,measured,True,0.9368,0.9368,0.0,0.0,0.0,"RobustScaler: fitted on 3820 training rows only, then applied to all rows"
+ts_energy__ovl_test_in_fit__concat,0,overlap,test_in_fit,LL-OVL-003,test_r2,measured,True,0.9717,0.9368,0.0349,0.0349,0.0,RandomForestRegressor.fit: 955 evaluation rows removed from the fit
+ts_energy__ovl_test_in_fit__refit_all,0,overlap,test_in_fit,LL-OVL-001,test_r2,measured,True,0.9717,0.9368,0.0349,0.0349,0.0,RandomForestRegressor.fit: 955 evaluation rows removed from the fit
+ts_energy__tmp_holdout__tts_default,0,temporal,T1,LL-TMP-001,test_r2,measured,True,0.9433,0.9368,0.0065,0.0065,0.0,train_test_split -> chronological split in time order
+ts_energy__tmp_holdout__tts_shuffle_true,0,temporal,T1,LL-TMP-001,test_r2,measured,True,0.9433,0.9368,0.0065,0.0065,0.0,train_test_split -> chronological split in time order
+ts_energy__tmp_hidden_time__renamed_time_col,0,temporal,T1,LL-TMP-001,test_r2,measured,True,0.9433,0.9368,0.0065,0.0065,0.0,train_test_split -> chronological split in time order
+ts_sensor__tmp_cv__kfold_shuffle,0,temporal,T1,LL-TMP-001,cv_mae,measured,True,1.2665,1.2779,0.0114,0.0114,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_sensor__tmp_cv__kfold_plain,0,temporal,T1,LL-TMP-001,cv_mae,measured,True,1.2646,1.2779,0.0133,0.0133,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_sensor__tmp_cv__default_cv,0,temporal,T1,LL-TMP-001,cv_mae,measured,True,1.2646,1.2779,0.0133,0.0133,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_sensor__combo4,0,temporal,T1,LL-TMP-001,cv_mae,measured,False,0.9063,0.9148,0.0085,0.3716,0.3631,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order

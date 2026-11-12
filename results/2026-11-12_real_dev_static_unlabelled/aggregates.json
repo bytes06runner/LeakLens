@@ -1,0 +1,36 @@
+{
+ "what": "static analyser on the real DEV notebooks, unlabelled; aggregates only; NOT a precision or recall result",
+ "split": "DEV",
+ "notebooks": 71,
+ "status": {
+  "ok": 64,
+  "ok with skipped cells": 7
+ },
+ "crashes": 0,
+ "seconds_per_notebook": {
+  "median": 0.0041,
+  "max": 0.149
+ },
+ "findings_by_type_and_confidence": {
+  "group|low": 41,
+  "group|medium": 6,
+  "multi_test|low": 9,
+  "multi_test|medium": 16,
+  "overlap|high": 7,
+  "preprocessing|high": 8,
+  "preprocessing|low": 11,
+  "preprocessing|medium": 19,
+  "target_derived|low": 1,
+  "target_derived|medium": 1,
+  "temporal|low": 14,
+  "temporal|medium": 5
+ },
+ "notebooks_with_a_medium_or_higher_finding": {
+  "group": 3,
+  "multi_test": 10,
+  "overlap": 3,
+  "preprocessing": 19,
+  "target_derived": 1,
+  "temporal": 3
+ }
+}

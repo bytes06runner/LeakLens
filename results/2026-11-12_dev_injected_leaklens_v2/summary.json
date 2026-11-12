@@ -1,0 +1,926 @@
+{
+ "tool": "leaklens",
+ "split": "DEV",
+ "items": 96,
+ "labels": 89,
+ "modes": {
+  "static": {
+   "medium": [
+    {
+     "type": "preprocessing",
+     "labels": 30,
+     "tp": 30,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 10,
+     "tp": 8,
+     "fp": 0,
+     "fn": 2,
+     "precision": 1.0,
+     "recall": 0.8,
+     "f1": 0.888888888888889,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.5,
+      1.0
+     ],
+     "recall_ci_bases": [
+      0.3333333333333333,
+      1.0
+     ],
+     "f1_ci": [
+      0.6666666666666666,
+      1.0
+     ],
+     "f1_ci_bases": [
+      0.6666666666666666,
+      1.0
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 8,
+     "tp": 8,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "group",
+     "labels": 10,
+     "tp": 3,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.3,
+     "f1": 0.4615384615384615,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.625
+     ],
+     "recall_ci_bases": [
+      0.0,
+      1.0
+     ],
+     "f1_ci": [
+      0.16666666666666669,
+      0.7692307692307693
+     ],
+     "f1_ci_bases": [
+      0.2857142857142857,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 25,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 6,
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    }
+   ],
+   "recall_by_category": {
+    "standard": [
+     52,
+     0
+    ],
+    "group": [
+     3,
+     7
+    ],
+    "dynamic_only": [
+     0,
+     2
+    ],
+    "temporal_hard": [
+     12,
+     0
+    ],
+    "temporal_differentiating": [
+     6,
+     0
+    ],
+    "temporal_common": [
+     7,
+     0
+    ]
+   },
+   "clean_files": {
+    "n": 10,
+    "with_finding": 0
+   },
+   "low": [
+    {
+     "type": "preprocessing",
+     "labels": 30,
+     "tp": 30,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 10,
+     "tp": 8,
+     "fp": 0,
+     "fn": 2,
+     "precision": 1.0,
+     "recall": 0.8,
+     "f1": 0.888888888888889,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.5,
+      1.0
+     ],
+     "recall_ci_bases": [
+      0.3333333333333333,
+      1.0
+     ],
+     "f1_ci": [
+      0.6666666666666666,
+      1.0
+     ],
+     "f1_ci_bases": [
+      0.6666666666666666,
+      1.0
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 8,
+     "tp": 8,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "group",
+     "labels": 10,
+     "tp": 3,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.3,
+     "f1": 0.4615384615384615,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.625
+     ],
+     "recall_ci_bases": [
+      0.0,
+      1.0
+     ],
+     "f1_ci": [
+      0.16666666666666669,
+      0.7692307692307693
+     ],
+     "f1_ci_bases": [
+      0.2857142857142857,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 25,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 6,
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    }
+   ]
+  },
+  "static+dynamic": {
+   "medium": [
+    {
+     "type": "preprocessing",
+     "labels": 30,
+     "tp": 30,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 10,
+     "tp": 10,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 8,
+     "tp": 8,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "group",
+     "labels": 10,
+     "tp": 10,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 25,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 6,
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    }
+   ],
+   "recall_by_category": {
+    "standard": [
+     52,
+     0
+    ],
+    "group": [
+     10,
+     0
+    ],
+    "dynamic_only": [
+     2,
+     0
+    ],
+    "temporal_hard": [
+     12,
+     0
+    ],
+    "temporal_differentiating": [
+     6,
+     0
+    ],
+    "temporal_common": [
+     7,
+     0
+    ]
+   },
+   "clean_files": {
+    "n": 10,
+    "with_finding": 0
+   },
+   "low": [
+    {
+     "type": "preprocessing",
+     "labels": 30,
+     "tp": 30,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 10,
+     "tp": 10,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 8,
+     "tp": 8,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "group",
+     "labels": 10,
+     "tp": 10,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 25,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 6,
+     "tp": 6,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    }
+   ]
+  }
+ },
+ "coverage": {
+  "ok": 96
+ },
+ "static_seconds": {
+  "median": 0.0017,
+  "mean": 0.0021145833333333333,
+  "max": 0.0046
+ },
+ "dynamic_runs": {
+  "ok": 96
+ },
+ "dynamic_seconds": {
+  "median": 3.435,
+  "max": 303.812
+ },
+ "dynamic_effect": {
+  "preprocessing|confirmed": 17,
+  "preprocessing|not_run": 13,
+  "multi_test|confirmed": 8,
+  "group|confirmed": 3,
+  "target_derived|not_run": 4,
+  "overlap|confirmed": 8,
+  "target_derived|confirmed": 2,
+  "temporal|not_run": 18,
+  "temporal|confirmed": 7
+ },
+ "dynamic_only": {
+  "group|high": 7,
+  "overlap|high": 2
+ }
+}
