@@ -119,7 +119,7 @@ def scan(
     if fmt == "terminal":
         text = None
         for line in terminal_lines(report, min_confidence, verbose):
-            console.print(line, highlight=False)
+            console.print(line, highlight=False, soft_wrap=True)
     else:
         text = json.dumps(to_sarif(report) if fmt == "sarif" else report, indent=2)
         if not output:
