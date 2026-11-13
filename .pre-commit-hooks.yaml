@@ -1,0 +1,13 @@
+# pre-commit hook: static scan only. Nothing in the repository is imported or executed.
+# In .pre-commit-config.yaml:
+#   - repo: https://github.com/bytes06runner/LeakLens
+#     rev: <commit or tag>
+#     hooks:
+#       - id: leaklens
+- id: leaklens
+  name: LeakLens (data leakage in ML code)
+  description: Static scan of Python scripts and Jupyter notebooks for data leakage. Fails on high-severity findings of medium or higher confidence.
+  entry: leaklens scan
+  language: python
+  types_or: [python, jupyter]
+  require_serial: true

@@ -1,0 +1,21 @@
+# Runs the LeakLens GitHub Action from this repository on the taxonomy examples (which contain known leaks) and
+# uploads the SARIF report to code scanning. It checks that the action installs, scans and uploads; findings are
+# expected, so the job does not fail on them.
+name: leaklens-action-selfcheck
+on:
+  push:
+    branches: [main]
+    paths: ["action.yml", "src/**", "configs/**", ".github/workflows/leaklens-selfcheck.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          paths: tests/fixtures/taxonomy
+          fail-on: never

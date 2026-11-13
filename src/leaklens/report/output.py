@@ -156,7 +156,7 @@ def terminal_lines(report: dict, min_confidence: str = "medium", verbose: bool =
             imp = f["impact"]
             if imp.get("status") == "measured":
                 extra += f" · {imp['metric']} {imp['value_leaky']:.4f} -> {imp['value_fixed']:.4f} with the fix"
-            out.append(f"  {where:<18} [{f['severity']}/{f['confidence']}] {f['type']} ({f['rule_id']}){tag}{extra}")
+            out.append(f"  {where:<18} \\[{f['severity']}/{f['confidence']}] {f['type']} ({f['rule_id']}){tag}{extra}")
             out.append(f"      {f['message']}")
             out.append(f"      fix: {f['suggested_fix']['description']}")
             if verbose:
