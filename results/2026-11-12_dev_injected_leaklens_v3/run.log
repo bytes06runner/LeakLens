@@ -1,0 +1,4 @@
+25/96 12s
+50/96 269s
+75/96 276s
+done: 96 runs in 315s -> results/2026-11-12_dev_injected_leaklens_v3/findings.jsonl

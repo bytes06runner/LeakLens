@@ -91,6 +91,7 @@ HINT_VAL = set(CFG["role_hints"]["validation"])
 PATH_NAMES = set(CFG["path_name_tokens"])
 MAX_DEPTH = CFG["limits"]["max_inline_depth"]
 MAX_STATEMENTS = CFG["limits"]["max_statements"]
+TRIM_MAX = CFG["limits"]["positional_trim_max_rows"]
 STATELESS = set(_T["stateless"])
 DEBUG = bool(os.environ.get("LEAKLENS_DEBUG"))
 
@@ -789,7 +790,9 @@ class Analyzer:
                     return replace(cols, uncertain=True)
                 if cols.names is not None:
                     return replace(cols, names=cols.names + tuple(e for e in extra if e not in cols.names))
-                return replace(cols, base=cols.base | set(extra), minus=cols.minus - set(extra))
+                return replace(
+                    cols, base=cols.base | set(extra), minus=cols.minus - set(extra), sure=cols.sure | set(extra)
+                )
             if isinstance(left, Str) and isinstance(right, Str):
                 return Str(left.value + right.value)
         if isinstance(op, ast.Mult):
@@ -1013,6 +1016,9 @@ class Analyzer:
             return d
         if sl.lower is not None and sl.upper is not None:
             return replace(d, subset=True)
+        k = num(self.ev(sl.upper if sl.lower is None else sl.lower))
+        if k is not None and abs(k) <= TRIM_MAX:
+            return replace(d, subset=True)  # dropping a few first or last rows is a trim, not a split
         side = "train" if sl.lower is None else "test"
         return replace(d, rows=Rows(side, self.positional(d), d.origin.id), subset=False)
 
@@ -1064,14 +1070,22 @@ class Analyzer:
         ):
             t = gen.target.id
             if isinstance(it, Cols) and it.names is None:
-                minus, uncertain = set(), it.uncertain
+                minus, uncertain, sure = set(), it.uncertain, set(it.sure)
                 for cond in gen.ifs:
                     ex = self.excluded_by(cond, t)
                     if ex is None:
                         uncertain = True
                     else:
                         minus |= ex
-                return replace(it, minus=it.minus | minus, uncertain=uncertain)
+                if uncertain:  # the filter is not resolved in general; decide the columns we do know
+                    sure = set()
+                    for c in it.base - it.minus - minus:
+                        verdicts = [self.truth(cond, t, c) for cond in gen.ifs]
+                        if False in verdicts:
+                            minus.add(c)
+                        elif None not in verdicts:
+                            sure.add(c)
+                return replace(it, minus=it.minus | minus, uncertain=uncertain, sure=frozenset(sure))
             names = str_list(it)
             if names is not None:
                 kept = [n for n in names if all(self.truth(c, t, n) is not False for c in gen.ifs)]
@@ -1145,13 +1159,12 @@ class Analyzer:
             and isinstance(cond.func.value, ast.Name)
             and cond.func.value.id == t
             and cond.args
-            and isinstance(cond.args[0], ast.Constant)
-            and isinstance(cond.args[0].value, str)
+            and cond.func.attr in ("startswith", "endswith")
         ):
-            if cond.func.attr == "startswith":
-                return value.startswith(cond.args[0].value)
-            if cond.func.attr == "endswith":
-                return value.endswith(cond.args[0].value)
+            affixes = str_list(self.ev(cond.args[0]))
+            if affixes is not None:
+                fn = value.startswith if cond.func.attr == "startswith" else value.endswith
+                return fn(tuple(affixes))
         return None
 
     def elem_of(self, v: AVal) -> AVal:
@@ -2347,12 +2360,15 @@ class Analyzer:
                 self.emit_taint(t, o, ycols, nested, at)
         for f in X.fwd:
             self.emit_fwd(f, None)
-        resolved = bool(ycols) if X.cols is None else (X.cols.names is not None or not X.cols.uncertain)
+        partial = X.cols is not None and X.cols.names is None and X.cols.uncertain
+        resolved = bool(ycols) if X.cols is None else (not partial or bool(X.cols.sure))
         if not resolved:
             return
         for c in list(o.cols):
             if c in ycols or not self.frame_has(X, c):
                 continue
+            if partial and c not in X.cols.sure:
+                continue  # an unresolved column filter: only columns known to be included are judged
             fact = o.cols[c]
             taints, fwd, pure = self.effective(o, c)
             for t in taints:
@@ -2383,6 +2399,8 @@ class Analyzer:
             _, _, pure = self.effective(o, tgt)
             explicit = X.cols is not None
             for dcol in sorted(pure - ycols):
+                if partial and dcol not in X.cols.sure:
+                    continue
                 if explicit and self.frame_has(X, dcol):
                     conf = "medium" if tf.thresholded and len(pure - ycols) == 1 else "low"
                     self.emit(

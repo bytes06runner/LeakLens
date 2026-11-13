@@ -121,14 +121,30 @@ def apply_events(findings: list[Finding], log: dict, src: Source) -> list[Findin
         if f.type == "group":
             folds = _at(events, "split", f)
             cols = f.context.get("entity_columns", [])
-            seen = [(c, e["entities"][c]) for e in folds for c in cols if c in e["entities"]]
+            # Every entity column found at run time at this split is a candidate, not only the ones the static
+            # pass nominated: a strong-name column with repeated values beats a nominated weak-name one.
+            seen = [(c, s) for e in folds for c, s in e["entities"].items() if c in cols or s["strength"] == "strong"]
             if not folds:
                 _set(f, "not_run", reason="the split was not reached in the run")
             elif not seen:
                 _set(f, "not_run", reason="the nominated column is not row-aligned with the split data at run time")
             else:
-                col, best = max(seen, key=lambda cs: cs[1]["test_rows_shared"])
-                if best["test_rows_shared"] >= ent_min and best["n_unique"] < best["n"]:
+                live = [cs for cs in seen if cs[1]["test_rows_shared"] >= ent_min and cs[1]["n_unique"] < cs[1]["n"]]
+                col, best = max(live or seen, key=lambda cs: (cs[1]["strength"] == "strong", cs[1]["test_rows_shared"]))
+                if live:
+                    nominated = next(iter(cols), None)
+                    if col != nominated and nominated is not None:
+                        f.message = f.message.replace(f"`{nominated}`", f"`{col}`").replace(
+                            f"the same {nominated} ", f"the same {col} "
+                        )
+                        f.fix_description = f.fix_description.replace(f"`{nominated}`", f"`{col}`")
+                        f.evidence.append(
+                            {
+                                "kind": "entity_column",
+                                "detail": f"column `{col}` found at run time (name evidence); "
+                                f"it replaces the static guess `{nominated}`",
+                            }
+                        )
                     _set(
                         f,
                         "confirmed",
@@ -146,7 +162,10 @@ def apply_events(findings: list[Finding], log: dict, src: Source) -> list[Findin
                         }
                     )
                     f.context["confirmed_column"] = col
-                    _bump(f)
+                    if best["strength"] == "strong":  # a weak-name column that repeats proves little by itself
+                        _bump(f)
+                        if col not in cols:
+                            _bump(f)  # same evidence as a run-time-only finding: strong name and measured overlap
                 else:
                     why = (
                         "every value is unique: one row per entity"

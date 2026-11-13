@@ -279,3 +279,37 @@ def test_cli_dynamic_and_impact_end_to_end(tmp_path):
     (f,) = report["findings"]
     assert f["rule_id"] == "LL-GRP-004" and f["dynamic"]["status"] == "confirmed"
     assert f["impact"]["status"] == "measured" and f["impact"]["value_leaky"] > f["impact"]["value_fixed"]
+
+
+def test_run_prefers_the_real_entity_over_a_weak_static_guess(tmp_path):
+    """Fault found on TEST (EVAL_CHANGES #8): the code names only a visit number; the data also has patient_id."""
+    grouped(tmp_path)
+    df = pd.read_csv(tmp_path / "data.csv")
+    df["visit"] = df.groupby("patient_id").cumcount()
+    df.to_csv(tmp_path / "data.csv", index=False)
+    f = run(tmp_path, """
+        df = pd.read_csv("data.csv")
+        df = df[df["visit"] >= 0]
+        X, y = df[list("abcd")], df["y"]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+        model = RandomForestClassifier(n_estimators=60, random_state=0).fit(X_train, y_train)
+        print(f"test_auc: {roc_auc_score(y_test, model.predict_proba(X_test)[:, 1]):.4f}")
+    """, impact=True)[("group", 4)]
+    assert f.rule_id == "LL-GRP-001"  # the static pass nominated `visit`, at low confidence
+    assert f.dynamic["status"] == "confirmed" and f.dynamic["details"]["column"] == "patient_id"
+    assert f.confidence == "high" and "`patient_id`" in f.message and "visit" not in f.message
+    assert "GroupShuffleSplit(groups=patient_id)" in f.impact["note"] and f.impact["delta"] > 0.1
+
+
+def test_weak_column_alone_does_not_raise_confidence(tmp_path):
+    grouped(tmp_path, unique=True)
+    df = pd.read_csv(tmp_path / "data.csv").drop(columns=["patient_id"])
+    df["visit"] = np.arange(len(df)) % 8
+    df.to_csv(tmp_path / "data.csv", index=False)
+    f = run(tmp_path, """
+        df = pd.read_csv("data.csv")
+        df = df[df["visit"] >= 0]
+        X, y = df[list("abcd")], df["y"]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+    """)[("group", 4)]
+    assert f.dynamic["details"]["column"] == "visit" and f.confidence == "low"

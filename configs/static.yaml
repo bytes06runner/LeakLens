@@ -103,3 +103,4 @@ path_name_tokens: [file, files, fname, filename, filenames, path, paths, fpath, 
 limits:
   max_inline_depth: 4          # user-function inlining depth
   max_statements: 200000       # give up on pathological inputs instead of hanging
+  positional_trim_max_rows: 10 # x[:-1] or x[2:] with a literal this small drops rows; it is not a manual split

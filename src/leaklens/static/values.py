@@ -92,6 +92,7 @@ class Cols(AVal):
     base: frozenset[str] = frozenset()
     minus: frozenset[str] = frozenset()
     uncertain: bool = False
+    sure: frozenset[str] = frozenset()  # names known to be included even when the filter is unresolved
 
 
 @dataclass(eq=False)

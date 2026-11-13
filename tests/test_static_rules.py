@@ -691,3 +691,54 @@ def test_analysis_is_deterministic(tmp_path_factory, stmts):
     a = [f.to_dict() for f in analyze(load(p))[0]]
     b = [f.to_dict() for f in analyze(load(p))[0]]
     assert a == b
+
+
+# --------------------------------------------------------------------------- faults found on TEST (EVAL_CHANGES #8)
+
+def test_dropping_the_last_row_is_not_a_split(tmp_path):
+    assert scan(tmp_path, """
+        df = pd.read_csv("air.csv", parse_dates=["day"]).sort_values("day")
+        df["lag"] = df["pm"].shift(1)
+        df["target"] = df["pm"].shift(-1)
+        df = df.iloc[:-1]
+        X, y = df[["pm", "lag"]], df["target"]
+        X = StandardScaler().fit_transform(X)
+        scores = {}
+        for c in (0.1, 1, 10):
+            scores[c] = cross_val_score(Ridge(alpha=c), X, y, cv=TimeSeriesSplit(5)).mean()
+        print(max(scores.values()))
+    """) == [("multi_test", 9), ("temporal", 6)]
+
+
+def test_computed_positional_split_is_still_a_split(tmp_path):
+    assert scan(tmp_path, """
+        df = pd.read_csv("air.csv", parse_dates=["day"]).sort_values("day")
+        df["lag"] = df["pm"].shift(1)
+        n = int(len(df) * 0.8)
+        train, test = df.iloc[:n], df.iloc[n:]
+        scaler = StandardScaler().fit(train[["pm", "lag"]])
+        model = Ridge().fit(scaler.transform(train[["pm", "lag"]]), train["y"])
+        print(model.score(scaler.transform(test[["pm", "lag"]]), test["y"]))
+    """, "low") == []
+
+
+def test_unresolved_column_filter_does_not_hide_explicitly_added_features(tmp_path):
+    assert scan(tmp_path, """
+        df = pd.read_csv("d.csv")
+        feats = [c for c in df.columns if c.startswith(("f", "n"))]
+        df["region_rate"] = df.groupby("region")["default"].transform("mean")
+        df["late"] = df["default"] * 3
+        df["helper"] = df["default"] + 1
+        feats = feats + ["region_rate", "late"]
+        X_train, X_test, y_train, y_test = train_test_split(df[feats], df["default"])
+    """) == [("preprocessing", 3), ("target_derived", 4)]
+
+
+def test_filter_with_startswith_is_evaluated_for_known_columns(tmp_path):
+    assert scan(tmp_path, """
+        df = pd.read_csv("d.csv")
+        df["f_leak"] = df["y"] * 2
+        df["other_leak"] = df["y"] * 3
+        feats = [c for c in df.columns if c.startswith("f")]
+        X_train, X_test, y_train, y_test = train_test_split(df[feats], df["y"])
+    """) == [("target_derived", 2)]
