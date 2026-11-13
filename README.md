@@ -274,7 +274,7 @@ internet outside the sandbox described below.
 | 6 | Impact estimation | 🔄 built for six kinds of fix; about half of the leaks have no automatic fix yet |
 | 7 | Evaluation on TEST, baselines, CalibraEEG case study, ablations | 🔄 injected TEST scored once; Yang et al. baseline run; case study negative; real set and other baselines pending |
 | 8 | Mining study of public notebooks | ⏳ |
-| 9 | Release: PyPI, pre-commit hook, GitHub Action, SARIF | 🔄 CLI, JSON and SARIF done; packaging not started; name clash to resolve |
+| 9 | Release: PyPI, pre-commit hook, GitHub Action, SARIF | 🔄 CLI, JSON, SARIF, [pre-commit hook and GitHub Action](integrations/README.md) done (SARIF uploaded to GitHub code scanning); no PyPI release; name clash to resolve |
 
 ### Research questions
 
@@ -378,7 +378,7 @@ The full rules are in [`CLAUDE.md`](CLAUDE.md#2-integrity-rules-non-negotiable).
 
 ## Related work
 
-Thirty-seven entries with verification status are in
+Thirty-eight entries with verification status are in
 [`literature/related_work.csv`](literature/related_work.csv). Key references: Kaufman et al. (TKDD 2012),
 Kapoor & Narayanan (Patterns 2023), Yang et al. (ASE 2022), Subotić et al. (ICSE-SEIP 2022, SOAP 2022),
 Drobnjaković et al. (TASE 2024), Draoui et al. (PACMSE 2026), Roth (arXiv 2026), Grafberger et al. (mlwhatif,

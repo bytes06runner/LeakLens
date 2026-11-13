@@ -91,5 +91,7 @@ read before the results. It will be extended in Phase 9.
 
 - **The name is taken.** A different package called `leaklens` exists on PyPI since June 2026
   (`docs/NOVELTY_LOG.md`). Nothing has been published; the project owner has to decide on the name.
-- No PyPI release, pre-commit hook, GitHub Action or HTML report yet (Phase 9). SARIF output has been checked
-  against the schema fields GitHub uses, not uploaded to GitHub code scanning.
+- No PyPI release or HTML report yet (Phase 9). The pre-commit hook and the GitHub Action exist and were each run
+  once for real (2026-11-13); the Action's SARIF upload to GitHub code scanning worked on this repository.
+- **The four papers of the owner's comparison table have not been run against LeakLens** (`docs/COMPARISON_TABLE_CHECK.md`).
+  Two of them could not even be opened to confirm what the table says about them.

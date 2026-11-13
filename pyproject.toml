@@ -61,3 +61,4 @@ select = ["E", "F", "I", "B", "UP"]
 "kaggle/**" = ["E501"]
 # The progress-report script is mostly prose in table cells.
 "scripts/make_progress_report.py" = ["E501"]
+"scripts/make_comparison_table.py" = ["E501"]
