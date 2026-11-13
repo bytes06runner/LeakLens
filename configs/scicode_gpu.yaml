@@ -1,0 +1,30 @@
+# scicode-lint baseline on the injected TEST files, Kaggle GPU (2x T4). Owner decision 2026-11-13: use the Kaggle GPU.
+# Published setup: vLLM serving RedHatAI/Qwen3-8B-FP8-dynamic on a >=16 GB GPU with native FP8. T4 has no FP8,
+# so the same model family runs at 16-bit. Deviation recorded in the result file and the paper.
+scicode_lint_version: "0.5.0"
+python_client: "3.13"
+vllm_version: "0.18.0"          # scicode-lint's config.toml pins vllm_version = v0.18.0
+vllm_model: Qwen/Qwen3-8B
+served_alias: qwen3-8b-fp8      # scicode-lint's default model_served_name
+tensor_parallel: 2
+max_model_len: 16384
+gpu_memory_utilization: 0.90
+vllm_start_timeout_minutes: 25
+fallback_llama_cpp_release: b11249
+fallback_llama_cpp_asset: llama-b11249-bin-ubuntu-cuda-12.8-x64.tar.gz
+fallback_gguf_repo: Qwen/Qwen3-8B-GGUF
+fallback_gguf_file: Qwen3-8B-Q8_0.gguf
+# scicode-lint patterns that concern leakage (66 patterns in total; the rest are about PyTorch, numerics, seeds)
+patterns: ml-001,ml-002,ml-003,ml-005,ml-006,ml-007,ml-009,ml-010
+pattern_types:
+  ml-001: preprocessing
+  ml-002: target_derived
+  ml-003: preprocessing
+  ml-005: temporal
+  ml-006: temporal
+  ml-007: preprocessing
+  ml-009: overlap
+  ml-010: multi_test
+split: TEST
+per_file_timeout_minutes: 20
+total_budget_minutes: 600
