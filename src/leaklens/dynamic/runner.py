@@ -42,6 +42,8 @@ STATE = {
     "fits": {},
     "split_positions": {},
     "cfg": {},
+    "dump": None,
+    "dump_index": [],
 }
 
 
@@ -181,7 +183,32 @@ def time_columns(cols: dict) -> dict:
     return out
 
 
-def record_fold(site: dict, fold: int, X, train, test, frame) -> None:
+def dump_fold(site: dict, fold: int, cols: dict, y, train, test) -> None:
+    """Write the train and evaluation tables of one fold (every row-aligned column plus `__target__`) as CSV.
+
+    Opt-in (`--dump-splits DIR`), used only to give data-level baseline tools exactly the splits the script made.
+    """
+    import numpy as np
+    import pandas as pd
+
+    data = {}
+    for name, a in cols.items():
+        a = np.asarray(a)
+        if a.ndim == 1 and a.dtype.kind in "biufcMmOUS":
+            data[name] = a
+    if y is not None and n_rows(y) == len(next(iter(data.values()), [])):
+        data["__target__"] = np.asarray(y).ravel()
+    if not data:
+        return
+    df = pd.DataFrame(data)
+    base = f"L{site['line']}_F{fold}"
+    df.iloc[np.asarray(train)].to_csv(os.path.join(STATE["dump"], base + "_train.csv"), index=False)
+    df.iloc[np.asarray(test)].to_csv(os.path.join(STATE["dump"], base + "_test.csv"), index=False)
+    STATE["dump_index"].append({"line": site["line"], "call": site["call"], "fold": fold, "base": base,
+                                "has_target": "__target__" in data, "columns": list(data)[:400]})
+
+
+def record_fold(site: dict, fold: int, X, train, test, frame, y=None) -> None:
     """Everything the dynamic checks need about one train/evaluation partition, computed in the child."""
     import numpy as np
     import pandas as pd
@@ -215,6 +242,11 @@ def record_fold(site: dict, fold: int, X, train, test, frame) -> None:
         site["line"], {"n": n, "test": test.tolist() if fold == 0 else None, "folds": 0}
     )["folds"] += 1
     cols = aligned_columns(frame, X, n) if n else {}
+    if STATE["dump"] and cols and fold < STATE["cfg"].get("max_folds_dumped", 5):
+        try:
+            dump_fold(site, fold, cols, y, train, test)
+        except Exception as e:  # never let the baseline export change the analysed run
+            STATE["dump_index"].append({"line": site["line"], "fold": fold, "error": f"{type(e).__name__}: {e}"})
     x_names = {str(c) for c in X.columns} if isinstance(X, pd.DataFrame) else set()
     ev["x_cols"] = sorted(x_names)[:200]
     for name, strength in entity_columns(cols, x_names).items():
@@ -376,7 +408,7 @@ def patch_train_test_split(ms, split_mod) -> None:
                 tr, te = res[-2], res[-1]
                 out = res[:-2]
             site = {"line": line, "call": "train_test_split"}
-            record_fold(site, 0, arrays[0], tr, te, frame)
+            record_fold(site, 0, arrays[0], tr, te, frame, arrays[1] if len(arrays) > 1 else None)
             return out
         finally:
             STATE["depth"] -= 1
@@ -403,7 +435,7 @@ def patch_splitters(split_mod) -> None:
                 STATE["depth"] -= 1
             site = {"line": line, "call": f"{type(self).__name__}.split"}
             for i, (tr, te) in enumerate(folds):
-                record_fold(site, i, X, tr, te, frame)
+                record_fold(site, i, X, tr, te, frame, y)
                 yield tr, te
 
         return split
@@ -594,7 +626,7 @@ def patch_cv_helpers(ms, val_mod) -> None:
                 kw.pop("groups", None)
                 site = {"line": line, "call": f"{name} (fixed)"}
                 for i, (tr, te) in enumerate(kw["cv"]):
-                    record_fold(site, i, X, tr, te, frame)
+                    record_fold(site, i, X, tr, te, frame, y)
             EVENTS.append(
                 {
                     "kind": "cv",
@@ -692,7 +724,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--hints")
     ap.add_argument("--fix")
+    ap.add_argument("--dump-splits", help="directory: write each fold's train/evaluation tables (baselines only)")
     a = ap.parse_args(argv)
+    if a.dump_splits:
+        os.makedirs(a.dump_splits, exist_ok=True)
+        STATE["dump"] = os.path.abspath(a.dump_splits)
     script = os.path.abspath(a.script)
     STATE["script"] = script
     if a.hints:
@@ -735,6 +771,7 @@ def main(argv: list[str] | None = None) -> int:
                     "fix": STATE["fix"],
                     "fix_applied": STATE["fix_applied"],
                     "split_positions": {str(k): v for k, v in STATE["split_positions"].items()},
+                    "dump_index": STATE["dump_index"],
                 },
                 f,
             )
