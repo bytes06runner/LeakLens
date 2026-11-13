@@ -174,13 +174,19 @@ No finding on any of the 9 leak-free files. What this does and does not show:
 - **Eight leaks missed**, from two causes: a slice that drops the last row (`data.iloc[:-1]`) was mistaken for a
   train/test split (five temporal leaks reported only at low confidence, one multi-test leak missed), and a
   feature list built with a `startswith` filter could not be resolved (one target-encoding leak and one
-  target-derived feature missed). None of this has been fixed: a fix followed by a re-run would be a second look
-  at TEST ([`EVAL_CHANGES.md`](EVAL_CHANGES.md) #7).
+  target-derived feature missed). These were fixed afterwards and TEST was re-run as a logged second look
+  (below).
 - **Impact estimates on TEST** ([report](results/2026-11-12_test_injected_leaklens_v1/IMPACT_REPORT.md)): an
   estimate for 34 of 70 located leaks. On 26 single-leak findings with a bounded metric, averaged over five data
   seeds: mean absolute error 0.035, rank correlation 0.58. Exact where the fix is the same operation as the
   benchmark's corrected file; **wrong direction for hold-out group splits** (the wrong-column fault above).
   Injected inflation is by construction and is not evidence of real-world severity.
+
+**Second look (2026-11-13), not a held-out result.** The three faults above were then fixed and logged
+([`EVAL_CHANGES.md`](EVAL_CHANGES.md) #8), DEV was re-checked (unchanged), and TEST was run again:
+static 67 of 73, static + dynamic 73 of 73, no false positive
+([run](results/2026-11-13_test_injected_leaklens_v2_second_look)). The fixes were written knowing which TEST files they repair, so the
+first-look table above remains the result of record. The injected benchmark is now saturated on both halves.
 
 Full account: [`docs/PHASE7_TEST_REPORT.md`](docs/PHASE7_TEST_REPORT.md).
 

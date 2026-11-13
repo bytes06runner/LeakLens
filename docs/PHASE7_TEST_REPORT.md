@@ -47,8 +47,7 @@ overlapping lines in the same cell). 95% bootstrap intervals over files.
    `[c for c in df.columns if c.startswith(("f", "n"))]`. The analyser cannot resolve that, so it does not know
    which columns are features and reports nothing: one target-encoding leak and one target-derived feature missed.
 
-None of the three has been fixed. Fixing them is easy; re-running TEST afterwards would be a second look
-(`EVAL_CHANGES.md` #7). **Your decision.**
+At the time of the first look none of the three was fixed. You then approved a second look; see section 7.
 
 ## 3. Impact estimation on TEST (five data seeds)
 
@@ -107,8 +106,36 @@ notebooks.**
 
 ## 6. What I need from you
 
-1. **Second look at TEST, yes or no.** If yes: I fix the three faults, log them, re-run TEST once more and report
-   both results side by side, first look first.
+1. ~~Second look at TEST~~ done on 2026-11-13 (section 7).
 2. **Labellers for the real notebooks.** Still the only route to a real-world result.
 3. **The project name** (PyPI clash).
 4. Wording of C1/C2/C3 (see `docs/PHASE3_6_REPORT.md` section 6).
+
+## 7. Second look at TEST (2026-11-13, approved: "Yes, second look")
+
+Run: `results/2026-11-13_test_injected_leaklens_v2_second_look`, at commit `bce9991`, after the three fixes of `EVAL_CHANGES.md` #8. **This is not a held-out
+result:** the fixes were written knowing exactly which TEST cases they repair. The first look stays the result of
+record. Before this run, DEV was re-run with the changed code and came out identical (`..._dev_injected_leaklens_v3`).
+
+| type | leaks | first look: static | first look: static+dynamic | second look: static | second look: static+dynamic | false positives (second look) |
+|---|---|---|---|---|---|---|
+| preprocessing | 22 | 21 | 21 | 22 | 22 | 0 |
+| overlap | 9 | 7 | 9 | 7 | 9 | 0 |
+| multi_test | 6 | 5 | 5 | 6 | 6 | 0 |
+| group | 7 | 3 | 7 | 3 | 7 | 0 |
+| temporal | 25 | 20 | 20 | 25 | 25 | 0 |
+| target_derived | 4 | 3 | 3 | 4 | 4 | 0 |
+| **all** | 73 | 59 | 65 | 67 | 73 | 0 |
+
+- All eight first-look misses are found, with no new false positive and still nothing on the 9 leak-free files.
+- Group: the four patient-visit findings now name `patient_id`. The three EEG findings now name a run-time variable
+  called `groups` instead of `subject`; it carries the same subject identifiers (the group-aware re-run gives the
+  same score as before), but it is a different name from the first look and from the benchmark's metadata.
+- Static-only group recall is unchanged at 3 of 7: the entity column is not in the code in the other four.
+- Impact, seed-averaged, 26 single-leak findings with a bounded metric: mean absolute error
+  0.0006, Spearman 0.97 (first look: 0.035 and 0.58). The hold-out group
+  estimate is now +0.212 against a true +0.212. Coverage is 34 of 73 located leaks: the newly found leaks are
+  of kinds that have no automatic fix.
+- What this shows: the three faults were the whole gap between DEV and TEST on this benchmark, and the fixes do not
+  disturb DEV. What it does not show: anything about leaks written by other people. The benchmark is now saturated
+  on both halves and cannot distinguish further improvements; only labelled real notebooks can.

@@ -8,7 +8,9 @@ read before the results. It will be extended in Phase 9.
 - **Results exist for the project's own injected benchmark only.** DEV numbers are optimistic by design (the
   rules were written on those files). TEST was scored once on 2026-11-12, after the protocol was frozen; it uses
   other pipelines but the same kinds of injected leak.
-- **TEST exposed three faults that are not fixed** (`docs/PHASE7_TEST_REPORT.md`): a positional slice such as
+- **TEST exposed three faults**, fixed afterwards and re-checked in a logged second look, which is not a held-out
+  result (`docs/PHASE7_TEST_REPORT.md` section 7). The injected benchmark is now saturated on DEV and TEST and
+  cannot measure further progress. The faults were: a positional slice such as
   `data.iloc[:-1]` is mistaken for a train/test split; a feature list built with a `startswith` filter is not
   resolved, and then nothing is reported; and when the static pass nominates a weak entity column, the run
   confirms that column instead of looking for a better one, so 4 of 7 TEST group findings name the wrong column

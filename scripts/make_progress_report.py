@@ -279,8 +279,11 @@ story += bullets([
     f"{cat['temporal_hard'][0]} of {sum(cat['temporal_hard'])}. The temporal baseline (scicode-lint) has not been run.",
     f"<b>Speed.</b> Static analysis: median {static_s['median'] * 1000:.1f} ms per file (laptop, Apple M5). An "
     f"instrumented run costs one execution of the script (median {dyn_s.get('median', 0):.1f} s).",
-    "<b>These three causes have not been fixed.</b> Fixing them now and re-running TEST would be a second look at "
-    "the test set; it is logged as an open decision, not done."])
+    "<b>Second look (13 November), not a held-out result.</b> With the owner's approval the three causes were "
+    "fixed and logged, DEV was re-checked (unchanged), and TEST was run again: static 67 of 73, static + "
+    "dynamic 73 of 73, no false positive; the patient-visit findings now name the patient identifier and the "
+    "hold-out group impact estimate matches the true value. The fixes were written knowing which TEST files they "
+    "repair, so the table above stays the result of record. The injected benchmark is now saturated on both halves."])
 
 story += [Paragraph("3.6 Results on the DEV split (the files the rules were written on)", H2),
           detection_table(DEV),
@@ -339,7 +342,7 @@ story += [Paragraph("3.8 What went wrong, and what is missing", H2)]
 story += bullets([
     "<b>TEST exposed three faults</b> that DEV did not: a positional slice mistaken for a split, an unresolved "
     "column filter, and a weak guess at the entity column that the run confirmed instead of correcting "
-    "(section 3.5). They are recorded in EVAL_CHANGES.md and are not fixed.",
+    "(section 3.5). They were fixed afterwards and re-checked in a logged second look.",
     "<b>CalibraEEG case study: LeakLens found nothing.</b> We ran the static analyser on the companion project's "
     "78 Python files. Expected: leakage flagged in regime A (random windows) and B (within-patient), nothing in C. "
     "Result: 0 findings in all three. That is correct for C and a miss for A and B: this code splits with "
@@ -429,8 +432,8 @@ story += [Paragraph("3.10 Objectives of Chapter 1", H2),
 
 story += [Paragraph("3.11 Next steps and decisions needed", H2)]
 story += bullets([
-    "<b>Decide on a second look at TEST.</b> The three faults found on TEST have obvious fixes. Fixing them and "
-    "re-running TEST is allowed only as a logged second look, reported next to the first result, never instead of it.",
+    "<b>A harder benchmark.</b> After the second look the injected benchmark is solved on both halves and can no "
+    "longer measure progress. New base pipelines and leak styles written by someone else are needed.",
     "<b>Label real notebooks:</b> two people, in the prepared random order, without seeing the tool's output. "
     "This is the only route to a result on real code.",
     "<b>Decide the project name</b> in the light of the existing PyPI package.",

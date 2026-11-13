@@ -1,0 +1,171 @@
+item_id,seed,type,subtype,rule_id,metric,status,single_leak,value_leaky,value_fixed,estimate,true_inflation,abs_error,fix
+grp_eeg__grp_cv__kfold,0,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.752,0.4885,0.2635,0.1905,0.073,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__kfold,1,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.635,0.5922,0.0428,0.0246,0.0182,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__kfold,2,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.743,0.5631,0.1799,0.3056,0.1257,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__kfold,3,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.6907,0.5212,0.1695,0.1912,0.0217,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__kfold,4,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7359,0.5561,0.1798,0.1473,0.0325,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__stratified,0,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7578,0.4885,0.2693,0.1963,0.073,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__stratified,1,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.6266,0.5922,0.0344,0.0162,0.0182,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__stratified,2,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7223,0.5631,0.1592,0.2849,0.1257,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__stratified,3,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.704,0.5212,0.1828,0.2045,0.0217,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__stratified,4,group,row_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.7433,0.5561,0.1872,0.1547,0.0325,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__default_cv,0,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.5838,0.4885,0.0953,0.0223,0.073,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__default_cv,1,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.5511,0.5922,-0.0411,-0.0593,0.0182,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__default_cv,2,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.4939,0.5631,-0.0692,0.0565,0.1257,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__default_cv,3,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.1847,0.5212,-0.3365,-0.3148,0.0217,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__grp_cv__default_cv,4,group,default_cv+file_path_entity,LL-GRP-003,cv_auc,measured,True,0.2982,0.5561,-0.2579,-0.2904,0.0325,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups)
+grp_eeg__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.5615,0.4385,0.4385,0.0,cross_val_score: feature annotated_spikes removed
+grp_eeg__tgt_proxy__proxy,1,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.6104,0.3896,0.3896,0.0,cross_val_score: feature annotated_spikes removed
+grp_eeg__tgt_proxy__proxy,2,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.4374,0.5626,0.5626,0.0,cross_val_score: feature annotated_spikes removed
+grp_eeg__tgt_proxy__proxy,3,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.4995,0.5005,0.5005,0.0,cross_val_score: feature annotated_spikes removed
+grp_eeg__tgt_proxy__proxy,4,target_derived,post_outcome,LL-TGT-001,cv_auc,measured,True,1.0,0.5886,0.4114,0.4114,0.0,cross_val_score: feature annotated_spikes removed
+grp_patients__pre_scaler__standard,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5729,0.5714,0.0015,-0.0002,0.0017,"StandardScaler: fitted on 555 training rows only, then applied to all rows"
+grp_patients__pre_scaler__standard,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5273,0.526,0.0013,-0.0001,0.0014,"StandardScaler: fitted on 521 training rows only, then applied to all rows"
+grp_patients__pre_scaler__standard,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.4973,0.4978,-0.0005,-0.0008,0.0003,"StandardScaler: fitted on 529 training rows only, then applied to all rows"
+grp_patients__pre_scaler__standard,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5559,0.5565,-0.0006,-0.0001,0.0005,"StandardScaler: fitted on 522 training rows only, then applied to all rows"
+grp_patients__pre_scaler__standard,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6271,0.627,0.0001,-0.0016,0.0017,"StandardScaler: fitted on 528 training rows only, then applied to all rows"
+grp_patients__pre_scaler__minmax,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5723,0.5723,0.0,-0.0008,0.0008,"MinMaxScaler: fitted on 555 training rows only, then applied to all rows"
+grp_patients__pre_scaler__minmax,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5266,0.5266,0.0,-0.0008,0.0008,"MinMaxScaler: fitted on 521 training rows only, then applied to all rows"
+grp_patients__pre_scaler__minmax,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.4961,0.4961,0.0,-0.002,0.002,"MinMaxScaler: fitted on 529 training rows only, then applied to all rows"
+grp_patients__pre_scaler__minmax,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5566,0.5566,0.0,0.0006,0.0006,"MinMaxScaler: fitted on 522 training rows only, then applied to all rows"
+grp_patients__pre_scaler__minmax,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6273,0.6273,0.0,-0.0014,0.0014,"MinMaxScaler: fitted on 528 training rows only, then applied to all rows"
+grp_patients__pre_scaler__robust,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5726,0.5726,0.0,-0.0005,0.0005,"RobustScaler: fitted on 555 training rows only, then applied to all rows"
+grp_patients__pre_scaler__robust,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5268,0.5265,0.0003,-0.0006,0.0009,"RobustScaler: fitted on 521 training rows only, then applied to all rows"
+grp_patients__pre_scaler__robust,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.498,0.4967,0.0013,-0.0001,0.0014,"RobustScaler: fitted on 529 training rows only, then applied to all rows"
+grp_patients__pre_scaler__robust,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.5557,0.5566,-0.0009,-0.0003,0.0006,"RobustScaler: fitted on 522 training rows only, then applied to all rows"
+grp_patients__pre_scaler__robust,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.6265,0.6267,-0.0002,-0.0022,0.002,"RobustScaler: fitted on 528 training rows only, then applied to all rows"
+grp_patients__ovl_test_in_fit__concat,0,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,1.0,0.5731,0.4269,0.4269,0.0,RandomForestClassifier.fit: 172 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__concat,1,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.9997,0.5274,0.4723,0.4723,0.0,RandomForestClassifier.fit: 184 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__concat,2,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,1.0,0.4981,0.5019,0.5019,0.0,RandomForestClassifier.fit: 196 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__concat,3,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,1.0,0.556,0.444,0.444,0.0,RandomForestClassifier.fit: 185 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__concat,4,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.9998,0.6287,0.3711,0.3711,0.0,RandomForestClassifier.fit: 166 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__refit_all,0,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,1.0,0.5731,0.4269,0.4269,0.0,RandomForestClassifier.fit: 172 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__refit_all,1,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,1.0,0.5274,0.4726,0.4726,0.0,RandomForestClassifier.fit: 184 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__refit_all,2,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,1.0,0.4981,0.5019,0.5019,0.0,RandomForestClassifier.fit: 196 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__refit_all,3,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,1.0,0.556,0.444,0.444,0.0,RandomForestClassifier.fit: 185 evaluation rows removed from the fit
+grp_patients__ovl_test_in_fit__refit_all,4,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,1.0,0.6287,0.3713,0.3713,0.0,RandomForestClassifier.fit: 166 evaluation rows removed from the fit
+grp_patients__grp_holdout__tts,0,group,row_split,LL-GRP-001,test_auc,measured,True,0.774,0.5731,0.2009,0.2009,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts,1,group,row_split,LL-GRP-001,test_auc,measured,True,0.7994,0.5274,0.272,0.272,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts,2,group,row_split,LL-GRP-001,test_auc,measured,True,0.72,0.4981,0.2219,0.2219,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts,3,group,row_split,LL-GRP-001,test_auc,measured,True,0.7039,0.556,0.1479,0.1479,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts,4,group,row_split,LL-GRP-001,test_auc,measured,True,0.7565,0.6287,0.1278,0.1278,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts_stratified,0,group,row_split,LL-GRP-001,test_auc,measured,True,0.8084,0.5731,0.2353,0.2353,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts_stratified,1,group,row_split,LL-GRP-001,test_auc,measured,True,0.8089,0.5274,0.2815,0.2815,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts_stratified,2,group,row_split,LL-GRP-001,test_auc,measured,True,0.819,0.4981,0.3209,0.3209,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts_stratified,3,group,row_split,LL-GRP-001,test_auc,measured,True,0.7994,0.556,0.2434,0.2434,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__tts_stratified,4,group,row_split,LL-GRP-001,test_auc,measured,True,0.7847,0.6287,0.156,0.156,0.0,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__shufflesplit,0,group,row_split,LL-GRP-001,test_auc,measured,True,0.774,0.5731,0.2009,0.2009,0.0,ShuffleSplit -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__shufflesplit,1,group,row_split,LL-GRP-001,test_auc,measured,True,0.7994,0.5274,0.272,0.272,0.0,ShuffleSplit -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__shufflesplit,2,group,row_split,LL-GRP-001,test_auc,measured,True,0.72,0.4981,0.2219,0.2219,0.0,ShuffleSplit -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__shufflesplit,3,group,row_split,LL-GRP-001,test_auc,measured,True,0.7039,0.556,0.1479,0.1479,0.0,ShuffleSplit -> GroupShuffleSplit(groups=patient_id)
+grp_patients__grp_holdout__shufflesplit,4,group,row_split,LL-GRP-001,test_auc,measured,True,0.7565,0.6287,0.1278,0.1278,0.0,ShuffleSplit -> GroupShuffleSplit(groups=patient_id)
+grp_patients__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,1.0,0.5731,0.4269,0.4269,0.0,RandomForestClassifier.fit: feature icu_days removed
+grp_patients__tgt_proxy__proxy,1,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,1.0,0.5274,0.4726,0.4726,0.0,RandomForestClassifier.fit: feature icu_days removed
+grp_patients__tgt_proxy__proxy,2,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,1.0,0.4981,0.5019,0.5019,0.0,RandomForestClassifier.fit: feature icu_days removed
+grp_patients__tgt_proxy__proxy,3,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,1.0,0.556,0.444,0.444,0.0,RandomForestClassifier.fit: feature icu_days removed
+grp_patients__tgt_proxy__proxy,4,target_derived,post_outcome,LL-TGT-001,test_auc,measured,True,1.0,0.6287,0.3713,0.3713,0.0,RandomForestClassifier.fit: feature icu_days removed
+grp_patients__combo1,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,False,0.7743,0.7721,0.0022,0.2012,0.199,"StandardScaler: fitted on 545 training rows only, then applied to all rows"
+grp_patients__combo1,0,group,row_split,LL-GRP-001,test_auc,measured,False,0.7743,0.5729,0.2014,0.2012,0.0002,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__combo1,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,False,0.7982,0.7982,0.0,0.2708,0.2708,"StandardScaler: fitted on 528 training rows only, then applied to all rows"
+grp_patients__combo1,1,group,row_split,LL-GRP-001,test_auc,measured,False,0.7982,0.5273,0.2709,0.2708,0.0001,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__combo1,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,False,0.7175,0.7193,-0.0018,0.2194,0.2212,"StandardScaler: fitted on 543 training rows only, then applied to all rows"
+grp_patients__combo1,2,group,row_split,LL-GRP-001,test_auc,measured,False,0.7175,0.4973,0.2202,0.2194,0.0008,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__combo1,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,False,0.7023,0.7036,-0.0013,0.1463,0.1476,"StandardScaler: fitted on 530 training rows only, then applied to all rows"
+grp_patients__combo1,3,group,row_split,LL-GRP-001,test_auc,measured,False,0.7023,0.5559,0.1464,0.1463,0.0001,train_test_split -> GroupShuffleSplit(groups=patient_id)
+grp_patients__combo1,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,False,0.7559,0.7576,-0.0017,0.1272,0.1289,"StandardScaler: fitted on 520 training rows only, then applied to all rows"
+grp_patients__combo1,4,group,row_split,LL-GRP-001,test_auc,measured,False,0.7559,0.6271,0.1288,0.1272,0.0016,train_test_split -> GroupShuffleSplit(groups=patient_id)
+tab_credit__pre_scaler__standard,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8121,0.8121,0.0,0.0,0.0,"StandardScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__standard,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8524,0.8524,0.0,0.0,0.0,"StandardScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__standard,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8124,0.8124,0.0,0.0,0.0,"StandardScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__standard,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8238,0.8238,0.0,0.0,0.0,"StandardScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__standard,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8039,0.8039,0.0,0.0,0.0,"StandardScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__minmax,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8121,0.8121,0.0,0.0,0.0,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__minmax,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8524,0.8524,0.0,0.0,0.0,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__minmax,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8124,0.8124,0.0,0.0,0.0,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__minmax,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8238,0.8238,0.0,0.0,0.0,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__minmax,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8039,0.8039,0.0,0.0,0.0,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__robust,0,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8121,0.8121,0.0,0.0,0.0,"RobustScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__robust,1,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8524,0.8524,0.0,0.0,0.0,"RobustScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__robust,2,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8124,0.8124,0.0,0.0,0.0,"RobustScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__robust,3,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8238,0.8238,0.0,0.0,0.0,"RobustScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_scaler__robust,4,preprocessing,scaler,LL-PRE-001,test_auc,measured,True,0.8039,0.8039,0.0,0.0,0.0,"RobustScaler: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__mean,0,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8121,0.8121,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__mean,1,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8524,0.8524,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__mean,2,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8123,0.8124,-0.0001,-0.0001,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__mean,3,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8238,0.8238,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__mean,4,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8039,0.8039,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__median,0,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8123,0.8121,0.0002,0.0002,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__median,1,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8525,0.8525,0.0,0.0001,0.0001,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__median,2,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8124,0.8124,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__median,3,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8238,0.8237,0.0001,0.0,0.0001,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__pre_imputer__median,4,preprocessing,imputer,LL-PRE-001,test_auc,measured,True,0.8039,0.8039,0.0,0.0,0.0,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__ovl_test_in_fit__concat,0,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.861,0.8121,0.0489,0.0489,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__concat,1,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.885,0.8524,0.0326,0.0326,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__concat,2,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.8499,0.8124,0.0375,0.0375,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__concat,3,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.8541,0.8238,0.0303,0.0303,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__concat,4,overlap,test_in_fit,LL-OVL-003,test_auc,measured,True,0.8341,0.8039,0.0302,0.0302,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__refit_all,0,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.861,0.8121,0.0489,0.0489,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__refit_all,1,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.885,0.8524,0.0326,0.0326,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__refit_all,2,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.8499,0.8124,0.0375,0.0375,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__refit_all,3,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.8541,0.8238,0.0303,0.0303,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_test_in_fit__refit_all,4,overlap,test_in_fit,LL-OVL-001,test_auc,measured,True,0.8341,0.8039,0.0302,0.0302,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__ovl_raw_duplicates__frac30,0,overlap,raw_duplicates,LL-OVL-004,test_auc,measured,True,0.8556,0.8121,0.0435,0.0435,0.0,train_test_split: 270 duplicated rows removed before the split
+tab_credit__ovl_raw_duplicates__frac30,1,overlap,raw_duplicates,LL-OVL-004,test_auc,measured,True,0.8341,0.8524,-0.0183,-0.0183,0.0,train_test_split: 270 duplicated rows removed before the split
+tab_credit__ovl_raw_duplicates__frac30,2,overlap,raw_duplicates,LL-OVL-004,test_auc,measured,True,0.8652,0.8124,0.0528,0.0528,0.0,train_test_split: 270 duplicated rows removed before the split
+tab_credit__ovl_raw_duplicates__frac30,3,overlap,raw_duplicates,LL-OVL-004,test_auc,measured,True,0.841,0.8238,0.0172,0.0172,0.0,train_test_split: 270 duplicated rows removed before the split
+tab_credit__ovl_raw_duplicates__frac30,4,overlap,raw_duplicates,LL-OVL-004,test_auc,measured,True,0.8389,0.8039,0.035,0.035,0.0,train_test_split: 270 duplicated rows removed before the split
+tab_credit__combo5,0,preprocessing,imputer,LL-PRE-001,test_auc,measured,False,0.861,0.8609,0.0001,0.0489,0.0488,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__combo5,0,overlap,test_in_fit,LL-OVL-001,test_auc,measured,False,0.861,0.8121,0.0489,0.0489,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__combo5,1,preprocessing,imputer,LL-PRE-001,test_auc,measured,False,0.885,0.885,0.0,0.0326,0.0326,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__combo5,1,overlap,test_in_fit,LL-OVL-001,test_auc,measured,False,0.885,0.8524,0.0326,0.0326,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__combo5,2,preprocessing,imputer,LL-PRE-001,test_auc,measured,False,0.8499,0.8499,0.0,0.0375,0.0375,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__combo5,2,overlap,test_in_fit,LL-OVL-001,test_auc,measured,False,0.8499,0.8123,0.0376,0.0375,0.0001,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__combo5,3,preprocessing,imputer,LL-PRE-001,test_auc,measured,False,0.8541,0.8541,0.0,0.0303,0.0303,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__combo5,3,overlap,test_in_fit,LL-OVL-001,test_auc,measured,False,0.8541,0.8238,0.0303,0.0303,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_credit__combo5,4,preprocessing,imputer,LL-PRE-001,test_auc,measured,False,0.8341,0.8341,0.0,0.0302,0.0302,"SimpleImputer: fitted on 675 training rows only, then applied to all rows"
+tab_credit__combo5,4,overlap,test_in_fit,LL-OVL-001,test_auc,measured,False,0.8341,0.8039,0.0302,0.0302,0.0,Pipeline.fit: 225 evaluation rows removed from the fit
+tab_housing__ovl_raw_duplicates__frac30,0,overlap,raw_duplicates,LL-OVL-004,cv_r2,measured,True,0.9474,0.9175,0.0299,0.0299,0.0,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the split
+tab_housing__ovl_raw_duplicates__frac30,1,overlap,raw_duplicates,LL-OVL-004,cv_r2,measured,True,0.9446,0.9131,0.0315,0.0315,0.0,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the split
+tab_housing__ovl_raw_duplicates__frac30,2,overlap,raw_duplicates,LL-OVL-004,cv_r2,measured,True,0.9545,0.9296,0.0249,0.0249,0.0,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the split
+tab_housing__ovl_raw_duplicates__frac30,3,overlap,raw_duplicates,LL-OVL-004,cv_r2,measured,True,0.9438,0.921,0.0228,0.0228,0.0,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the split
+tab_housing__ovl_raw_duplicates__frac30,4,overlap,raw_duplicates,LL-OVL-004,cv_r2,measured,True,0.9464,0.9258,0.0206,0.0206,0.0,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the split
+tab_housing__tgt_proxy__proxy,0,target_derived,post_outcome,LL-TGT-001,cv_r2,measured,True,0.9697,0.9175,0.0522,0.0522,0.0,cross_val_score: feature assessed_value removed
+tab_housing__tgt_proxy__proxy,1,target_derived,post_outcome,LL-TGT-001,cv_r2,measured,True,0.9642,0.9131,0.0511,0.0511,0.0,cross_val_score: feature assessed_value removed
+tab_housing__tgt_proxy__proxy,2,target_derived,post_outcome,LL-TGT-001,cv_r2,measured,True,0.9694,0.9296,0.0398,0.0398,0.0,cross_val_score: feature assessed_value removed
+tab_housing__tgt_proxy__proxy,3,target_derived,post_outcome,LL-TGT-001,cv_r2,measured,True,0.9703,0.921,0.0493,0.0493,0.0,cross_val_score: feature assessed_value removed
+tab_housing__tgt_proxy__proxy,4,target_derived,post_outcome,LL-TGT-001,cv_r2,measured,True,0.9709,0.9258,0.0451,0.0451,0.0,cross_val_score: feature assessed_value removed
+ts_air__tmp_cv__kfold_shuffle,0,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9028,0.8957,0.0071,0.0071,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_shuffle,1,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9324,0.92,0.0124,0.0124,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_shuffle,2,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.8893,0.8876,0.0017,0.0017,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_shuffle,3,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9217,0.9154,0.0063,0.0063,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_shuffle,4,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9175,0.9103,0.0072,0.0072,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_plain,0,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.887,0.8957,-0.0087,-0.0087,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_plain,1,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9288,0.92,0.0088,0.0088,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_plain,2,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.8883,0.8876,0.0007,0.0007,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_plain,3,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9168,0.9154,0.0014,0.0014,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__kfold_plain,4,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9153,0.9103,0.005,0.005,0.0,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__default_cv,0,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9012,0.8957,0.0055,0.0055,0.0,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__default_cv,1,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9301,0.92,0.0101,0.0101,0.0,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__default_cv,2,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.8901,0.8876,0.0025,0.0025,0.0,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__default_cv,3,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9192,0.9154,0.0038,0.0038,0.0,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_air__tmp_cv__default_cv,4,temporal,T1,LL-TMP-001,cv_auc,measured,True,0.9172,0.9103,0.0069,0.0069,0.0,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order
+ts_sales__tmp_holdout__tts_default,0,temporal,T1,LL-TMP-001,test_mae,measured,True,18.4608,18.9083,0.4475,0.4475,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_default,1,temporal,T1,LL-TMP-001,test_mae,measured,True,18.0083,20.2394,2.2311,2.2311,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_default,2,temporal,T1,LL-TMP-001,test_mae,measured,True,18.2683,19.2536,0.9853,0.9853,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_default,3,temporal,T1,LL-TMP-001,test_mae,measured,True,18.6466,19.2628,0.6162,0.6162,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_default,4,temporal,T1,LL-TMP-001,test_mae,measured,True,16.9577,19.3386,2.3809,2.3809,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_shuffle_true,0,temporal,T1,LL-TMP-001,test_mae,measured,True,18.4608,18.9083,0.4475,0.4475,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_shuffle_true,1,temporal,T1,LL-TMP-001,test_mae,measured,True,18.0083,20.2394,2.2311,2.2311,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_shuffle_true,2,temporal,T1,LL-TMP-001,test_mae,measured,True,18.2683,19.2536,0.9853,0.9853,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_shuffle_true,3,temporal,T1,LL-TMP-001,test_mae,measured,True,18.6466,19.2628,0.6162,0.6162,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_holdout__tts_shuffle_true,4,temporal,T1,LL-TMP-001,test_mae,measured,True,16.9577,19.3386,2.3809,2.3809,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_hidden_time__renamed_time_col,0,temporal,T1,LL-TMP-001,test_mae,measured,True,18.4608,18.9083,0.4475,0.4475,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_hidden_time__renamed_time_col,1,temporal,T1,LL-TMP-001,test_mae,measured,True,18.0083,20.2394,2.2311,2.2311,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_hidden_time__renamed_time_col,2,temporal,T1,LL-TMP-001,test_mae,measured,True,18.2683,19.2536,0.9853,0.9853,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_hidden_time__renamed_time_col,3,temporal,T1,LL-TMP-001,test_mae,measured,True,18.6466,19.2628,0.6162,0.6162,0.0,train_test_split -> chronological split in time order
+ts_sales__tmp_hidden_time__renamed_time_col,4,temporal,T1,LL-TMP-001,test_mae,measured,True,16.9577,19.3386,2.3809,2.3809,0.0,train_test_split -> chronological split in time order
+ts_sales__combo3,0,temporal,T1,LL-TMP-001,test_mae,measured,False,18.4594,18.9083,0.4489,0.4489,0.0,train_test_split -> chronological split in time order
+ts_sales__combo3,1,temporal,T1,LL-TMP-001,test_mae,measured,False,18.0083,20.2394,2.2311,2.2311,0.0,train_test_split -> chronological split in time order
+ts_sales__combo3,2,temporal,T1,LL-TMP-001,test_mae,measured,False,18.2683,19.2536,0.9853,0.9853,0.0,train_test_split -> chronological split in time order
+ts_sales__combo3,3,temporal,T1,LL-TMP-001,test_mae,measured,False,18.6549,19.253,0.5981,0.6079,0.0098,train_test_split -> chronological split in time order
+ts_sales__combo3,4,temporal,T1,LL-TMP-001,test_mae,measured,False,16.9577,19.3386,2.3809,2.3809,0.0,train_test_split -> chronological split in time order
