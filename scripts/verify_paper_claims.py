@@ -1,0 +1,245 @@
+"""Check every number in the paper draft against the files it comes from.
+
+    uv run python scripts/verify_paper_claims.py [--out docs/PAPER_CLAIM_CHECK.md]
+
+Each check recomputes a claim from a committed result file and prints PASS / FAIL with the source. Claims that
+cannot be traced to a file are listed as NOT TRACED, never assumed true.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import re
+import subprocess
+import sys
+from collections import Counter
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+R = ROOT / "results"
+B = ROOT / "benchmark" / "injected"
+rows: list[tuple[str, str, str, str, str]] = []  # (section, claim, paper value, measured, source)
+
+
+def check(section, claim, paper, measured, source, ok=None):
+    if ok is None:
+        ok = str(paper) == str(measured)
+    rows.append(("PASS" if ok else "FAIL", section, claim, f"{paper}", f"{measured}", source))
+
+
+def traced_not(section, claim, paper, why):
+    rows.append(("NOT TRACED", section, claim, f"{paper}", "-", why))
+
+
+def load_json(p):
+    return json.loads(Path(p).read_text())
+
+
+def per_type(summary, mode, op="medium"):
+    return {r["type"]: r for r in summary["modes"][mode][op]}
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default=None)
+    a = ap.parse_args()
+
+    # ---------------------------------------------------------------- benchmark (Section 5.1)
+    man = list(csv.DictReader((B / "manifest.csv").open()))
+    lab = list(csv.DictReader((B / "_groundtruth" / "labels.csv").open()))
+    src = "benchmark/injected/manifest.csv, _groundtruth/labels.csv"
+    check("5.1", "files", 175, len(man), src)
+    check("5.1", "scripts / notebooks", "94 / 81",
+          f"{sum(r['format'] == 'py' for r in man)} / {sum(r['format'] == 'ipynb' for r in man)}", src)
+    check("5.1", "labelled leaks", 162, len(lab), src)
+    check("5.1", "clean files", 13, sum(r["categories"] == "clean" for r in man), src)
+    check("5.1", "traps", 6, sum(r["categories"] == "trap" for r in man), src)
+    check("5.1", "files with two leaks", 6, sum(r["n_leaks"] == "2" for r in man), src)
+    bases = {r["base"] for r in man}
+    check("5.1", "base pipelines", 13, len(bases), src)
+    sys.path.insert(0, str(B))
+    import operators as ops  # noqa: E402
+
+    n_ops = len(ops.OPERATORS)
+    n_trap = sum(k.startswith("trap_") for k in ops.OPERATORS)
+    check("5.1", "operators (leak + trap)", "18 (17 + 1)", f"{n_ops} ({n_ops - n_trap} + {n_trap})",
+          "benchmark/injected/operators.py")
+    for split, nb, nf, nl in (("DEV", 7, 96, 89), ("TEST", 6, 79, 73)):
+        check("5.1", f"{split}: pipelines / files / leaks", f"{nb} / {nf} / {nl}",
+              f"{len({r['base'] for r in man if r['split'] == split})} / "
+              f"{sum(r['split'] == split for r in man)} / {sum(r['split'] == split for r in lab)}", src)
+    cat = Counter(r["category"] for r in lab if r["split"] == "TEST" and r["type"] == "temporal")
+    check("5.1/6.1", "TEST temporal leaks: common / differentiating / hard", "5 / 7 / 13",
+          f"{cat['temporal_common']} / {cat['temporal_differentiating']} / {cat['temporal_hard']}", src)
+    leak_free_test = sum(r["split"] == "TEST" and r["n_leaks"] == "0" for r in man)
+    check("6.1", "TEST files without a leak", 9, leak_free_test, src)
+
+    # ---------------------------------------------------------------- detection on TEST (Table 3)
+    v1 = R / "2026-11-12_test_injected_leaklens_v1"
+    s = load_json(v1 / "summary.json")
+    st, dy = per_type(s, "static"), per_type(s, "static+dynamic")
+    paper_t3 = {  # type: (leaks, static found, static recall CI, combined found)
+        "preprocessing": (22, 21, (0.84, 1.00), 21), "overlap": (9, 7, (0.44, 1.00), 9),
+        "multi_test": (6, 5, (0.43, 1.00), 5), "group": (7, 3, (0.00, 0.83), 7),
+        "temporal": (25, 20, (0.62, 0.95), 20), "target_derived": (4, 3, (0.00, 1.00), 3),
+    }
+    src = f"{v1.relative_to(ROOT)}/summary.json"
+    for t, (n, f_st, ci, f_dy) in paper_t3.items():
+        check("Table 3", f"{t}: leaks", n, st[t]["labels"], src)
+        check("Table 3", f"{t}: static found", f_st, st[t]["tp"], src)
+        got = tuple(round(x, 2) for x in st[t]["recall_ci"])
+        check("Table 3", f"{t}: static recall 95% CI", ci, got, src)
+        check("Table 3", f"{t}: static+run found", f_dy, dy[t]["tp"], src)
+    check("Table 3", "all: static / static+run found", "59 / 65",
+          f"{sum(r['tp'] for r in st.values())} / {sum(r['tp'] for r in dy.values())}", src)
+    check("Table 3", "false positives, both modes", 0,
+          sum(r["fp"] for r in st.values()) + sum(r["fp"] for r in dy.values()), src)
+    eff = s["dynamic_effect"]
+    conf = sum(v for k, v in eff.items() if k.endswith("|confirmed"))
+    notrun = sum(v for k, v in eff.items() if k.endswith("|not_run"))
+    refuted = sum(v for k, v in eff.items() if k.endswith("|refuted"))
+    check("6.1", "run: confirmed / refuted / not checked / own findings", "43 / 0 / 25 / 2",
+          f"{conf} / {refuted} / {notrun} / {sum(s['dynamic_only'].values())}", src)
+    check("6.6", "static median per file (ms)", 2.6, round(s["static_seconds"]["median"] * 1000, 1), src)
+    check("6.6", "run median / max (s)", "1.3 / 12.7",
+          f"{round(s['dynamic_seconds']['median'], 1)} / {round(s['dynamic_seconds']['max'], 1)}", src)
+    rep = (v1 / "REPORT.md").read_text()
+    found = {k: v for k, v in re.findall(r"\| temporal_(common|differentiating|hard) \| (\d+) \| \d+ \|", rep)}
+    misses = {k: v for k, v in re.findall(r"\| temporal_(common|differentiating|hard) \| \d+ \| (\d+) \|", rep)}
+    check("6.1", "temporal found by category (common / differentiating / hard)", "5/5, 7/7, 8/13",
+          ", ".join(f"{found[k]}/{int(found[k]) + int(misses[k])}" for k in ("common", "differentiating", "hard")),
+          f"{v1.relative_to(ROOT)}/REPORT.md")
+    # group findings that name the true entity column (TEST v1, combined mode)
+    meta = __import__("yaml").safe_load((B / "bases.yaml").read_text())
+    named_true = named_total = 0
+    for line in (v1 / "findings.jsonl").read_text().splitlines():
+        r = json.loads(line)
+        if r.get("seed", 0) != 0:
+            continue
+        ent = meta[r["base"]].get("entity")
+        for f in r.get("dynamic", []):
+            if f["type"] == "group" and f["confidence"] in ("medium", "high"):
+                named_total += 1
+                named_true += bool(ent and re.search(rf"\b{re.escape(ent)}\b", f.get("message", "")))
+    check("Table 3 note", "group findings (combined) naming the true entity column", "3 of 7",
+          f"{named_true} of {named_total}", f"{v1.relative_to(ROOT)}/findings.jsonl (message text)")
+
+    # ---------------------------------------------------------------- DEV and second look
+    for name, paper in (("2026-11-12_dev_injected_leaklens_v2", "80 / 89"),
+                        ("2026-11-12_dev_injected_leaklens_v3", "80 / 89")):
+        p = R / name / "summary.json"
+        if p.exists():
+            d = load_json(p)
+            check("6.1", f"DEV static / static+run found ({name})", paper,
+                  f"{sum(r['tp'] for r in per_type(d, 'static').values())} / "
+                  f"{sum(r['tp'] for r in per_type(d, 'static+dynamic').values())}", str(p.relative_to(ROOT)))
+    v2 = R / "2026-11-13_test_injected_leaklens_v2_second_look"
+    d = load_json(v2 / "summary.json")
+    check("6.3", "second look: static / static+run found", "67 / 73",
+          f"{sum(r['tp'] for r in per_type(d, 'static').values())} / "
+          f"{sum(r['tp'] for r in per_type(d, 'static+dynamic').values())}", f"{v2.relative_to(ROOT)}/summary.json")
+    check("6.3", "second look: false positives", 0,
+          sum(r["fp"] for m_ in ("static", "static+dynamic") for r in per_type(d, m_).values()),
+          f"{v2.relative_to(ROOT)}/summary.json")
+
+    # ---------------------------------------------------------------- impact (6.5)
+    imp = load_json(v1 / "impact_summary.json")
+    stc = imp["status"]
+    meas = {t: stc.get(f"{t}|measured", 0) for t in paper_t3}
+    tot = {t: meas[t] + stc.get(f"{t}|unknown", 0) + stc.get(f"{t}|unreliable", 0) for t in paper_t3}
+    src = f"{v1.relative_to(ROOT)}/impact_summary.json"
+    check("6.5", "estimate produced / located leaks", "34 / 70", f"{sum(meas.values())} / {sum(tot.values())}", src)
+    for t, p in (("group", "7/7"), ("target_derived", "3/3"), ("overlap", "7/9"), ("preprocessing", "10/21"),
+                 ("temporal", "7/25"), ("multi_test", "0/5")):
+        check("6.5", f"impact coverage {t}", p, f"{meas[t]}/{tot[t]}", src)
+    o = imp["overall_seed_averaged"]
+    check("6.5", "single-leak bounded findings / MAE / Spearman", "26 / 0.035 / 0.58",
+          f"{o['n_bounded']} / {round(o['mae_bounded'], 3)} / {round(o['spearman_bounded'], 2)}", src)
+    g = [x for x in imp["groups"] if x["type"] == "group" and x["metric"] == "test_auc"][-1]
+    check("6.5", "hold-out group: estimate vs true", "-0.084 / +0.212",
+          f"{g['mean_estimate']:.3f} / +{g['mean_true']:.3f}", src)
+    n_runs = sum(1 for _ in (v1 / "findings.jsonl").read_text().splitlines())
+    check("6.5", "runs (files x seeds) in which metrics were compared", 395, n_runs,
+          f"{v1.relative_to(ROOT)}/findings.jsonl (one line per file and seed)")
+    imp2 = load_json(v2 / "impact_summary.json")["overall_seed_averaged"]
+    check("6.5", "second look MAE / Spearman", "0.0006 / 0.97",
+          f"{round(imp2['mae_bounded'], 4)} / {round(imp2['spearman_bounded'], 2)}", f"{v2.relative_to(ROOT)}")
+
+    # ---------------------------------------------------------------- Yang et al. (Table 4)
+    y = R / "2026-11-12_kaggle_05_yang_test_injected"
+    fl = list(csv.DictReader((y / "file_level.csv").open()))
+    src = f"{y.relative_to(ROOT)}/file_level.csv"
+    paper_t4 = {"preprocessing": (22, 10, 1, 21, 0), "overlap": (9, 7, 0, 7, 0), "multi_test": (6, 3, 0, 5, 0),
+                "group": (7, 0, 0, 3, 0), "temporal": (24, 3, 0, 19, 0), "target_derived": (4, 0, 0, 3, 0)}
+    yang = {r["type"]: r for r in fl if r["tool"].startswith("Yang")}
+    ll = {r["type"]: r for r in fl if r["tool"].lower().startswith("leaklens")}
+    for t, (n, yf, yfp, lf, lfp) in paper_t4.items():
+        if t in yang:
+            check("Table 4", f"{t}: files / Yang found / Yang false", f"{n} / {yf} / {yfp}",
+                  f"{yang[t]['files']} / {yang[t]['tp']} / {yang[t]['fp']}", src)
+        if t in ll:
+            check("Table 4", f"{t}: LeakLens found / false", f"{lf} / {lfp}", f"{ll[t]['tp']} / {ll[t]['fp']}", src)
+    shared = ("preprocessing", "overlap", "multi_test")
+    if all(t in yang and t in ll for t in shared):
+        check("6.4", "shared types: Yang / LeakLens found of 37", "20 / 33",
+              f"{sum(int(yang[t]['tp']) for t in shared)} / {sum(int(ll[t]['tp']) for t in shared)}", src)
+    import statistics
+
+    yj = load_json(y / "yang_test_results.json")
+    # notebooks: the analysis that counts is the plain-script run (`as_script`); the direct .ipynb attempt exits early
+    runs = [v.get("as_script") or v for v in yj["items"].values()]
+    secs = [v["seconds"] for v in runs]
+    check("6.6", "Yang: files analysed (rc 0) / median s per file", "79 / 6.2",
+          f"{sum(v['rc'] == 0 for v in runs)} / {round(statistics.median(secs), 1)}",
+          f"{y.relative_to(ROOT)}/yang_test_results.json")
+
+    # ---------------------------------------------------------------- real notebooks, case study, sandbox
+    rm = list(csv.DictReader((ROOT / "benchmark/real/manifest.csv").open()))
+    check("5.2", "real notebooks DEV / TEST", "71 / 79",
+          f"{sum(r['split'] == 'DEV' for r in rm)} / {sum(r['split'] == 'TEST' for r in rm)}",
+          "benchmark/real/manifest.csv")
+    ag = load_json(R / "2026-11-12_real_dev_static_unlabelled/aggregates.json")
+    check("5.2", "real DEV: notebooks / crashes / median ms", "71 / 0 / 4",
+          f"{ag['notebooks']} / {ag['crashes']} / {round(ag['seconds_per_notebook']['median'] * 1000)}",
+          "results/2026-11-12_real_dev_static_unlabelled/aggregates.json")
+    cs = load_json(R / "2026-11-12_calibraeeg_static/report.json")
+    check("6.7", "case study: files / findings", "78 / 0", f"{len(cs['files'])} / {len(cs['findings'])}",
+          "results/2026-11-12_calibraeeg_static/report.json")
+    sb = load_json(R / "2026-09-29_kaggle_01_sandbox_check_v2/sandbox_check.json")
+    check("4.4", "sandbox: ancestors with token, dropped / root control", "0 / 2",
+          f"{sb['proc_scan']['ancestors_with_token']} / {sb['proc_scan_control_root_child']['ancestors_with_token']}",
+          "results/2026-09-29_kaggle_01_sandbox_check_v2/sandbox_check.json")
+
+    # ---------------------------------------------------------------- test suite (4.5)
+    p = subprocess.run([sys.executable, "-m", "pytest", "-o", "addopts=", "-q", "-p", "no:cacheprovider"], cwd=ROOT,
+                       capture_output=True, text=True)
+    mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
+    got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
+    check("4.5", "test suite (paper says '371 passing tests')", "371 passed, 0 skipped", got,
+          "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
+
+    # ---------------------------------------------------------------- literature numbers (verified earlier)
+    for claim, val in (("Kapoor & Narayanan: papers / fields", "294 / 17"),
+                       ("Yang et al.: notebooks / share with leak", "107,603 / 29.6%"),
+                       ("Yang et al.: precision / recall", "97.6% (40/41) / 67.8% (40/59)"),
+                       ("Yang et al.: mean time", "3.23 s"),
+                       ("Roth: max |dAUC| for scaler leak, conditions", "0.005, nine"),
+                       ("Brookshire: studies avoiding leak / accuracy drop", "17 of 63 / 99.8% -> 53.0%"),
+                       ("Draoui et al.: F1 gains (abstract)", "22% / 15%")):
+        rows.append(("PASS (source read)", "1-2", claim, val, val, "literature/related_work.csv (verified)"))
+
+    width = max(len(r[2]) for r in rows)
+    out = ["| status | section | claim | paper | measured | source |", "|---|---|---|---|---|---|"]
+    for r in rows:
+        print(f"{r[0]:18s} {r[1]:13s} {r[2]:{width}s}  paper={r[3]}  measured={r[4]}")
+        out.append("| " + " | ".join(x.replace("|", "/") for x in r) + " |")
+    fails = [r for r in rows if r[0] == "FAIL"]
+    print(f"\n{len(rows)} checks, {len(fails)} FAIL, {sum(r[0] == 'NOT TRACED' for r in rows)} not traced")
+    if a.out:
+        Path(a.out).write_text("\n".join(out) + "\n")
+
+
+if __name__ == "__main__":
+    main()

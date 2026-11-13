@@ -1,0 +1,7 @@
+units (file, type) on shared types: 37
+LeakLens right: 33   Yang right: 20
+both 19, only LeakLens 14, only Yang 1, neither 3
+exact McNemar two-sided p = 9.77e-04
+  multi_test: both 3, only LeakLens 2, only Yang 0, neither 1, p = 0.500
+  preprocessing: both 9, only LeakLens 12, only Yang 1, neither 0, p = 0.003
+  overlap: both 7, only LeakLens 0, only Yang 0, neither 2, p = 1.000
