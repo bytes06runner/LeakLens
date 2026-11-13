@@ -17,7 +17,7 @@ from rich.console import Console
 
 from leaklens import LEAKAGE_TYPES, __version__
 
-console = Console()
+console = Console(soft_wrap=True)
 
 # Exit codes: docs/SPEC.md section 7.
 EXIT_OK = 0
