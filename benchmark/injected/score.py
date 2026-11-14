@@ -17,8 +17,8 @@ from __future__ import annotations
 import argparse
 import ast
 import csv
-import re
 import json
+import re
 import statistics
 from collections import Counter, defaultdict
 from pathlib import Path

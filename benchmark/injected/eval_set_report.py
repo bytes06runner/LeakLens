@@ -26,7 +26,8 @@ def kind(note: str) -> str:
     for key, name in (("groupkfold", "group-aware split"), ("groupshufflesplit", "group-aware split"),
                       ("chronological", "chronological split"), ("timeseriessplit", "chronological split"),
                       ("duplicated rows removed", "duplicates removed before split"),
-                      ("refit", "transformer refitted on training rows"), ("training rows", "transformer refitted on training rows"),
+                      ("refit", "transformer refitted on training rows"),
+                      ("training rows", "transformer refitted on training rows"),
                       ("evaluation rows removed", "evaluation rows removed from fit"), ("feature", "feature removed")):
         if key in n:
             return name

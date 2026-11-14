@@ -99,7 +99,7 @@ def main() -> None:
     ss = load_json(v1 / "summary_strict.json")
     sst, sdy = per_type(ss, "static"), per_type(ss, "static+dynamic")
     srcs = f"{v1.relative_to(ROOT)}/summary_strict.json"
-    for t, (n, f_st, ci, f_dy) in {**paper_t3, "group": (7, 3, (0.00, 0.83), 3)}.items():
+    for t, (_n, f_st, _ci, f_dy) in {**paper_t3, "group": (7, 3, (0.00, 0.83), 3)}.items():
         check("Table 3 (strict)", f"{t}: static / static+run found", f"{f_st} / {f_dy}",
               f"{sst[t]['tp']} / {sdy[t]['tp']}", srcs)
     check("Table 3 (strict)", "group static+run recall CI", (0.0, 0.83),
@@ -285,7 +285,8 @@ def main() -> None:
     cal = load_json(R / "2026-11-14_case_studies" / "calibraeeg_static_after_13.json")
     check("7.1", "EEG after #13: findings / rules / lines", "2 / LL-GRP-001,LL-GRP-005 / 99,54",
           f"{len(cal['findings'])} / {','.join(sorted(f['rule_id'] for f in cal['findings']))} / "
-          f"{','.join(str(f['location']['line_start']) for f in sorted(cal['findings'], key=lambda f: -f['location']['line_start']))}",
+          + ",".join(str(f["location"]["line_start"])
+                     for f in sorted(cal["findings"], key=lambda f: -f["location"]["line_start"])),
           "results/2026-11-14_case_studies/calibraeeg_static_after_13.json")
     check("7.1", "EEG regime C (fold.py) has no finding", True,
           not any("fold.py" in f["location"]["file"] for f in cal["findings"]),
@@ -322,7 +323,8 @@ def main() -> None:
     cvf = next(f for f in tmp if "TimeSeriesSplit" in f["impact"].get("note", ""))
     imp = first["impact"]
     check("7.1", "C3b temporal: confidence / run status (both splits)", "low / confirmed",
-          f"{'/'.join(sorted({f['confidence'] for f in tmp}))} / {'/'.join(sorted({f['dynamic']['status'] for f in tmp}))}",
+          "/".join(sorted({f["confidence"] for f in tmp})) + " / "
+          + "/".join(sorted({f["dynamic"]["status"] for f in tmp})),
           src)
     check("7.1", "C3b share of training rows dated after first test row", "99%",
           f"{min(f['dynamic']['details']['training_rows_after_earliest_evaluation_row'] for f in tmp):.0%}", src)
@@ -336,7 +338,8 @@ def main() -> None:
     info = load_json(V4 / "run_info.json")
     check("7.1", "job 08 v4: cases run / timed out", "4 / 0",
           f"{sum('returncode' in c for c in info['cases'].values())} / "
-          f"{sum(bool(c.get('timed_out')) for c in info['cases'].values())}", "results/2026-11-14_kaggle_08_case_studies_v4/run_info.json")
+          f"{sum(bool(c.get('timed_out')) for c in info['cases'].values())}",
+          "results/2026-11-14_kaggle_08_case_studies_v4/run_info.json")
     check("7.1", "job 08 v4: data paths adapted", 0,
           sum(len(v) for v in load_json(V4 / "adaptations.json").values()),
           "results/2026-11-14_kaggle_08_case_studies_v4/adaptations.json")
