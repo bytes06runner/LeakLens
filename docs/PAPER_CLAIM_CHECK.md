@@ -123,6 +123,7 @@
 | PASS | 7.1 | C3a: temporal confidence / run / impact | low / not_run / unknown | low / not_run / unknown | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
 | PASS | 7.1 | C3a: static evidence names datetime (parsed) | True | True | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
 | PASS | 7.1 | C3a: run found no timestamp column at the split | True | True | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
+| PASS | 7.1 | case labels confirmed by the owner, unchanged | True | True | results/2026-11-14_case_studies/PROPOSED_LABELS.md |
 | PASS | 7.1 | case labels found: at threshold / with low (of all labels) | 1 / 4 of 6 | 1 / 4 of 6 | results/2026-11-14_case_studies/PROPOSED_LABELS.md + _v4 reports |
 | PASS | 7.1 | C2a static result | none | none | results/2026-11-14_case_studies/static_C2a.json |
 | PASS | 7.1 | C2b static result | group:medium:patient_id | group:medium:patient_id | results/2026-11-14_case_studies/static_C2b.json |

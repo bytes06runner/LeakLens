@@ -16,4 +16,8 @@ counted from 1). The notebooks are public Kaggle notebooks, identified here only
 Not labelled: C2a cell 85 fits a scaler on the competition test set for a submission (no score is computed on it);
 C3b keeps `Store` on both sides, which is legitimate for forecasting known stores.
 
-**Owner confirmation:** _pending_
+**Owner confirmation:** confirmed on 2026-11-14 by the project owner (first author), all six rows as written
+("Confirm all six"). This settles the two open questions as the table states them: the C3b multi-test leak is located
+at the selection line (displayed cell 51, line 3), and C3b's cross-validated comparison of three models (cell 54) is
+not labelled as a leak. The confirmation came after LeakLens's output on these notebooks had been shown to the
+owner (job 08 v4, `../2026-11-14_kaggle_08_case_studies_v4/README.md`); no row was changed.

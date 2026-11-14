@@ -381,6 +381,10 @@ def main() -> None:
                      and f["dynamic"]["status"] != "refuted" for f in fs)
         return n
 
+    lab_txt = (R / "2026-11-14_case_studies" / "PROPOSED_LABELS.md").read_text()
+    check("7.1", "case labels confirmed by the owner, unchanged", True,
+          "**Owner confirmation:** confirmed" in lab_txt and "no row was changed" in lab_txt,
+          "results/2026-11-14_case_studies/PROPOSED_LABELS.md")
     check("7.1", "case labels found: at threshold / with low (of all labels)", "1 / 4 of 6",
           f"{found('medium')} / {found('low')} of {len(labs)}",
           "results/2026-11-14_case_studies/PROPOSED_LABELS.md + _v4 reports")

@@ -459,8 +459,8 @@ paired AUPRC falls from 0.779 (A) and 0.595 (B) to 0.364 (C).
 
 \textbf{Public notebooks.} To avoid picking cases \tool{} handles, a rule fixed in advance took, in the seeded order of
 our sampling pool (study notebooks excluded), the first two notebooks per theme whose code shows patient-level or
-chronological leakage, uses scikit-learn and runs on a CPU. All 253 notebooks inspected are logged with the reason
-they were taken or skipped, and the labels were written before \tool{} was run on the four chosen. They ran unchanged in the offline
+chronological leakage, uses scikit-learn and runs on a CPU. All 253 notebooks inspected are logged with reasons, and
+the labels were written before \tool{} was run on the four chosen and later confirmed, unchanged, by the first author. They ran unchanged in the offline
 sandbox. Statically, \tool{} names \code{patient\_id} at the random split of the
 Parkinson's progression notebook (C2b), finds the shuffled splits of both forecasting notebooks only at low
 confidence, below the reporting threshold, and misses the gait notebook (C2a), whose patients exist only as file
