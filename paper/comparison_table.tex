@@ -3,13 +3,11 @@
 \toprule
 \textbf{Aspect} & \textbf{Yang et al.~\cite{yang2022}} & \textbf{\tool{} (this work)} \\
 \midrule
-Venue and year & ASE 2022 & Research prototype, 2026 \\
 Analysis technique & Static data-flow analysis written in Datalog (Souffl\'{e}), with type inference & One-pass abstract interpretation over the Python syntax tree, linked to an optional instrumented run \\
 Runs the analysed code & No & Optional (dynamic and impact modes only) \\
 Input & Python scripts; notebooks have to be converted first & \code{.py} and \code{.ipynb} directly, in execution order when it is recorded \\
 Leakage types & Preprocessing, overlap, multi-test & The same three, plus group, temporal and target-derived features \\
-Group (entity) leakage & Not a type it claims & Yes: entity inferred from names and file paths, confirmed on the data at run time \\
-Temporal leakage & Not a type it claims & Yes: non-chronological splits and forward-looking features \\
+Group and temporal leakage & Not types it claims & Group: entity inferred from names and file paths, confirmed on the data at run time. Temporal: non-chronological splits and forward-looking features \\
 Location reported & The affected evaluation line (as observed in our runs) & The line that causes the leak, with a suggested fix \\
 Confidence and severity & Not reported & Both, per finding \\
 Impact on the score & Not estimated & Re-runs the pipeline with a canonical fix; six kinds of fix so far \\
@@ -19,6 +17,5 @@ Evaluation data & 100 hand-labelled real notebooks (94 analysed) and 107,603 pub
 Accuracy reported by the authors & Precision 97.6\% (40/41), recall 67.8\% (40/59), real notebooks & Precision 1.00, recall 0.81 (static) and 0.89 (with the run), own injected TEST split \\
 Time per file & Mean 3.23\,s (their paper); median 6.2\,s on our files (Kaggle CPU) & Static: median 2.6\,ms. Instrumented run: median 1.3\,s (laptop) \\
 Large-scale study & 29.6\% of 107,603 notebooks flagged & None yet \\
-Licence & MIT & MIT \\
 \bottomrule
 \end{tabularx}

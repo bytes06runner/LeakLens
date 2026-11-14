@@ -102,7 +102,8 @@ tex = [r"\begin{tabular}{@{}llrrrrr@{}}", r"\toprule",
        rf" & & /{len(T1)} & /{len(G)} & /{len(G)} & /{len(DUP)} & /{len(clean)} \\", r"\midrule"]
 prev = None
 for tool, hint, t1, g, gc, dp, al in rows5:
-    shown = "" if tool == prev else tool.replace("LeakLens", r"\tool{}")
+    pretty = {"leakhound-ml": "LeakHound", "deepchecks": "Deepchecks"}.get(tool, tool)
+    shown = "" if tool == prev else pretty.replace("LeakLens", r"\tool{}")
     prev = tool
     shown_hint = {"none (default)": "no", "true column named": "yes", "none needed": "no"}[hint]
     tex.append(rf"{shown} & {shown_hint} & {t1} & {g} & {gc} & {dp} & {al} \\")
