@@ -158,11 +158,12 @@ def cell(v):
 
 
 tex = [r"\begin{tabular}{@{}lrrlll@{}}", r"\toprule",
-       r"\textbf{Type} & \textbf{Findings} & \textbf{AUC/R$^2$} & \textbf{\tool{}} & \textbf{LeakHound, default} & "
-       r"\textbf{LeakHound, column named} \\", r"\midrule"]
+       r"\textbf{Type} & \textbf{N} & \textbf{Comp.} & \textbf{\tool{}} & \textbf{LH} & \textbf{LH, col.} \\",
+       r"\midrule"]
 for t in sorted(per):
     p = per[t]
-    tex.append(rf"{t.replace('_', '-')} & {p['n']} & {p['comp']} & {cell(p['ll'])} & {cell(p['lh0'])} & {cell(p['lh1'])} \\")
+    short = {"target_derived": "target-der.", "preprocessing": "preproc."}.get(t, t)
+    tex.append(rf"{short} & {p['n']} & {p['comp']} & {cell(p['ll'])} & {cell(p['lh0'])} & {cell(p['lh1'])} \\")
 tex += [r"\bottomrule", r"\end{tabular}"]
 (OUT / "impact_table.tex").write_text("\n".join(tex) + "\n")
 both = [x for x in rows if x["comparable_default"] and x["leaklens"] is not None

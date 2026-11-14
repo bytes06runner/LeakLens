@@ -580,9 +580,10 @@ none at all without a named column except for duplicated records. The near-zero 
 little information: the true inflation of those leaks is close to zero.
 
 \begin{table}[t]
-\caption{Impact estimates against the true inflation, injected TEST, single-leak files, seed 0. Cells: number of
-estimates (mean absolute error). AUC/R$^2$: findings whose pipeline reports a metric LeakHound also reports.
-\tool{}: first look.}
+\caption{Impact estimates against the true inflation, injected TEST, single-leak files, seed 0. N: findings.
+Comp.: findings whose pipeline reports AUC or $R^2$, the metrics LeakHound reports. Cells: number of estimates
+(mean absolute error). LH: LeakHound with its defaults; LH, col.: with the true column named. \tool{}: first
+look.}
 \label{tab:impact}
 \footnotesize
 \setlength{\tabcolsep}{2.4pt}
