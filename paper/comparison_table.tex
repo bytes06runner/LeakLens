@@ -17,7 +17,6 @@ Output and integration & HTML report, command line & Terminal, JSON, SARIF; pre-
 Dependencies & Souffl\'{e}, a pyright fork, Python 3.8, Linux & Python 3.12 with NumPy, pandas, scikit-learn \\
 Evaluation data & 100 hand-labelled real notebooks (94 analysed) and 107,603 public GitHub notebooks & 175 synthetic files with injected leaks, written by us; 150 real notebooks sampled but not yet labelled \\
 Accuracy reported by the authors & Precision 97.6\% (40/41), recall 67.8\% (40/59), real notebooks & Precision 1.00, recall 0.81 (static) and 0.89 (with the run), own injected TEST split \\
-Are the two accuracy rows comparable? & \multicolumn{2}{>{\raggedright\arraybackslash}p{0.79\textwidth}}{No. They were measured on different data with different labelling. Table~\ref{tab:yang} gives the only like-for-like measurement.} \\
 Time per file & Mean 3.23\,s (their paper); median 6.2\,s on our files (Kaggle CPU) & Static: median 2.6\,ms. Instrumented run: median 1.3\,s (laptop) \\
 Large-scale study & 29.6\% of 107,603 notebooks flagged & None yet \\
 Licence & MIT & MIT \\
