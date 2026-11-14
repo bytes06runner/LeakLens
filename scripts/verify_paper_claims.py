@@ -263,7 +263,7 @@ def main() -> None:
                        capture_output=True, text=True)
     mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
     got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
-    check("4.5", "test suite (386 tests; 384 pass on a laptop, 2 root-only skipped)", "384 passed, 2 skipped", got,
+    check("4.5", "test suite (387 tests; 385 pass on a laptop, 2 root-only skipped)", "385 passed, 2 skipped", got,
           "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
 
     # ---------------------------------------------------------------- review response (2026-11-14)
@@ -393,6 +393,60 @@ def main() -> None:
         got = "none" if not st_ else ";".join(
             f"{f['type']}:{f['confidence']}" + (":patient_id" if "`patient_id`" in f["message"] else "") for f in st_)
         check("7.1", f"{cid} static result", paper, got, f"results/2026-11-14_case_studies/static_{cid}.json")
+
+    # ---------------------------------------------------------------- real notebooks (7.2), Review 2
+    rt = R / "2026-11-14_real_test_static"
+    rlab = list(csv.DictReader((ROOT / "benchmark/real/labels_TEST.csv").open()))
+    dlab = list(csv.DictReader((ROOT / "benchmark/real/labels_DEV.csv").open()))
+    leaks = [x for x in rlab if x["leak_type"] != "none"]
+    check("7.2", "real notebooks: TEST / DEV", "79 / 71",
+          f"{len({x['notebook_id'] for x in rlab})} / {len({x['notebook_id'] for x in dlab})}", "benchmark/real/labels_*.csv")
+    from collections import Counter as _C
+    cnt = _C(x["leak_type"] for x in leaks)
+    check("7.2", "TEST draft labels: leaks in notebooks; pre/multi/temp/over/group/target",
+          "99 in 56; 39/26/15/8/6/5",
+          f"{len(leaks)} in {len({x['notebook_id'] for x in leaks})}; "
+          + "/".join(str(cnt[t]) for t in ("preprocessing", "multi_test", "temporal", "overlap", "group",
+                                            "target_derived")), "benchmark/real/labels_TEST.csv")
+    check("7.2", "TEST labels frozen before the first LeakLens run on real TEST (label commit is an ancestor)", True,
+          subprocess.run(["git", "merge-base", "--is-ancestor", "f8e901e", "d43f0c8"], cwd=ROOT).returncode == 0,
+          "git history: f8e901e (labels) before d43f0c8 (first scoring)")
+    sm = load_json(rt / "summary.json")["strict (headline)|medium"]
+    tp_, fp_ = sum(x["tp"] for x in sm), sum(x["fp"] for x in sm)
+    check("7.2", "line rule, medium+, strict: leaks found / false positives", "33 of 99 / 87", f"{tp_} of 99 / {fp_}",
+          str(rt / "summary.json"))
+    fl = load_json(rt / "filelevel.json")
+    lm, yg = fl["LeakLens static, confidence medium+"], fl["Yang et al. analyser (notebook as .py)"]
+
+    def pr(d, t):
+        return f"{d[t]['tp'] + d[t]['fn']}: {d[t]['precision'] or 0:.2f}/{d[t]['recall'] or 0:.2f}"
+    for t, paper_ll, paper_y in (("preprocessing", "23: 0.76/0.70", "23: 0.43/0.52"),
+                                 ("overlap", "7: 0.83/0.71", "7: 0.20/0.29"),
+                                 ("multi_test", "25: 0.74/0.56", "25: 0.32/0.36")):
+        check("7.2", f"notebook level {t}: n: P/R LeakLens", paper_ll, pr(lm, t), str(rt / "filelevel.json"))
+        check("7.2", f"notebook level {t}: n: P/R Yang", paper_y, pr(yg, t), str(rt / "filelevel.json"))
+    for t, paper_ll in (("group", "4: 0.00/0.00"), ("temporal", "13: 0.75/0.23"), ("target_derived", "4: 0.20/0.25")):
+        check("7.2", f"notebook level {t}: n: P/R LeakLens", paper_ll, pr(lm, t), str(rt / "filelevel.json"))
+    check("7.2", "group false-positive notebooks at medium+", 3, lm["group"]["fp"], str(rt / "filelevel.json"))
+    pj = load_json(R / "2026-11-14_kaggle_10_yang_real_test/paired_vs_leaklens.json")
+    check("7.2", "paired decisions right: LeakLens / Yang of N; p<0.001", "206 / 162 of 237; True",
+          f"{pj['leaklens_right']} / {pj['yang_right']} of {pj['decisions']}; {pj['mcnemar_exact_p'] < 0.001}",
+          "results/2026-11-14_kaggle_10_yang_real_test/paired_vs_leaklens.json")
+    yi = load_json(R / "2026-11-14_kaggle_10_yang_real_test/yang_real_test_results.json")["items"]
+    check("7.2", "Yang: notebooks without a report / of them timed out at 300 s", "10 / 7",
+          f"{sum(v['summary'] is None for v in yi.values())} / {sum(v['rc'] == -999 for v in yi.values())}",
+          "results/2026-11-14_kaggle_10_yang_real_test/yang_real_test_results.json")
+    dfl = load_json(R / "2026-11-14_real_dev_static/filelevel.json")["LeakLens static, confidence medium+"]
+    check("7.2", "DEV (not blind) notebook level pre / multi P/R; group TP of n",
+          "0.53/0.50; 0.60/0.40; 0 of 4",
+          f"{dfl['preprocessing']['precision']:.2f}/{dfl['preprocessing']['recall']:.2f}; "
+          f"{dfl['multi_test']['precision']:.2f}/{dfl['multi_test']['recall']:.2f}; "
+          f"{dfl['group']['tp']} of {dfl['group']['tp'] + dfl['group']['fn']}", "results/2026-11-14_real_dev_static")
+    st_txt = (ROOT / "benchmark/real/review/REVIEW_STATUS.md").read_text()
+    st_line = next((ln for ln in st_txt.splitlines() if ln.startswith("Status:")), "no status line")
+    check("7.2", "labels reviewed by the first author (review recorded as complete)", "Status: COMPLETE",
+          "Status: COMPLETE" if st_line.startswith("Status: COMPLETE") else st_line,
+          "benchmark/real/review/REVIEW_STATUS.md")
 
     # ---------------------------------------------------------------- literature numbers (verified earlier)
     for claim, val in (("Kapoor & Narayanan: papers / fields", "294 / 17"),

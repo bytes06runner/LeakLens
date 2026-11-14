@@ -53,8 +53,7 @@
 \maketitle
 
 \begin{abstract}
-When evaluation data reaches model training, a reported score stops predicting how the model will do on new
-data. Code analysers for machine learning catch preprocessing, overlap and multi-test leakage, but the leaks that
+When evaluation data reaches training, a reported score overstates performance. Code analysers for machine learning catch preprocessing, overlap and multi-test leakage, but the leaks that
 distort results most, across patients or across time, are either missed or found only when an identifier column
 is named in the code. We present \tool{}, a prototype for Python scripts and notebooks. Its static pass reports
 six leakage types and takes evidence for an entity from column names, file paths, attributes of objects and
@@ -64,8 +63,10 @@ held-out half of an injected benchmark (79 files, 73 leaks), scored once, with a
 it names the true entity, the static pass finds 59 leaks with no false positive and the combined mode 61 with
 four. Per file, the analyser of Yang et al.\ is right for 20 of 37 files and \tool{} for 33 ($p<0.001$). On real
 code it flags the random-window and within-patient regimes of an EEG study and leaves the leave-one-patient-out
-regime alone. Of six leaks we labelled in four public notebooks it reports one at its threshold, naming the patient column, and four with low-confidence findings included; its run confirms a shuffled forecasting split whose fix lowers the reported $R^2$ from 0.96 to 0.89. Impact estimates are preliminary: fixes that change the split also change the
-rows being scored.
+regime alone. On 79 held-out public Kaggle notebooks, scored per notebook, it is right in 206 of 237 decisions on
+the three types both tools report, against 162 for the Yang analyser ($p<0.001$), but it finds none of the four
+notebooks with group leakage. Impact estimates are preliminary: fixes that change the split also change the rows
+being scored.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -80,10 +81,8 @@ leakage} is any route by which evaluation rows, or information that will not exi
 training~\cite{kaufman2012}. Leaky code runs without errors and passes its tests; the only sign is a score that
 is better than it should be.
 
-The problem is widespread. A review of earlier surveys counted 294 affected papers in 17 scientific fields, and
-in one re-analysis the advantage of complex models over logistic regression vanished after the errors were
-corrected~\cite{kapoor2023}. Applied to 107,603 public notebooks on GitHub, a static analyser reported a leak in
-29.6\% of them~\cite{yang2022}.
+The problem is widespread: a survey counted 294 affected papers in 17
+fields~\cite{kapoor2023}, and a static analyser flagged 29.6\% of 107,603 public notebooks~\cite{yang2022}.
 
 The kinds of leak differ a great deal in cost. Across 2,047 tabular datasets, scaling all rows before the split,
 the example every course uses, moved AUC by at most 0.005, while leakage across group and time boundaries did not
@@ -112,8 +111,8 @@ run checks entity and time overlap there, per fold, and finds identifier columns
 \item \textbf{A per-finding impact estimate}, measured by re-running the user's own pipeline with a canonical fix,
 including notebooks that only display their score. We present it as preliminary.
 \item \textbf{An evaluation in three parts}: an injected benchmark of 175 files (162 leaks) split before any rule
-was written; five case studies on real code; and a protocol for 79 real notebooks labelled independently by two
-people.
+was written; five case studies on real code; and 150 public notebooks, 79 of them held out, with labels drafted
+by an AI assistant from a written guide and reviewed by the first author.
 \end{enumerate}
 
 \section{Background and Related Work}
@@ -125,8 +124,7 @@ Narayanan~\cite{kapoor2023} distinguish eight types, and Roth~\cite{roth2026} me
 97.6\%, recall 67.8\% on hand-labelled notebooks). NBLyzer and later abstract-interpretation work verify that
 training and test data stay apart~\cite{subotic2022a,subotic2022b,drobnjakovic2024}. LeakageDetector puts the
 analyser of Yang et al.\ into an IDE with quick fixes~\cite{alomar2025,truong2025}, and Draoui et
-al.~\cite{draoui2026} add LLM prompts to static slicing; their abstract, which is all we could read, reports F1
-gains of 22\% for preprocessing and 15\% for overlap. scicode-lint~\cite{samsonau2026} asks a local LLM pattern
+al.~\cite{draoui2026} add LLM prompts to static slicing. scicode-lint~\cite{samsonau2026} asks a local LLM pattern
 questions, two of them about temporal leakage. leakray and unleak~\cite{leakray,unleak} (2026, no paper) match identifier names near a random split.
 
 \textbf{Checks on data and at run time.} Deepchecks~\cite{chorev2022} checks duplicates and date overlap between
@@ -136,7 +134,7 @@ provenance.
 
 \textbf{Measuring the effect.} LeakHound~\cite{leakhound} estimates inflation with a proxy model trained on the
 given split; mlwhatif~\cite{grafberger2023} re-runs pipelines for data-cleaning questions; Leakly~\cite{leakly}
-re-runs a pipeline on permuted labels, which signals leakage somewhere without locating it. In \tool{} an estimate
+re-runs a pipeline on permuted labels without locating the leak. In \tool{} an estimate
 belongs to one located finding and uses the user's own pipeline and metric. Table~\ref{tab:design} sets \tool{}
 next to the analyser of Yang et al., the closest prior work.
 
@@ -153,9 +151,8 @@ with different labelling and are not comparable; Table~\ref{tab:yang} is the lik
 
 \tool{} reports six types (Table~\ref{tab:types}): the three of Yang et al.~\cite{yang2022}, group and temporal
 leakage (non-independence and temporal leakage for Kapoor and Narayanan~\cite{kapoor2023}) and target-derived
-features. Whether a group finding is a mistake depends on the claim: a model meant for the patients it was trained
-on may share patients across a split. The tool cannot know the claim, so group findings carry a confidence and can
-be suppressed inline with a reason.
+features. A group finding is a mistake only if the claim is about new entities, so it
+can be suppressed inline with a reason.
 
 \begin{table}[t]
 \caption{The six leakage types and the signal used by each pass.}
@@ -220,8 +217,7 @@ entity name read on the items of a collection (\code{recs[k].subject}). Strong n
 \code{subject} can give medium confidence, weak ones such as \code{customer} or \code{visit} only low. Research code
 often splits by hand, so the analyser also treats a uniform random draw compared with a threshold
 (\code{u = rng.random(n); tr = u < 0.8}) as a row-level split once both sides index the same data, and a loop that
-sends the first rows of every entity to one list and the rest to another as a within-entity split. Functions that a
-file defines but never calls are analysed once with unknown arguments. Listing~\ref{lst:example} shows a case from
+sends the first rows of every entity to one list and the rest to another as a within-entity split. Listing~\ref{lst:example} shows a case from
 the EEG study of Section~\ref{sec:real}.
 
 \begin{lstlisting}[float=t, caption={Random split of 1-second EEG windows pooled over patients (shortened from the case study code) and the static finding.}, label={lst:example}, captionpos=b]
@@ -270,7 +266,7 @@ Notebooks from the internet run only in an offline cloud session (Kaggle), in a 
 environment, a throwaway directory, a timeout and an unprivileged user, so that it cannot read the session's
 tokens. Findings (location, type, rule, confidence, evidence, proposed fix, and the before/after metric where
 measured) are written as text, JSON or SARIF, with a pre-commit hook and a GitHub Action. The tool is deterministic
-and uses no language model. Of its 386 tests, 384 pass on a laptop; two need root and run only in the cloud.
+and uses no language model. Of its 387 tests, 385 pass on a laptop; two need root and run only in the cloud.
 
 \section{Benchmark and Evaluation Protocol}
 
@@ -288,7 +284,7 @@ every leaky file has a corrected twin, so true inflation can be measured. Tempor
 
 \subsection{Protocol}
 
-The protocol was frozen before any TEST result existed. A finding matches a label when it is in the same file and
+The protocol was frozen before any TEST result. A finding matches a label when it is in the same file and
 cell, its lines overlap the labelled lines and its type is the labelled one or a listed alternative; matching is
 one-to-one, and the operating point is medium confidence or above. Recall is reported per type with 95\% bootstrap
 intervals over files. After the first TEST run we added one stricter condition, logged with its reason and applied to
@@ -422,9 +418,9 @@ $+0.212$ AUC on average) because the fix grouped by the wrong column. LeakHound,
 (Table~\ref{tab:impact}), was more accurate where both tools gave an estimate (11 findings, mean absolute error
 0.065 against 0.086).
 
-The direction is consistent: every estimate is oriented so that a
-positive value means the leak flattered the score, and across 395 runs instrumentation never changed the metric a script
-printed. The scored rows are another matter. We recorded the evaluation rows of every original and
+Every estimate is oriented so that a positive value means the leak
+flattered the score, and across 395 runs instrumentation never changed a printed metric. The scored rows are
+another matter. We recorded the evaluation rows of every original and
 fixed run: the 18 fixes that leave the split alone (refit on training rows, drop a feature, remove evaluation rows
 from a fit) score identical rows, while all 16 fixes that change the split score different rows, with a mean
 overlap of 0.14 to 0.28 by fix type. For those, the estimate is the change under the canonical fix, not a
@@ -445,35 +441,24 @@ AUC or $R^2$. Cells: estimates (mean absolute error). LH: LeakHound; col.: true 
 
 \subsection{Case studies}
 
-For each case we report the mechanism, what \tool{} says, whether it names the right column, the corrected
-pipeline and the change in the metric (Table~\ref{tab:cases}).
+Table~\ref{tab:cases} summarises the cases.
 
 \textbf{EEG.} CalibraEEG, a seizure-detection project by the first author, scores the same models under three
 regimes on 23 patients: random 1-second windows pooled over patients (A), a chronological split inside each
-patient (B) and leave-one-patient-out (C). Its splits are hand-written NumPy masks and per-subject loops over
-recording objects, and our first version of \tool{} found nothing in its 78 files. The rules for hand-written
-splits and item attributes (Section~\ref{sec:static}) were added after that miss, while looking at this code, so this case is a
-development case, not a blind one. \tool{} now flags A (Listing~\ref{lst:example}) and B on \code{subject} and
+patient (B) and leave-one-patient-out (C). Its splits are hand-written NumPy masks and per-subject loops, on which our first version found nothing; the rules for
+them (Section~\ref{sec:static}) were written while looking at this code, so it is a development case. \tool{} now flags A (Listing~\ref{lst:example}) and B on \code{subject} and
 reports nothing in C. The corrected pipeline is regime C, written by the CalibraEEG authors; with LightGBM the
 paired AUPRC falls from 0.779 (A) and 0.595 (B) to 0.364 (C).
 
-\textbf{Public notebooks.} To avoid picking cases \tool{} handles, a rule fixed in advance took, in the seeded order of
-our sampling pool (study notebooks excluded), the first two notebooks per theme whose code shows patient-level or
-chronological leakage, uses scikit-learn and runs on a CPU. All 253 notebooks inspected are logged with reasons, and
-the labels were written before \tool{} was run on the four chosen and later confirmed, unchanged, by the first author. They ran unchanged in the offline
-sandbox. Statically, \tool{} names \code{patient\_id} at the random split of the
-Parkinson's progression notebook (C2b), finds the shuffled splits of both forecasting notebooks only at low
-confidence, below the reporting threshold, and misses the gait notebook (C2a), whose patients exist only as file
-names inside a loop over \code{os.listdir}; the identifier never becomes a column, so the run adds nothing.
-In C2b the run confirmed 115 of 194 patients on both sides, holding 96\% of the validation rows; a patient-level
-split raised the validation SMAPE from 84.7 to 98.5, an estimate \tool{} marks unreliable because the score is a
-displayed value it cannot tie to the fix. In the energy notebook (C3a) \code{datetime} is dropped before the
-split, so the run could not confirm the leak and the chronological fix failed. In the sales notebook (C3b) the run confirmed that 99\% of training
-rows were dated after the first test row, and the chronological fix lowered the random forest's test $R^2$ from
-0.959 to 0.895 and raised its cross-validated RMSE from 108.6k to 258.0k. It also confirmed the multi-test
-selection of the best of three models on the test rows, but placed it at the scoring call rather than the selection
-line. A bug found on C3b's first run (a printed statistic taken as the metric) is fixed and logged. Of the six leaks we labelled in these notebooks, \tool{} reports one at the
-threshold, with the right column (C2b), and four with low-confidence findings included.
+\textbf{Public notebooks.} A rule fixed in advance chose, from our seeded sampling pool, the first two notebooks per
+theme with patient-level or chronological leakage that use scikit-learn and run on a CPU (253 inspected, all
+logged). Labels were written before \tool{} ran and later confirmed, unchanged, by the first author. \tool{} names
+\code{patient\_id} in C2b, where the run found 115 of 194 patients on both sides (96\% of validation rows); the
+patient-level fix raised validation SMAPE from 84.7 to 98.5, marked unreliable because the score is a displayed
+value. It misses C2a, whose patients exist only as file names in an \code{os.listdir} loop, and finds the
+forecasting splits only at low confidence. In C3a the run could not confirm the leak (\code{datetime} is dropped
+before the split); in C3b it found 99\% of training rows dated after the first test row, and the chronological fix
+lowered test $R^2$ from 0.959 to 0.895. Its C3b multi-test finding sits at the scoring call, not the selection line.
 
 \begin{table}[t]
 \caption{Real-code case studies. Entity: true entity or time column named. $\Delta$: metric with the leak minus
@@ -503,43 +488,71 @@ unconf.: not confirmed by the run.
 
 \subsection{Real notebooks}
 
-From 150 public Kaggle notebooks sampled in three strata, the 79 by TEST-side authors form the test set (71 are
-DEV). Two
-authors are labelling the 79 TEST notebooks independently, with a written guide and a practice round, without tool
-output or AI assistants; we will report Cohen's kappa and settle disagreements before scoring. Until then we make no
-claim about precision or recall on real notebooks.
+We sampled 150 public Kaggle notebooks in three strata (tabular, time series, grouped data) and split them by
+author into TEST (79) and DEV (71). The labels were drafted by an AI coding assistant following the
+written guide and reviewed by the first author; with no second annotator there is no agreement statistic. The TEST labels were committed before either tool's output on these
+notebooks was looked at. They mark 99 leaks in 56 notebooks (39 preprocessing, 26 multi-test, 15 temporal, 8
+overlap, 6 group, 5 target-derived). Both tools ran once (Table~\ref{tab:real}).
+
+\begin{table}[t]
+\centering
+\caption{Real TEST notebooks (79), scored per notebook and type, confidence medium or above. $n$: notebooks with a
+label of the type. P/R: precision/recall.}
+\label{tab:real}
+\small
+\begin{tabular}{@{}lrcc@{}}
+\toprule
+Type & $n$ & \tool{} P/R & Yang et al.\ P/R \\
+\midrule
+preprocessing & 23 & 0.76/0.70 & 0.43/0.52 \\
+overlap & 7 & 0.83/0.71 & 0.20/0.29 \\
+multi-test & 25 & 0.74/0.56 & 0.32/0.36 \\
+group & 4 & 0.00/0.00 & -- \\
+temporal & 13 & 0.75/0.23 & -- \\
+target-derived & 4 & 0.20/0.25 & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On the three shared types \tool{} is right in 206 of 237 notebook-type decisions and the Yang analyser in 162
+(exact McNemar, $p<0.001$); the latter gave no report for 10 notebooks (7 timed out at 300\,s), counted as no
+finding. Under the line rule \tool{} locates only 33 of the 99 leaks, with 87 false positives, partly because it points
+at a selection's scoring call and the guide at the selection line. Group leakage, our
+main target, fails on real code: none of the four notebooks is found at the threshold (one at low confidence,
+with the right column), and three others get group findings on identifiers the labels do not treat as entities.
+Of ten temporal misses, three
+are below the threshold; most others have implicit order (EEG samples, engine cycles). DEV, not blind, is no better
+(preprocessing 0.53/0.50, multi-test 0.60/0.40, group 0 of 4).
 
 \section{Limitations and Threats to Validity}
 
-\textbf{Real code.} The benchmark and the tool share authors, and TEST uses new pipelines but the same mutation
-operators as DEV, so it measures generalisation across pipelines, not across the ways people write leaks. The case
-studies are few and one of them shaped the rules. \textbf{Small samples.} TEST has 4 target-derived, 6 multi-test
-and 7 group leaks. \textbf{Blindness.} TEST column names were seen by mistake while rules were written; no TEST
-code, label or operator was read. \textbf{Entity inference} is heuristic and can mislead, as the first TEST run
-shows. \textbf{Coverage.} Custom classes and deep learning frameworks
-remain largely outside the analysis. \textbf{Impact estimates} exist for about half of the located leaks and, for
-split-changing fixes, compare different evaluation rows. \textbf{Baselines.} The Yang analyser was scored under a
-looser rule; the data-level tools used tables exported by our run; scicode-lint, LeakCheck, leakray and unleak were
-not run.
+\textbf{Shared authorship.} The benchmark, the real-notebook labels and the tool share authors, and the AI assistant
+that drafted the labels also wrote the rules, so all may miss the same leaks; injected TEST reuses DEV's mutation
+operators. \textbf{Labels.} One draft and one reviewer, no second annotator; parts of 32 long TEST notebooks may
+have been read only partly, and labels the review adds are reported as added after scoring. \textbf{Small
+samples.} Injected TEST has 4 target-derived, 6 multi-test and 7 group leaks; real TEST has 4 group notebooks.
+\textbf{Blindness.} TEST column names were seen by mistake while rules were written. \textbf{Coverage.} Custom
+classes and deep learning code are largely outside the analysis. \textbf{Baselines.} The Yang analyser was scored per file;
+scicode-lint, LeakCheck, leakray and unleak were not run on real code.
 
 \section{Conclusion and Future Work}
 
-\tool{} reads machine learning code for six leakage types, takes entity evidence from more than column names,
-checks its findings at the split while the code runs, and can re-run a pipeline with a fix. On held-out injected
-leaks, counting a group finding only when it names the right entity, it found 81\% statically and 84\% with the
-run, more than the reference static analyser on the types they share ($p<0.001$), and it was the only tool to find
-the time-order leaks without being told the time column. Two weaknesses are plain: the run once attached group
-findings to the wrong column, and impact estimates for split-changing fixes compare different rows.
-Next we will finish the real-notebook evaluation, run the new linters and scicode-lint, and measure how often each
-leakage type occurs in public notebooks and how much it costs.
+\tool{} reads ML code for six leakage types, takes entity evidence from more than column names, checks findings at
+the split while the code runs, and can re-run a pipeline with a fix. On held-out injected leaks, with group findings
+counted only when they name the right entity, it found 81\% statically and 84\% with the run, more than the
+reference analyser ($p<0.001$). On 79 real notebooks it again beats that analyser on the shared types but finds no
+group leak, so the main contribution is not yet shown on real code, and impact estimates for split-changing fixes
+compare different rows. Next: an independent human annotator, the remaining linters, and prevalence and cost of each
+type in public notebooks.
 
 \textbf{Data and code availability.} The code, benchmark generators, frozen protocol, change log and the output of
 every cited run are released under the MIT licence at \url{https://github.com/bytes06runner/LeakLens}.
 
 \section*{Acknowledgment}
 
-The implementation was written with the help of an AI coding assistant; the authors made the design and protocol
-decisions and reviewed all reported results.
+The implementation was written with the help of an AI coding assistant, which also drafted the real-notebook
+labels from the written guide; the first author reviewed every label, and the authors made the design and
+protocol decisions and reviewed all reported results.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

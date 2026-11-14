@@ -54,3 +54,42 @@ def test_score_maps_displayed_cells_and_applies_the_entity_rule(tmp_path):
     lenient = {r["type"]: r for r in rep["lenient|medium"]}
     assert (lenient["group"]["tp"], lenient["group"]["fn"]) == (2, 0)  # displayed cell 4 = finding cell 3
     assert (strict["group"]["tp"], strict["group"]["fn"]) == (1, 1)  # `visit` is the wrong entity
+
+
+def test_filelevel_scores_per_notebook_with_the_entity_rule_and_counts_yang_gaps_as_no_finding(tmp_path):
+    out = tmp_path / "run"
+    out.mkdir()
+
+    def f(typ, conf, msg=""):
+        return {
+            "type": typ,
+            "confidence": conf,
+            "message": msg,
+            "location": {"cell": 0, "line_start": 1, "line_end": 1},
+        }
+
+    recs = [
+        {
+            "notebook_id": "R001",
+            "status": "ok",
+            "findings": [f("preprocessing", "medium"), f("group", "medium", "`visit`")],
+        },
+        {"notebook_id": "R002", "status": "ok", "findings": [f("preprocessing", "low")]},
+    ]
+    (out / "findings.jsonl").write_text("".join(json.dumps(r) + "\n" for r in recs))
+    labels = tmp_path / "labels.csv"
+    labels.write_text(HEAD + "x,R001,group,9,1,1,sure,,,patient_id\nx,R002,preprocessing,9,1,1,sure,,,\n")
+    yang = tmp_path / "yang.json"
+    det = {"Pre-processing leakage": {"detected": 1, "lines": [3]}}
+    yang.write_text(json.dumps({"items": {"R001": {"summary": None}, "R002": {"summary": det}}}))
+    sl.filelevel(labels, out, yang, boot=50)
+    s = json.loads((out / "filelevel.json").read_text())
+    med, low, y = (
+        s["LeakLens static, confidence medium+"],
+        s["LeakLens static, confidence low+"],
+        s["Yang et al. analyser (notebook as .py)"],
+    )
+    assert (med["preprocessing"]["tp"], med["preprocessing"]["fp"], med["preprocessing"]["fn"]) == (0, 1, 1)
+    assert (low["preprocessing"]["tp"], low["preprocessing"]["fp"]) == (1, 1)
+    assert (med["group"]["tp"], med["group"]["fn"]) == (0, 1)  # names `visit`, label says patient_id
+    assert (y["preprocessing"]["tp"], y["preprocessing"]["fp"]) == (1, 0)  # R001 had no report: no finding
