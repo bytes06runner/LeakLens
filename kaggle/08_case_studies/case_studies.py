@@ -24,7 +24,8 @@ T0 = time.time()
 code_dir = os.path.dirname(glob.glob("/kaggle/input/**/CODE_VERSION.json", recursive=True)[0])
 info = {"code_version": json.load(open(os.path.join(code_dir, "CODE_VERSION.json"))), "cases": {}}
 wheel = glob.glob(os.path.join(code_dir, "leaklens-*.whl"))[0]
-subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-deps", wheel], check=True)
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-deps", "--ignore-requires-python", wheel], check=True)
+info["python"] = sys.version.split()[0]  # the wheel declares 3.12; Kaggle moved to 3.13 (recorded, not hidden)
 
 from leaklens.sandbox import run_untrusted  # noqa: E402
 
