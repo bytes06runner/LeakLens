@@ -36,8 +36,17 @@
 | PASS | Table 3 | target_derived: static found | 3 | 3 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
 | PASS | Table 3 | target_derived: static recall 95% CI | (0.0, 1.0) | (0.0, 1.0) | results/2026-11-12_test_injected_leaklens_v1/summary.json |
 | PASS | Table 3 | target_derived: static+run found | 3 | 3 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
-| PASS | Table 3 | all: static / static+run found | 59 / 65 | 59 / 65 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
-| PASS | Table 3 | false positives, both modes | 0 | 0 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
+| PASS | Table 3 note | frozen line-and-type rule: static+run group / all found | 7 / 65 | 7 / 65 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
+| PASS | Table 3 | static false positives | 0 | 0 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
+| PASS | Table 3 (strict) | preprocessing: static / static+run found | 21 / 21 | 21 / 21 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | overlap: static / static+run found | 7 / 9 | 7 / 9 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | multi_test: static / static+run found | 5 / 5 | 5 / 5 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | group: static / static+run found | 3 / 3 | 3 / 3 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | temporal: static / static+run found | 20 / 20 | 20 / 20 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | target_derived: static / static+run found | 3 / 3 | 3 / 3 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | group static+run recall CI | (0.0, 0.83) | (0.0, 0.83) | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | all: static / static+run found | 59 / 61 | 59 / 61 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
+| PASS | Table 3 (strict) | false positives static / static+run | 0 / 4 | 0 / 4 | results/2026-11-12_test_injected_leaklens_v1/summary_strict.json |
 | PASS | 6.1 | run: confirmed / refuted / not checked / own findings | 43 / 0 / 25 / 2 | 43 / 0 / 25 / 2 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
 | PASS | 6.6 | static median per file (ms) | 2.6 | 2.6 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
 | PASS | 6.6 | run median / max (s) | 1.3 / 12.7 | 1.3 / 12.7 | results/2026-11-12_test_injected_leaklens_v1/summary.json |
@@ -76,7 +85,7 @@
 | PASS | 5.2 | real DEV: notebooks / crashes / median ms | 71 / 0 / 4 | 71 / 0 / 4 | results/2026-11-12_real_dev_static_unlabelled/aggregates.json |
 | PASS | 6.7 | case study: files / findings | 78 / 0 | 78 / 0 | results/2026-11-12_calibraeeg_static/report.json |
 | PASS | 4.4 | sandbox: ancestors with token, dropped / root control | 0 / 2 | 0 / 2 | results/2026-09-29_kaggle_01_sandbox_check_v2/sandbox_check.json |
-| PASS | 6.4 | paired: both / only LeakLens / only Yang / neither / p | 19 / 14 / 1 / 3 / 0.001 | 19 / 14 / 1 / 3 / 0.001 | results/2026-11-13_yang_paired_test/output.txt |
+| PASS | 6.4 | paired: both / only LeakLens / only Yang / neither / p<0.001 | 19 / 14 / 1 / 3 / True | 19 / 14 / 1 / 3 / True | results/2026-11-13_yang_paired_test/output.txt |
 | PASS | 6.5 / Table 5 | LeakLens (static + run) (none needed): T1 / group / group right col / dup / clean alarms | 8 / 7 / 3 / 2 / 0 | 8 / 7 / 3 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
 | PASS | 6.5 / Table 5 | leakcheck-ml (none (default)): T1 / group / group right col / dup / clean alarms | 3 / 4 / 4 / 2 / 0 | 3 / 4 / 4 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
 | PASS | 6.5 / Table 5 | leakcheck-ml (true column named): T1 / group / group right col / dup / clean alarms | 7 / 7 / 7 / 2 / 0 | 7 / 7 / 7 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
@@ -90,7 +99,23 @@
 | PASS | 6.6 | impact, findings both estimate / MAE LeakHound / MAE LeakLens | 11 / 0.065 / 0.086 | 11 / 0.065 / 0.086 | paper/numbers.json |
 | PASS | 6.6 | LeakHound error range on duplicates and time splits | 0.01 to 0.08 | 0.01 to 0.08 | paper/numbers.json |
 | PASS | 5.4 | scicode-lint: files attempted (all timed out) / results | 29 / 0 | 29 / 0 | results/2026-11-14_kaggle_06_scicode_gpu_test |
-| PASS | 4.5 | test suite (373 tests; 371 pass on a laptop, 2 root-only skipped) | 371 passed, 2 skipped | 371 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
+| PASS | 4.5 | test suite (383 tests; 381 pass on a laptop, 2 root-only skipped) | 381 passed, 2 skipped | 381 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
+| PASS | 6.5 | fixes keeping the split: identical eval rows / changing the split: different rows | 18 / 16 | 18 / 16 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
+| PASS | 6.5 | mean overlap by split-changing fix type, range | 0.14 to 0.28 | 0.14 to 0.28 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
+| PASS | 6.5 | kinds of fix that keep the split all identical | True | True | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
+| PASS | 7.1 | EEG after #13: findings / rules / lines | 2 / LL-GRP-001,LL-GRP-005 / 99,54 | 2 / LL-GRP-001,LL-GRP-005 / 99,54 | results/2026-11-14_case_studies/calibraeeg_static_after_13.json |
+| PASS | 7.1 | EEG regime C (fold.py) has no finding | True | True | results/2026-11-14_case_studies/calibraeeg_static_after_13.json |
+| PASS | 7.1 | EEG AUPRC A / B / C (lgbm) | 0.779 / 0.595 / 0.364 | 0.779 / 0.595 / 0.364 | results/2026-11-14_case_studies/calibraeeg_gap_summary.csv (copied from CalibraEEG a062f45) |
+| PASS | 7.1 | EEG A-C / B-C AUPRC differences | +0.415 / +0.231 | +0.415 / +0.231 | results/2026-11-14_case_studies/calibraeeg_gap_summary.csv |
+| PASS | 7.1 | notebooks inspected / taken | 253 / 4 | 253 / 4 | results/2026-11-14_case_studies/case_selection_log.csv |
+| PASS | 7.1 | C3b temporal: confidence / run status (both splits) | low / confirmed | low / confirmed | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C3b share of training rows dated after first test row | 99% | 99% | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C3b chronological fix: RF test R2 leaky -> fixed / delta | 0.959 -> 0.895 / +0.065 | 0.959 -> 0.895 / +0.065 | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C3b CV RMSE leaky -> fixed (k) | 108.6k -> 258.0k | 108.6k -> 258.0k | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C3b multi-test confirmed | high / confirmed | high / confirmed | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C2a static result | none | none | results/2026-11-14_case_studies/static_C2a.json |
+| PASS | 7.1 | C2b static result | group:medium:patient_id | group:medium:patient_id | results/2026-11-14_case_studies/static_C2b.json |
+| PASS | 7.1 | C3a static result | temporal:low | temporal:low | results/2026-11-14_case_studies/static_C3a.json |
 | PASS (source read) | 1-2 | Kapoor & Narayanan: papers / fields | 294 / 17 | 294 / 17 | literature/related_work.csv (verified) |
 | PASS (source read) | 1-2 | Yang et al.: notebooks / share with leak | 107,603 / 29.6% | 107,603 / 29.6% | literature/related_work.csv (verified) |
 | PASS (source read) | 1-2 | Yang et al.: precision / recall | 97.6% (40/41) / 67.8% (40/59) | 97.6% (40/41) / 67.8% (40/59) | literature/related_work.csv (verified) |

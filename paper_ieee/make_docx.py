@@ -173,7 +173,7 @@ def math_runs(s, fmt):
             m = re.match(r"\\([a-zA-Z]+|.)", s[i:])
             name = m[1]
             i += len(m[0])
-            out.append(({"dagger": "\u2020", "ast": "*", "leq": "\u2264", "geq": "\u2265", ",": "\u202f",
+            out.append(({"dagger": "\u2020", "cdot": "\u00b7", "Delta": "\u0394", "ast": "*", "leq": "\u2264", "geq": "\u2265", ",": "\u202f",
                          "times": "\u00d7"}[name], fmt))
             continue
         if c.isalpha():
@@ -572,6 +572,18 @@ def main():
         labels[m[1]] = str(k)
     for k, m in enumerate(re.finditer(r"label=\{([^}]+)\}", body), start=1):
         labels[m[1]] = str(k)
+    sec, sub = 0, 0  # section labels: IEEE numbering (VII, IV-A)
+    for m in re.finditer(r"\\(section|subsection)(\*?)\{[^}]*\}\s*(\\label\{([^}]+)\})?", body):
+        if m[2]:
+            continue
+        if m[1] == "section":
+            sec, sub = sec + 1, 0
+            if m[4]:
+                labels[m[4]] = ROMAN[sec]
+        else:
+            sub += 1
+            if m[4]:
+                labels[m[4]] = f"{ROMAN[sec]}-{chr(64 + sub)}"
     ctx = Ctx(cites, labels)
 
     # ---- template parts
@@ -634,6 +646,10 @@ def main():
             else:
                 B.append(para("Heading1" if m[1] == "section" else "Heading2",
                               to_runs(norm_space(inline(head, ctx)), ctx)))
+            continue
+        ml = re.match(r"\\label\{[^}]*\}\s*", lines[i:])
+        if ml:
+            i += ml.end()
             continue
         m = re.match(r"\\begin\{([a-zA-Z*]+)\}", lines[i:])
         if m:

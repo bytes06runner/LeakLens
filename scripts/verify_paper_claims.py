@@ -304,6 +304,30 @@ def main() -> None:
           f"{len(sel)} / {sum(r['decision'] == 'TAKEN' for r in sel)}",
           "results/2026-11-14_case_studies/case_selection_log.csv")
 
+    c3 = load_json(R / "2026-11-14_kaggle_08_case_studies_v3" / "C3b.json")
+    src = "results/2026-11-14_kaggle_08_case_studies_v3/C3b.json"
+    tmp = [f for f in c3["findings"] if f["type"] == "temporal"]
+    first = next(f for f in tmp if "chronological" in f["impact"].get("note", ""))
+    cvf = next(f for f in tmp if "TimeSeriesSplit" in f["impact"].get("note", ""))
+    imp = first["impact"]
+    check("7.1", "C3b temporal: confidence / run status (both splits)", "low / confirmed",
+          f"{'/'.join(sorted({f['confidence'] for f in tmp}))} / {'/'.join(sorted({f['dynamic']['status'] for f in tmp}))}",
+          src)
+    check("7.1", "C3b share of training rows dated after first test row", "99%",
+          f"{min(f['dynamic']['details']['training_rows_after_earliest_evaluation_row'] for f in tmp):.0%}", src)
+    check("7.1", "C3b chronological fix: RF test R2 leaky -> fixed / delta", "0.959 -> 0.895 / +0.065",
+          f"{imp['value_leaky']:.3f} -> {imp['value_fixed']:.3f} / +{imp['delta']:.3f}", src)
+    check("7.1", "C3b CV RMSE leaky -> fixed (k)", "108.6k -> 258.0k",
+          f"{-cvf['impact']['value_leaky'] / 1000:.1f}k -> {-cvf['impact']['value_fixed'] / 1000:.1f}k", src)
+    check("7.1", "C3b multi-test confirmed", "high / confirmed",
+          "/".join(sorted({f["confidence"] for f in c3["findings"] if f["type"] == "multi_test"})) + " / "
+          + "/".join(sorted({f["dynamic"]["status"] for f in c3["findings"] if f["type"] == "multi_test"})), src)
+    for cid, paper in (("C2a", "none"), ("C2b", "group:medium:patient_id"), ("C3a", "temporal:low")):
+        st_ = load_json(R / "2026-11-14_case_studies" / f"static_{cid}.json")["findings"]
+        got = "none" if not st_ else ";".join(
+            f"{f['type']}:{f['confidence']}" + (":patient_id" if "`patient_id`" in f["message"] else "") for f in st_)
+        check("7.1", f"{cid} static result", paper, got, f"results/2026-11-14_case_studies/static_{cid}.json")
+
     # ---------------------------------------------------------------- literature numbers (verified earlier)
     for claim, val in (("Kapoor & Narayanan: papers / fields", "294 / 17"),
                        ("Yang et al.: notebooks / share with leak", "107,603 / 29.6%"),
