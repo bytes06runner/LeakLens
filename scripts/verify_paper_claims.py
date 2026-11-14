@@ -263,7 +263,7 @@ def main() -> None:
                        capture_output=True, text=True)
     mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
     got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
-    check("4.5", "test suite (383 tests; 381 pass on a laptop, 2 root-only skipped)", "381 passed, 2 skipped", got,
+    check("4.5", "test suite (386 tests; 384 pass on a laptop, 2 root-only skipped)", "384 passed, 2 skipped", got,
           "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
 
     # ---------------------------------------------------------------- review response (2026-11-14)

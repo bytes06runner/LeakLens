@@ -99,7 +99,7 @@
 | PASS | 6.6 | impact, findings both estimate / MAE LeakHound / MAE LeakLens | 11 / 0.065 / 0.086 | 11 / 0.065 / 0.086 | paper/numbers.json |
 | PASS | 6.6 | LeakHound error range on duplicates and time splits | 0.01 to 0.08 | 0.01 to 0.08 | paper/numbers.json |
 | PASS | 5.4 | scicode-lint: files attempted (all timed out) / results | 29 / 0 | 29 / 0 | results/2026-11-14_kaggle_06_scicode_gpu_test |
-| PASS | 4.5 | test suite (383 tests; 381 pass on a laptop, 2 root-only skipped) | 381 passed, 2 skipped | 381 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
+| PASS | 4.5 | test suite (386 tests; 384 pass on a laptop, 2 root-only skipped) | 384 passed, 2 skipped | 384 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
 | PASS | 6.5 | fixes keeping the split: identical eval rows / changing the split: different rows | 18 / 16 | 18 / 16 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
 | PASS | 6.5 | mean overlap by split-changing fix type, range | 0.14 to 0.28 | 0.14 to 0.28 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
 | PASS | 6.5 | kinds of fix that keep the split all identical | True | True | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |

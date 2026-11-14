@@ -270,7 +270,7 @@ Notebooks from the internet run only in an offline cloud session (Kaggle), in a 
 environment, a throwaway directory, a timeout and an unprivileged user, so that it cannot read the session's
 tokens. Findings (location, type, rule, confidence, evidence, proposed fix, and the before/after metric where
 measured) are written as text, JSON or SARIF, with a pre-commit hook and a GitHub Action. The tool is deterministic
-and uses no language model. Of its 383 tests, 381 pass on a laptop; two need root and run only in the cloud.
+and uses no language model. Of its 386 tests, 384 pass on a laptop; two need root and run only in the cloud.
 
 \section{Benchmark and Evaluation Protocol}
 
@@ -291,8 +291,8 @@ every leaky file has a corrected twin, so true inflation can be measured. Tempor
 The protocol was frozen before any TEST result existed. A finding matches a label when it is in the same file and
 cell, its lines overlap the labelled lines and its type is the labelled one or a listed alternative; matching is
 one-to-one, and the operating point is medium confidence or above. Recall is reported per type with 95\% bootstrap
-intervals over files. After an internal review we added one condition, logged with its reason and applied to both
-looks: a group finding counts only if it names the true entity, or a variable assigned directly from it;
+intervals over files. After the first TEST run we added one stricter condition, logged with its reason and applied to
+both looks: a group finding counts only if it names the true entity, or a variable assigned directly from it;
 otherwise it is a false positive and the label a miss. TEST is scored once per release; later runs are labelled
 second looks. True inflation is the leaky file's metric minus its twin's, averaged over five data seeds; the
 generators were built so that each leak type can move the metric, so these values score estimates only and say
