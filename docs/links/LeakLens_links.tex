@@ -1,0 +1,87 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{booktabs,tabularx,array}
+\usepackage{parskip}
+\renewcommand{\arraystretch}{1.25}
+\newcommand{\K}[1]{\href{https://www.kaggle.com/code/srijeetbanerjee/#1}{\texttt{#1}}}
+\newcommand{\G}[1]{\href{https://github.com/bytes06runner/LeakLens/tree/main/#1}{\texttt{\detokenize{#1}}}}
+
+\begin{document}
+
+{\Large\bfseries LeakLens: code, runs and results}\par
+\smallskip
+Srijeet Prasad Banerjee, Adrish Sarkar, Ankur Roy, Sayandeep Dey, Soumyarik Mukherjee, Sayan Hazra\\
+Department of Information Technology, Guru Nanak Institute of Technology, Kolkata
+
+\section*{1. Start here}
+
+\textbf{GitHub repository (all code, the frozen protocol, the change log and the output of every run):}\\
+\url{https://github.com/bytes06runner/LeakLens}
+
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+What & Where in the repository \\
+\midrule
+Paper (IEEE, 6 pages) & \G{paper_ieee} \\
+Every number in the paper, checked against the saved results & \href{https://github.com/bytes06runner/LeakLens/blob/main/docs/PAPER_CLAIM_CHECK.md}{\texttt{docs/PAPER\_CLAIM\_CHECK.md}} (161 checks, 0 failures) \\
+Evaluation protocol (frozen before any test result) & \href{https://github.com/bytes06runner/LeakLens/blob/main/EVAL_PROTOCOL.md}{\texttt{EVAL\_PROTOCOL.md}} \\
+Every change made after a result was seen, with the reason & \href{https://github.com/bytes06runner/LeakLens/blob/main/EVAL_CHANGES.md}{\texttt{EVAL\_CHANGES.md}} \\
+List of all runs (date, commit, result) & \href{https://github.com/bytes06runner/LeakLens/blob/main/results/registry.csv}{\texttt{results/registry.csv}} \\
+Real-notebook labels and how they were made & \G{benchmark/real} (\texttt{LABELS\_PROVENANCE.md}) \\
+\bottomrule
+\end{tabularx}
+
+\section*{2. Kaggle}
+
+All Kaggle work ran on CPU sessions. Code from the internet ran only with internet off, inside the project's
+sandbox (no access tokens, throwaway folder, time limit).
+
+\textbf{Code package used by every job:} \href{https://www.kaggle.com/datasets/srijeetbanerjee/leaklens-code}{\texttt{kaggle.com/datasets/srijeetbanerjee/leaklens-code}}
+
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+Kaggle notebook (public) & What it shows & Paper \\
+\midrule
+\K{leaklens-00-smoke-offline} & The sandbox runs with the network blocked & Sec.\ IV-D \\
+\K{leaklens-01b-sandbox-hardening-probe} & A child process run as an unprivileged user cannot read the session's tokens (a root one can), so the sandbox uses one & Sec.\ IV-D \\
+\K{leaklens-00b-yang-baseline} & Yang et al.'s analyser built from source and checked on four small probe files & Sec.\ V-C \\
+\K{leaklens-04-yang-dev-injected} & Yang et al.'s analyser on the injected DEV files & Sec.\ V-C \\
+\K{leaklens-05-yang-test-injected} & Yang et al.'s analyser on the injected TEST files & Table IV \\
+\K{leaklens-10-yang-real-test} & Yang et al.'s analyser on the 79 real TEST notebooks & Table VIII \\
+\K{leaklens-07-build-paper} & The paper compiled from source in a clean session & -- \\
+\bottomrule
+\end{tabularx}
+
+\medskip
+\textbf{Kept private, results on GitHub instead.} These runs executed copies of other people's public Kaggle
+notebooks, and their outputs contain those copies; the project does not redistribute third-party notebooks whose
+licence it has not verified. Their full results are in the repository:
+
+\begin{tabularx}{\textwidth}{@{}lXl@{}}
+\toprule
+Kaggle job & Results on GitHub & Paper \\
+\midrule
+\texttt{leaklens-08-case-studies} & \G{results/2026-11-14_kaggle_08_case_studies_v4} (\texttt{README.md}) & Table VII \\
+\texttt{leaklens-11-real-dynamic} & added to \G{results} when the run finishes & -- \\
+\bottomrule
+\end{tabularx}
+
+The 150 sampled notebooks are public on Kaggle; their links and file hashes are in
+\href{https://github.com/bytes06runner/LeakLens/blob/main/benchmark/real/manifest.csv}{\texttt{benchmark/real/manifest.csv}}.
+
+\section*{3. Main results and where they come from}
+
+\begin{tabularx}{\textwidth}{@{}Xl@{}}
+\toprule
+Result & Folder in \texttt{results/} \\
+\midrule
+Injected TEST, scored once: 59 of 73 leaks statically (no false positive), 61 with the run & \G{results/2026-11-12_test_injected_leaklens_v1} \\
+Real TEST notebooks, LeakLens (first look) & \G{results/2026-11-14_real_test_static} \\
+Real TEST notebooks, second look (group leakage 3 of 4) & \G{results/2026-11-15_real_test_static_second_look_v2} \\
+Real TEST notebooks, Yang et al.\ and the paired test (206 vs 162 of 237) & \G{results/2026-11-14_kaggle_10_yang_real_test} \\
+Case studies (EEG and four public notebooks) & \G{results/2026-11-14_case_studies} \\
+\bottomrule
+\end{tabularx}
+
+\end{document}
