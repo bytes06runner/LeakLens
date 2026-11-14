@@ -1,0 +1,2347 @@
+{
+ "started_utc": "2026-11-14T13:21:47Z",
+ "yang_commit": "a7d038bfec6b8ddbe21d87dde54b806aecdd79f7",
+ "leaklens_commit": "1dd4327f8e1b185780eaea2d23887b1259077ed1",
+ "split": "TEST (real notebooks)",
+ "steps": [
+  {
+   "name": "apt_souffle",
+   "rc": 127,
+   "seconds": 24.6,
+   "log_tail": "eading database ... 125658 files and directories currently installed.)\nPreparing to unpack .../ca-certificates_20260816ubuntu0.24.04.2_all.deb ...\nUnpacking ca-certificates (20260816ubuntu0.24.04.2) over (20260816ubuntu0.24.04.1) ...\nSetting up ca-certificates (20260816ubuntu0.24.04.2) ...\nUpdating certificates in /etc/ssl/certs...\n0 added, 0 removed; done.\nRunning hooks in /etc/ca-certificates/update.d...\ndone.\nProcessing triggers for man-db (2.12.0-4build2) ...\nProcessing triggers for ca-certificates-java (20240118) ...\ndone.\nReading package lists...\nBuilding dependency tree...\nReading state information...\nSome packages could not be installed. This may mean that you have\nrequested an impossible situation or if you are using the unstable\ndistribution that some required packages have not yet been created\nor been moved out of Incoming.\nThe following information may help to resolve the situation:\n\nThe following packages have unmet dependencies:\n souffle : Depends: libffi7 (>= 3.3~20180313) but it is not installable\nE: Unable to correct problems, you have held broken packages.\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\nW: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\n/bin/sh: 1: souffle: not found\n"
+  },
+  {
+   "name": "apt_souffle_cleanup",
+   "rc": 0,
+   "seconds": 2.5,
+   "log_tail": "W: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\n"
+  },
+  {
+   "name": "souffle_from_source",
+   "rc": 0,
+   "seconds": 496.2,
+   "log_tail": "[ 99%] Linking CXX static library libsouffle.a\n[ 99%] Built target libsouffle\n[100%] Building CXX object src/CMakeFiles/souffle.dir/souffle.cpp.o\n[100%] Linking CXX executable souffle\n[100%] Built target souffle\n----------------------------------------------------------------------------\nVersion: \nWord size: 32 bits\nOptions enabled: ffi openmp ncurses sqlite zlib\n----------------------------------------------------------------------------\nCopyright (c) 2016-22 The Souffle Developers.\nCopyright (c) 2013-16 Oracle and/or its affiliates.\nAll rights reserved.\n============================================================================\n\nNote: switching to '01f11777b4b09329b8232466d82376e039ac1ba8'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\n"
+  },
+  {
+   "name": "node",
+   "rc": 0,
+   "seconds": 2.5,
+   "log_tail": "v16.20.2\n"
+  },
+  {
+   "name": "clone",
+   "rc": 0,
+   "seconds": 8.8,
+   "log_tail": "Submodule path 'pyright': checked out 'e3d7d9c44ac69fa6bc66bb8a47377fcec034e503'\ne3d7d9c44ac69fa6bc66bb8a47377fcec034e503\n2022-03-28T19:51:23-04:00\nSubmodule 'pyright' (https://github.com/malusamayo/pyright) registered for path 'pyright'\nCloning into '/tmp/leakage-analysis/pyright'...\n"
+  },
+  {
+   "name": "pyright_build",
+   "rc": 0,
+   "seconds": 129.9,
+   "log_tail": "cessing SourceMapDevToolPlugin pyright-internal.js attached SourceMap\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin resolve sources\n<s> [webpack.Progress] 92% sealing asset processing SourceMapDevToolPlugin\n<s> [webpack.Progress] 92% sealing asset processing RealContentHashPlugin\n<s> [webpack.Progress] 92% sealing asset processing\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing after asset optimization\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 93% sealing recording\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 94% sealing after seal\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 95% emitting emit CleanPlugin\n<s> [webpack.Progress] 95% emitting emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 98% emitting after emit\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% done plugins\n<s> [webpack.Progress] 99% \n\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache store build dependencies\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 99% cache begin idle\n<s> [webpack.Progress] 100% \n\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 99% cache shutdown\n<s> [webpack.Progress] 100% \n\n"
+  },
+  {
+   "name": "python38_venv",
+   "rc": 0,
+   "seconds": 10.7,
+   "log_tail": "Python 3.8.20\n"
+  }
+ ],
+ "items": {
+  "R001": {
+   "rc": 0,
+   "seconds": 9.77,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      85
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 1,
+     "lines": [
+      106
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      45,
+      85,
+      107,
+      117
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R003": {
+   "rc": 0,
+   "seconds": 16.03,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 4,
+     "lines": [
+      943,
+      944,
+      1134,
+      1135
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R004": {
+   "rc": 0,
+   "seconds": 13.7,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 2,
+     "lines": [
+      324,
+      166
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      201,
+      203,
+      257,
+      266,
+      328,
+      332,
+      168,
+      170
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R006": {
+   "rc": 0,
+   "seconds": 12.3,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R009": {
+   "rc": 0,
+   "seconds": 10.29,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      323
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      323
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R010": {
+   "rc": 0,
+   "seconds": 8.39,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R011": {
+   "rc": 0,
+   "seconds": 10.05,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R017": {
+   "rc": -999,
+   "seconds": 300.11,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R018": {
+   "rc": 0,
+   "seconds": 11.47,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      470,
+      541
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R020": {
+   "rc": 0,
+   "seconds": 10.31,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R022": {
+   "rc": 0,
+   "seconds": 10.13,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 5,
+     "lines": [
+      340,
+      342,
+      401,
+      403,
+      466
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R024": {
+   "rc": 0,
+   "seconds": 10.63,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R027": {
+   "rc": 0,
+   "seconds": 7.46,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      46,
+      47,
+      48,
+      49,
+      58,
+      59,
+      60,
+      66,
+      67
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R028": {
+   "rc": 0,
+   "seconds": 59.61,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R030": {
+   "rc": 0,
+   "seconds": 7.88,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      339
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      339,
+      492
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R031": {
+   "rc": 0,
+   "seconds": 8.35,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R033": {
+   "rc": 0,
+   "seconds": 10.88,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      201
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      263,
+      264,
+      355,
+      201
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R036": {
+   "rc": 0,
+   "seconds": 10.76,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      435,
+      500,
+      505,
+      669,
+      814
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R038": {
+   "rc": 0,
+   "seconds": 7.57,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      87
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      87,
+      231,
+      231,
+      231,
+      231,
+      231
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R040": {
+   "rc": 0,
+   "seconds": 8.19,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      25
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R041": {
+   "rc": -999,
+   "seconds": 300.1,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R043": {
+   "rc": 0,
+   "seconds": 9.18,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R044": {
+   "rc": -999,
+   "seconds": 300.1,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R046": {
+   "rc": 0,
+   "seconds": 9.96,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      314,
+      333,
+      353,
+      373,
+      392,
+      411,
+      430,
+      449,
+      99,
+      116
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R047": {
+   "rc": 0,
+   "seconds": 277.68,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R048": {
+   "rc": 0,
+   "seconds": 6.51,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 2,
+     "lines": [
+      140,
+      143
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      141,
+      145
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R050": {
+   "rc": 0,
+   "seconds": 14.9,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      384,
+      399,
+      455
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R051": {
+   "rc": 0,
+   "seconds": 10.16,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R054": {
+   "rc": 0,
+   "seconds": 13.98,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 5,
+     "lines": [
+      202,
+      214,
+      226,
+      259,
+      268
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R058": {
+   "rc": 0,
+   "seconds": 17.32,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 1,
+     "lines": [
+      627
+     ]
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R059": {
+   "rc": 0,
+   "seconds": 11.86,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      32,
+      32,
+      40
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R065": {
+   "rc": 0,
+   "seconds": 13.26,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      282,
+      291
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      282,
+      291
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R069": {
+   "rc": 0,
+   "seconds": 9.7,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 3,
+     "lines": [
+      138,
+      113,
+      118
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R070": {
+   "rc": 0,
+   "seconds": 22.75,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 9,
+     "lines": [
+      648,
+      796,
+      868,
+      868,
+      1045,
+      1258,
+      1286,
+      1414,
+      1446
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      647,
+      648,
+      796,
+      868,
+      868,
+      1044,
+      1045,
+      1258,
+      1285,
+      1286,
+      1413,
+      1414,
+      1446
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R072": {
+   "rc": 0,
+   "seconds": 10.24,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      269,
+      273,
+      129,
+      147
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R073": {
+   "rc": -999,
+   "seconds": 300.04,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R074": {
+   "rc": 0,
+   "seconds": 29.85,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R075": {
+   "rc": 0,
+   "seconds": 7.66,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      137,
+      154
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R077": {
+   "rc": 0,
+   "seconds": 10.68,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 4,
+     "lines": [
+      183,
+      392,
+      461,
+      466
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R078": {
+   "rc": 0,
+   "seconds": 13.46,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 5,
+     "lines": [
+      94,
+      120,
+      121,
+      151,
+      152
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      161,
+      94,
+      120,
+      121,
+      151,
+      152
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R082": {
+   "rc": 0,
+   "seconds": 10.71,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      341,
+      185,
+      213
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R083": {
+   "rc": 0,
+   "seconds": 32.73,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 29,
+     "lines": [
+      242,
+      243,
+      248,
+      249,
+      258,
+      266,
+      274,
+      285,
+      299,
+      311,
+      322,
+      329,
+      351,
+      437,
+      472,
+      509,
+      559,
+      616,
+      705,
+      754,
+      837,
+      874,
+      899,
+      906,
+      1188,
+      1202,
+      1216,
+      1223,
+      1229
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R084": {
+   "rc": 0,
+   "seconds": 13.67,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R086": {
+   "rc": 0,
+   "seconds": 30.68,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 14,
+     "lines": [
+      2208,
+      2258,
+      2313,
+      2511,
+      2514,
+      2564,
+      2644,
+      2822,
+      2823,
+      2832,
+      2833,
+      2843,
+      2904,
+      2905
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R087": {
+   "rc": 0,
+   "seconds": 5.69,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R088": {
+   "rc": 0,
+   "seconds": 6.81,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R089": {
+   "rc": -999,
+   "seconds": 300.01,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R090": {
+   "rc": 0,
+   "seconds": 8.08,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      140
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      120,
+      140
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R095": {
+   "rc": 0,
+   "seconds": 8.72,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      148,
+      151
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      148,
+      151
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R097": {
+   "rc": 0,
+   "seconds": 9.54,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 1,
+     "lines": [
+      114
+     ]
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R100": {
+   "rc": 0,
+   "seconds": 12.48,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 10,
+     "lines": [
+      383,
+      439,
+      440,
+      467,
+      485,
+      652,
+      702,
+      713,
+      715,
+      731
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R101": {
+   "rc": 0,
+   "seconds": 14.8,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 19,
+     "lines": [
+      492,
+      501,
+      510,
+      518,
+      527,
+      536,
+      545,
+      554,
+      563,
+      598,
+      628,
+      653,
+      664,
+      674,
+      700,
+      733,
+      755,
+      771,
+      783
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 20,
+     "lines": [
+      163,
+      173,
+      183,
+      193,
+      203,
+      240,
+      277,
+      310,
+      321,
+      332,
+      361,
+      393,
+      418,
+      444,
+      455,
+      472,
+      119,
+      134,
+      144,
+      153
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      164,
+      165,
+      174,
+      175,
+      184,
+      185,
+      194,
+      195,
+      204,
+      205,
+      206,
+      241,
+      242,
+      243,
+      278,
+      279,
+      280,
+      311,
+      312,
+      313,
+      322,
+      323,
+      324,
+      333,
+      334,
+      335,
+      362,
+      363,
+      364,
+      395,
+      398,
+      427,
+      430,
+      445,
+      446,
+      447,
+      456,
+      457,
+      458,
+      473,
+      474,
+      475,
+      492,
+      493,
+      501,
+      502,
+      510,
+      511,
+      518,
+      519,
+      527,
+      528,
+      536,
+      537,
+      545,
+      546,
+      554,
+      555,
+      563,
+      564,
+      565,
+      598,
+      599,
+      600,
+      628,
+      629,
+      630,
+      653,
+      654,
+      655,
+      664,
+      665,
+      666,
+      674,
+      675,
+      676,
+      700,
+      701,
+      702,
+      733,
+      735,
+      755,
+      757,
+      771,
+      772,
+      773,
+      783,
+      784,
+      785,
+      120,
+      121,
+      135,
+      136,
+      145,
+      146,
+      154,
+      155
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R102": {
+   "rc": 0,
+   "seconds": 12.83,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R103": {
+   "rc": 0,
+   "seconds": 8.29,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 3,
+     "lines": [
+      240,
+      241,
+      248
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R106": {
+   "rc": 0,
+   "seconds": 8.37,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      214,
+      215,
+      227,
+      228,
+      243,
+      244,
+      257,
+      258
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R108": {
+   "rc": 0,
+   "seconds": 7.58,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R110": {
+   "rc": 0,
+   "seconds": 6.02,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R111": {
+   "rc": -999,
+   "seconds": 300.05,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R112": {
+   "rc": 0,
+   "seconds": 6.87,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      44,
+      48
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R113": {
+   "rc": 0,
+   "seconds": 7.38,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R117": {
+   "rc": 0,
+   "seconds": 16.89,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 1,
+     "lines": [
+      577
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      578,
+      639
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R118": {
+   "rc": 0,
+   "seconds": 9.21,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R121": {
+   "rc": -999,
+   "seconds": 300.05,
+   "summary": null,
+   "log_tail": "TIMEOUT after 300s"
+  },
+  "R122": {
+   "rc": 0,
+   "seconds": 8.49,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      383
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R123": {
+   "rc": 0,
+   "seconds": 12.12,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 2,
+     "lines": [
+      347,
+      366
+     ]
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R127": {
+   "rc": 0,
+   "seconds": 11.71,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      176,
+      189,
+      190,
+      202,
+      203,
+      215,
+      216,
+      149,
+      150,
+      162,
+      163
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R131": {
+   "rc": 0,
+   "seconds": 16.67,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R133": {
+   "rc": 0,
+   "seconds": 7.55,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 1,
+     "lines": [
+      51
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R134": {
+   "rc": 0,
+   "seconds": 20.54,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 15,
+     "lines": [
+      1699,
+      1700,
+      1727,
+      2101,
+      2102,
+      2132,
+      2132,
+      2132,
+      2132,
+      2132,
+      2152,
+      2171,
+      2171,
+      2171,
+      2193
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      1699,
+      1700,
+      1727,
+      2101,
+      2102,
+      2132,
+      2132,
+      2132,
+      2132,
+      2132,
+      2152,
+      2171,
+      2171,
+      2171,
+      2193
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R135": {
+   "rc": 0,
+   "seconds": 10.38,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      169,
+      171,
+      202,
+      204,
+      231,
+      233,
+      239,
+      241,
+      247,
+      248,
+      250,
+      275,
+      277,
+      67,
+      305,
+      69,
+      312,
+      338,
+      345,
+      371,
+      372,
+      374,
+      382,
+      384,
+      390,
+      392,
+      80,
+      82,
+      88,
+      90,
+      95,
+      97,
+      103,
+      105,
+      111,
+      113,
+      119,
+      121,
+      127,
+      129,
+      135,
+      137
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R136": {
+   "rc": 0,
+   "seconds": 0.59,
+   "summary": null,
+   "log_tail": "(<unknown>, line 47)\nTraceback (most recent call last):\n  File \"/tmp/leakage-analysis/src/main.py\", line 31, in wrapper_function\n    ret = func(*args,  **kwargs)\n  File \"/tmp/leakage-analysis/src/main.py\", line 45, in load_input\n    tree = ast.parse(code)\n  File \"/root/.local/share/uv/python/cpython-3.8-linux-x86_64-gnu/lib/python3.8/ast.py\", line 47, in parse\n    return compile(source, filename, mode, flags,\n  File \"<unknown>\", line 47\n    print(f\"Unique Stores: {df[\"store_id\"].nunique()}\")\n                                ^\nSyntaxError: invalid syntax\n\nFailed to parse: /tmp/real/R136/R136.py\n"
+  },
+  "R137": {
+   "rc": 0,
+   "seconds": 6.94,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R139": {
+   "rc": 0,
+   "seconds": 13.43,
+   "summary": null,
+   "log_tail": ".dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\nError loading StoreIndex data: Values missing in line 79; cannot parse fact file StoreIndex.facts!\n\n"
+  },
+  "R140": {
+   "rc": 0,
+   "seconds": 7.68,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      83,
+      105
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      83,
+      105
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R143": {
+   "rc": 0,
+   "seconds": 12.89,
+   "summary": null,
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R144": {
+   "rc": 0,
+   "seconds": 6.86,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R146": {
+   "rc": 0,
+   "seconds": 9.47,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 2,
+     "lines": [
+      138,
+      185
+     ]
+    },
+    "Overlap leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R149": {
+   "rc": 0,
+   "seconds": 13.75,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 4,
+     "lines": [
+      603,
+      765,
+      824,
+      904
+     ]
+    },
+    "No independence test data": {
+     "detected": 0,
+     "lines": []
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  },
+  "R150": {
+   "rc": 0,
+   "seconds": 9.96,
+   "summary": {
+    "Pre-processing leakage": {
+     "detected": 0,
+     "lines": []
+    },
+    "Overlap leakage": {
+     "detected": 5,
+     "lines": [
+      310,
+      339,
+      368,
+      403,
+      276
+     ]
+    },
+    "No independence test data": {
+     "detected": 1,
+     "lines": [
+      313,
+      342,
+      371,
+      406,
+      279
+     ]
+    }
+   },
+   "log_tail": "---------------------^-------------------------\nWarning: Variable invo only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------^-------------------\nWarning: Variable meth only occurs once in file main.dl at line 1404\n    c2 = count : {ModelPair(testModel, ctx1, _, _), FilteredTests(testModel, test, invo, meth, ctx1)},\n-----------------------------------------------------------------------------------------^-------------\n"
+  }
+ },
+ "souffle_route": "built from source, tag 2.4.1 (fallback)",
+ "build_ok": true,
+ "conversion": {
+  "R001": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R003": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R004": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R006": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R009": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R010": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R011": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R017": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R018": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R020": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R022": {
+   "status": "ok",
+   "skipped_cells": 1,
+   "order_used": "cell"
+  },
+  "R024": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R027": {
+   "status": "ok",
+   "skipped_cells": 1,
+   "order_used": "cell"
+  },
+  "R028": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R030": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R031": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R033": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R036": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R038": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R040": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R041": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R043": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R044": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R046": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R047": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R048": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R050": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R051": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R054": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R058": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R059": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R065": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R069": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R070": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R072": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R073": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R074": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R075": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R077": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R078": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R082": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R083": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R084": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R086": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R087": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R088": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R089": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R090": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R095": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R097": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R100": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R101": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R102": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R103": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R106": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R108": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R110": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R111": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R112": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R113": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R117": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R118": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R121": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R122": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R123": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R127": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R131": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R133": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R134": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R135": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R136": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R137": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R139": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R140": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R143": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R144": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R146": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  },
+  "R149": {
+   "status": "ok",
+   "skipped_cells": 5,
+   "order_used": "cell"
+  },
+  "R150": {
+   "status": "ok",
+   "skipped_cells": 0,
+   "order_used": "cell"
+  }
+ },
+ "finished_utc": "2026-11-14T14:27:08Z"
+}

@@ -1,0 +1,10 @@
+{
+ "decisions": 237,
+ "both_right": 153,
+ "both_wrong": 22,
+ "leaklens_only_right": 53,
+ "yang_only_right": 9,
+ "mcnemar_exact_p": 1.0507232717140574e-08,
+ "leaklens_right": 206,
+ "yang_right": 162
+}
