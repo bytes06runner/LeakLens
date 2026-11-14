@@ -12,7 +12,11 @@
     "srijeetbanerjee/leaklens-case-notebooks",
     "yasserh/walmart-dataset"
   ],
-  "competition_sources": [],
+  "competition_sources": [
+    "tlvmc-parkinsons-freezing-gait-prediction",
+    "amp-parkinsons-disease-progression-prediction",
+    "predict-energy-behavior-of-prosumers"
+  ],
   "kernel_sources": [],
   "model_sources": []
 }
