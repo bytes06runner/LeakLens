@@ -1,0 +1,35 @@
+item_id,type,fix,note,metric,lower_is_better,status,estimate,identical,jaccard,n_eval_leaky,n_eval_fixed
+grp_eeg__grp_cv__kfold,group,group-aware split,KFold -> GroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups),cv_auc,False,measured,0.2635,False,0.1222,960,960
+grp_eeg__grp_cv__stratified,group,group-aware split,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups),cv_auc,False,measured,0.2693,False,0.1047,960,960
+grp_eeg__grp_cv__default_cv,group,group-aware split,StratifiedKFold -> StratifiedGroupKFold(groups=groups); _CVIterableWrapper -> GroupKFold(groups=groups),cv_auc,False,measured,0.0953,False,0.1255,960,960
+grp_eeg__tgt_proxy__proxy,target_derived,feature removed,cross_val_score: feature annotated_spikes removed,cv_auc,False,measured,0.4385,True,1.0,960,960
+grp_patients__pre_scaler__standard,preprocessing,transformer refitted on training rows,"StandardScaler: fitted on 555 training rows only, then applied to all rows",test_auc,False,measured,0.0015,True,1.0,172,172
+grp_patients__pre_scaler__minmax,preprocessing,transformer refitted on training rows,"MinMaxScaler: fitted on 555 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,172,172
+grp_patients__pre_scaler__robust,preprocessing,transformer refitted on training rows,"RobustScaler: fitted on 555 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,172,172
+grp_patients__ovl_test_in_fit__concat,overlap,evaluation rows removed from fit,RandomForestClassifier.fit: 172 evaluation rows removed from the fit,test_auc,False,measured,0.4269,True,1.0,172,172
+grp_patients__ovl_test_in_fit__refit_all,overlap,evaluation rows removed from fit,RandomForestClassifier.fit: 172 evaluation rows removed from the fit,test_auc,False,measured,0.4269,True,1.0,172,172
+grp_patients__grp_holdout__tts,group,group-aware split,train_test_split -> GroupShuffleSplit(groups=patient_id),test_auc,False,measured,0.2009,False,0.1419,182,172
+grp_patients__grp_holdout__tts_stratified,group,group-aware split,train_test_split -> GroupShuffleSplit(groups=patient_id),test_auc,False,measured,0.2353,False,0.1531,182,172
+grp_patients__grp_holdout__shufflesplit,group,group-aware split,ShuffleSplit -> GroupShuffleSplit(groups=patient_id),test_auc,False,measured,0.2009,False,0.1419,182,172
+grp_patients__tgt_proxy__proxy,target_derived,feature removed,RandomForestClassifier.fit: feature icu_days removed,test_auc,False,measured,0.4269,True,1.0,172,172
+grp_patients__combo1,preprocessing,transformer refitted on training rows,"StandardScaler: fitted on 545 training rows only, then applied to all rows",test_auc,False,measured,0.0022,True,1.0,182,182
+grp_patients__combo1,group,group-aware split,train_test_split -> GroupShuffleSplit(groups=patient_id),test_auc,False,measured,0.2014,False,0.1419,182,172
+tab_credit__pre_scaler__standard,preprocessing,transformer refitted on training rows,"StandardScaler: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,225,225
+tab_credit__pre_scaler__minmax,preprocessing,transformer refitted on training rows,"MinMaxScaler: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,225,225
+tab_credit__pre_scaler__robust,preprocessing,transformer refitted on training rows,"RobustScaler: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,225,225
+tab_credit__pre_imputer__mean,preprocessing,transformer refitted on training rows,"SimpleImputer: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0,True,1.0,225,225
+tab_credit__pre_imputer__median,preprocessing,transformer refitted on training rows,"SimpleImputer: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0002,True,1.0,225,225
+tab_credit__ovl_test_in_fit__concat,overlap,evaluation rows removed from fit,Pipeline.fit: 225 evaluation rows removed from the fit,test_auc,False,measured,0.0489,True,1.0,225,225
+tab_credit__ovl_test_in_fit__refit_all,overlap,evaluation rows removed from fit,Pipeline.fit: 225 evaluation rows removed from the fit,test_auc,False,measured,0.0489,True,1.0,225,225
+tab_credit__ovl_raw_duplicates__frac30,overlap,duplicates removed before split,train_test_split: 270 duplicated rows removed before the split,test_auc,False,measured,0.0435,False,0.2401,293,225
+tab_credit__combo5,preprocessing,transformer refitted on training rows,"SimpleImputer: fitted on 675 training rows only, then applied to all rows",test_auc,False,measured,0.0001,True,1.0,225,225
+tab_credit__combo5,overlap,evaluation rows removed from fit,Pipeline.fit: 225 evaluation rows removed from the fit,test_auc,False,measured,0.0489,True,1.0,225,225
+tab_housing__ovl_raw_duplicates__frac30,overlap,duplicates removed before split,cross_val_score: 240 duplicated rows removed before the split; cross_validate: 0 duplicated rows removed before the spli,cv_r2,False,measured,0.0299,False,0.3294,1040,800
+tab_housing__tgt_proxy__proxy,target_derived,feature removed,cross_val_score: feature assessed_value removed,cv_r2,False,measured,0.0522,True,1.0,800,800
+ts_air__tmp_cv__kfold_shuffle,temporal,chronological split,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order,cv_auc,False,measured,0.0071,False,0.1092,1453,1210
+ts_air__tmp_cv__kfold_plain,temporal,chronological split,KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order,cv_auc,False,measured,-0.0087,False,0.4214,1453,1210
+ts_air__tmp_cv__default_cv,temporal,chronological split,StratifiedKFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order,cv_auc,False,measured,0.0055,False,0.4214,1453,1210
+ts_sales__tmp_holdout__tts_default,temporal,chronological split,train_test_split -> chronological split in time order,test_mae,True,measured,0.4475,False,0.1151,218,218
+ts_sales__tmp_holdout__tts_shuffle_true,temporal,chronological split,train_test_split -> chronological split in time order,test_mae,True,measured,0.4475,False,0.1151,218,218
+ts_sales__tmp_hidden_time__renamed_time_col,temporal,chronological split,train_test_split -> chronological split in time order,test_mae,True,measured,0.4475,False,0.1151,218,218
+ts_sales__combo3,temporal,chronological split,train_test_split -> chronological split in time order,test_mae,True,measured,0.4489,False,0.1151,218,218

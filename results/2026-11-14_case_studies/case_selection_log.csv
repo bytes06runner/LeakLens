@@ -1,0 +1,38 @@
+case,order,notebook_sha12,case_id,decision,reason
+forecast,1,9eb697692d81,,skip,c1/c2: forecasting model uses TimeSeriesSplit; the randomly split model is explanatory (same-date unemployment)
+forecast,2,291b32f90c4f,,skip,"c4: ~20M rows, LightGBM with K folds, not feasible in 30 min CPU"
+forecast,3,2e17efc08792,,skip,c2: date cut-off validation (correct)
+forecast,4,191f1f3ac7df,,skip,c3: Keras
+forecast,5,879c3c53276b,,skip,c2: date-based train/valid split (correct)
+forecast,6,840d9b532f5a,,skip,c3: statsmodels only; date split
+forecast,7,abbba688f752,,skip,c3: PyTorch
+forecast,8,b5946bb0ab51,,skip,c1: explanatory model of same-year emissions (features include per-capita emissions and population)
+forecast,9,e63b930e69dc,C3a,TAKEN,"forecasting competition, random train_test_split with year/day/days-since-reference features; XGBoost (scikit-learn API)"
+forecast,10,fab39df49769,C3b,TAKEN,"weekly sales of 45 stores, random train_test_split with Year/Month/Week features; scikit-learn; public dataset"
+health,11,cc9a021a79c8,,skip,"c1: student health survey, one row per student"
+health,12,43f42239431b,,skip,c3: Keras image model
+health,13,1e271845e135,,skip,c1: one row per patient (Wisconsin)
+health,14,c5e77818aec5,,skip,c1: one row per patient
+health,15,813601a83c77,,skip,"c3: PyTorch, no scored model"
+health,16,482c31431902,,skip,c1: one row per patient
+health,17,5f647a404742,,skip,c1: synthetic tutorial data
+health,18,b3de7f214bef,,skip,c3: PyTorch
+health,19,c41560f90d78,,skip,c1: one row per patient
+health,20,bbfda69174fc,,skip,"c3: EDA only, no model"
+health,21,63e0555becb7,,skip,c1: patient_id unique (one row per patient)
+health,22,16fb4e890fc6,,skip,c1: not patient-level data
+health,23,4642ce853eb7,,skip,c3: PyTorch
+health,24,60d5663f745c,,skip,c3: Keras; one row per patient
+health,25,8db95dc54e69,,skip,"c1: text, not patient records"
+health,26,bb31829086b1,,skip,"c1: synthetic playground data, one row per record"
+health,27,a0cf01398d69,,skip,c3: PyTorch
+health,28,b661682dcdd7,,skip,c1: one row per patient
+health,29,6b305801a8bf,,skip,"c3: Keras CNN (several trials per subject, random split: leakage mechanism present but model not scikit-learn)"
+health,30,058c4faa047d,,skip,c1: no patient identifier or evidence of repeated patients
+health,31,d4afee99534d,,skip,c2: custom leave-one-participant-out CV (correct); a real negative
+health,32,b6d583ac1c15,,skip,"c3: AIBL data not public on Kaggle (several visits per RID, random split: mechanism present)"
+health,33,404a35ac5770,,skip,"c4 (found on closer reading, before LeakLens was run): GridSearchCV over ~1e8 combinations of a 20000-tree LightGBM (cell 157) cannot finish; leakage mechanism present (several encounters per patient_nbr, random split, SMOTE before split)"
+health,34,c062310cc315,,skip,c2: keeps first encounter per patient (correct)
+health,35,598cbd672fcc,C2a,TAKEN,"many recordings per Parkinson's patient pooled sample-wise, random train_test_split; competition tlvmc-parkinsons-freezing-gait-prediction; scikit-learn"
+health,36,af06725eaf31,,skip,"c4: fork of rank 702; passes early_stopping_rounds to LightGBM/XGBoost fit, removed in current versions, so it stops at cell 146 in a current image"
+health,37,83045eee61d1,C2b,TAKEN,"baseline-visit proteomics melted over 4 UPDRS parts (up to 4 rows per patient, identical features, patient_id kept as a feature), random train_test_split; RandomForestRegressor; competition amp-parkinsons-disease-progression-prediction"

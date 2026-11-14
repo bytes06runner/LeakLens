@@ -44,6 +44,7 @@ STATE = {
     "cfg": {},
     "dump": None,
     "dump_index": [],
+    "eval_rows": {},  # opt-in (LEAKLENS_RECORD_EVAL=1): evaluation rows per split call and fold
 }
 
 
@@ -244,6 +245,10 @@ def record_fold(site: dict, fold: int, X, train, test, frame, y=None) -> None:
     STATE["split_positions"].setdefault(
         site["line"], {"n": n, "test": test.tolist() if fold == 0 else None, "folds": 0}
     )["folds"] += 1
+    if os.environ.get("LEAKLENS_RECORD_EVAL") == "1" and fold < 5:
+        STATE["eval_rows"].setdefault(str(site["line"]), []).append(
+            {"fold": fold, "n": n, "pos": test.tolist(),
+             "hash": [int(x) for x in h[test]] if h is not None and n else None})
     cols = aligned_columns(frame, X, n) if n else {}
     if STATE["dump"] and cols and fold < STATE["cfg"].get("max_folds_dumped", 5):
         try:
@@ -775,6 +780,7 @@ def main(argv: list[str] | None = None) -> int:
                     "fix_applied": STATE["fix_applied"],
                     "split_positions": {str(k): v for k, v in STATE["split_positions"].items()},
                     "dump_index": STATE["dump_index"],
+                    **({"eval_rows": STATE["eval_rows"]} if STATE["eval_rows"] else {}),
                 },
                 f,
             )

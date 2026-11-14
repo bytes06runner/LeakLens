@@ -513,6 +513,44 @@ def severity_from_delta(metric: str, leaky: float, fixed: float) -> str:
     return "high" if delta >= th["high"] else "medium" if delta >= th["medium"] else "low"
 
 
+def eval_set_change(base: dict, fixed: dict) -> dict | None:
+    """Compare the evaluation rows of the original and the fixed run (opt-in recording, LEAKLENS_RECORD_EVAL=1).
+
+    Per split call present in both runs and per recorded fold: identical when the same row positions of the same
+    number of rows are evaluated, or the same multiset of row fingerprints; otherwise the Jaccard overlap of the
+    fingerprint sets and the change in evaluated rows.
+    """
+    a, b = base.get("eval_rows"), fixed.get("eval_rows")
+    if not a or not b:
+        return None
+    from collections import Counter
+
+    folds, identical, jac, n_a, n_b = 0, True, [], 0, 0
+    lines = sorted(set(a) | set(b), key=int)
+    for line in lines:
+        fa = {r["fold"]: r for r in a.get(line, [])}
+        fb = {r["fold"]: r for r in b.get(line, [])}
+        for k in sorted(set(fa) | set(fb)):
+            ra, rb = fa.get(k), fb.get(k)
+            folds += 1
+            if ra is None or rb is None:
+                identical = False
+                continue
+            n_a += len(ra["pos"])
+            n_b += len(rb["pos"])
+            same = (ra["n"] == rb["n"] and ra["pos"] == rb["pos"]) or (
+                ra["hash"] is not None and rb["hash"] is not None and Counter(ra["hash"]) == Counter(rb["hash"]))
+            identical &= same
+            if ra["hash"] is not None and rb["hash"] is not None:
+                sa, sb = set(ra["hash"]), set(rb["hash"])
+                jac.append(len(sa & sb) / max(len(sa | sb), 1))
+            elif ra["n"] == rb["n"]:
+                pa, pb = set(ra["pos"]), set(rb["pos"])
+                jac.append(len(pa & pb) / max(len(pa | pb), 1))
+    return {"identical": identical, "folds": folds, "split_lines": len(lines),
+            "jaccard": round(sum(jac) / len(jac), 4) if jac else None, "n_eval_leaky": n_a, "n_eval_fixed": n_b}
+
+
 def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict, timeout: float) -> None:
     """Re-run with the finding's canonical fix and record the change in the script's own printed metric."""
     fix, why = fix_for_finding(f, base)
@@ -550,6 +588,9 @@ def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict,
         "note": "; ".join(dict.fromkeys(fixed["fix_applied"]))[:300]
         + ("" if reliable else " | the fixed run took a different path through the code"),
     }
+    change = eval_set_change(base, fixed)
+    if change is not None:
+        f.impact["eval_set"] = change
     if reliable and f.type != "target_derived":
         f.severity = severity_from_delta(base_metric[0], base_metric[1], metric[1])
 
