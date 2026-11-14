@@ -96,3 +96,25 @@ owner:**
 
 All entries are in `literature/related_work.csv` (now 37 rows) with `verified = partial` (metadata and README
 read, source not read, not run).
+
+## 2026-11-14: boundary check before the review-response paper (supervisor's review)
+
+Queries (web search, extended mode): "static analysis detect group leakage patient subject split Python notebooks
+tool 2026"; "data leakage detection tool re-run pipeline fix estimate inflation per finding 2026 arXiv". READMEs of
+the new tools and the arXiv abstract were read (not their source; not yet run).
+
+| New item | Level | Touches | Finding |
+|---|---|---|---|
+| **leakray** (tpong-dev, MIT, v0.2.0, GitHub only; "Built with AI assistance (Claude Code)") | static, AST, one file | **C1 (partly)**, temporal | Rule LK012 "kfold-ignores-groups": a random K-fold when a `patient_id` / `user_id` column name appears. Name hints only; no data, no file-path or attribute entities, never runs code, no impact. LK002 random split on dated data. Own benchmark: 126 hand-written snippets, held-out 48 (micro P 0.93, R 0.81). |
+| **unleak** (johnnyjosta-go, MIT, v0.1.0, PyPI) | static + data-level checker | **C1 (partly)**, temporal | UL403 "entity ids without a grouped split" (name-based, how is not documented); UL401 forward-looking features, UL402 shuffled splits on lagged data. `unleak data` checks declared `--group` / `--time` columns on exported tables. Never runs code; impact only as a manual agent workflow. No precision/recall. |
+| **leakdetect** (anishitagi-droid, MIT, GitHub; implementation by Claude) | static + runtime provenance + data | C3 (neighbouring) | Entity leakage only with a user-declared `--group`, detected through an AUC effect; impact as a proxy-model AUC drop per flagged feature, not a re-run of the user's pipeline with a fix. |
+| arXiv 2608.02985 (Zhang, Stadie; TMLR 2026) | scores / backtests | – | Temporal contamination of LLM backtests; out of scope (no code, no ML-pipeline splits). |
+
+**Verdict.** Group leakage detection *from source code* is no longer unique to LeakLens in its simplest form: two
+unreviewed linters flag a random split when an identifier column name such as `patient_id` appears. **This is
+the stop condition of Rule 1 for C1 and is reported to the project owner.** What remains distinct, and what the
+paper must claim instead: (i) entity evidence beyond column names (file-path identifiers, attributes of items,
+columns the code never names, found by the instrumented run); (ii) confirmation at the split, fold by fold, with
+nothing declared; (iii) per-finding impact measured on the user's own pipeline. C3 is not covered by any of them.
+Both linters are added as baselines (static, run as released in a Kaggle job with untrusted code kept off the
+laptop). Related work must cite them as unreviewed software.

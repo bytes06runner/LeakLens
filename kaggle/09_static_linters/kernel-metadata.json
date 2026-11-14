@@ -1,0 +1,14 @@
+{
+  "id": "srijeetbanerjee/leaklens-09-static-linters",
+  "title": "leaklens-09-static-linters",
+  "code_file": "linters.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": ["srijeetbanerjee/leaklens-code", "srijeetbanerjee/leaklens-case-notebooks"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
