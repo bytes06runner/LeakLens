@@ -5,10 +5,13 @@
   "language": "python",
   "kernel_type": "script",
   "is_private": "true",
-  "enable_gpu": "false",
+  "enable_gpu": "true",
   "enable_internet": "true",
-  "dataset_sources": ["srijeetbanerjee/leaklens-code"],
+  "dataset_sources": [
+    "srijeetbanerjee/leaklens-code"
+  ],
   "competition_sources": [],
   "kernel_sources": [],
-  "model_sources": []
+  "model_sources": [],
+  "machine_shape": "NvidiaTeslaT4"
 }
