@@ -295,3 +295,30 @@ class SplitterV(AVal):
     line: int = 0
     end_line: int = 0
     shuffle: bool | None = None
+
+
+@dataclass(frozen=True)
+class RngV(AVal):
+    """A NumPy random generator (np.random.default_rng, RandomState)."""
+
+
+@dataclass(eq=False)
+class DrawV(AVal):
+    """Uniform random numbers, one per row: the raw material of a hand-written random split."""
+
+    line: int
+    end_line: int
+    call: str
+    data: Data | None = None
+    split: Split | None = None
+
+
+@dataclass(frozen=True)
+class MaskV(AVal):
+    """A boolean mask from comparing a random draw with a threshold: one side of a hand-written random split."""
+
+    draw: DrawV
+    side: str  # "low" (u < a), "high" (u >= a) or "mid" (a <= u < b)
+    line: int
+    end_line: int
+    role: str | None = None  # from the name it is stored under (tr / te / val), when there is one

@@ -25,6 +25,7 @@ from leaklens.config import load_config
 from leaklens.ingest import Source
 from leaklens.report.findings import CONFIDENCE_ORDER, Finding
 
+from . import handwritten
 from .values import (
     UNKNOWN,
     AVal,
@@ -33,6 +34,7 @@ from .values import (
     Cols,
     Const,
     Data,
+    DrawV,
     Est,
     EvalEvent,
     FitRec,
@@ -40,10 +42,12 @@ from .values import (
     Indexer,
     Iter,
     ListV,
+    MaskV,
     Num,
     Origin,
     PathV,
     Ref,
+    RngV,
     Rows,
     Score,
     Split,
@@ -90,6 +94,7 @@ HINT_TEST = set(CFG["role_hints"]["test"])
 HINT_VAL = set(CFG["role_hints"]["validation"])
 PATH_NAMES = set(CFG["path_name_tokens"])
 MAX_DEPTH = CFG["limits"]["max_inline_depth"]
+DRAW_FUNCS = set(CFG["random_draws"])  # uniform draws in [0, 1) used for hand-written random splits
 MAX_STATEMENTS = CFG["limits"]["max_statements"]
 TRIM_MAX = CFG["limits"]["positional_trim_max_rows"]
 STATELESS = set(_T["stateless"])
@@ -341,17 +346,92 @@ class Analyzer:
         self.cat_names: set[str] = set()
         self.origins: list[Origin] = []
         self.truncated = False
+        self.attr_coll: dict[str, str] = {}  # collection name -> entity attribute of its items (handwritten.py)
+        self.attr_data: dict[str, Data] = {}
+        self.called: set[ast.AST] = set()
 
     # ------------------------------------------------------------------ driver
 
     def run(self) -> list[Finding]:
         if self.src.tree is None:
             return []
+        tree = self.src.tree
+        self.attr_coll = handwritten.attribute_entities(tree, entity_strength)
         try:
-            self.block(self.src.tree.body)
+            self.block(tree.body)
+            self.uncalled_functions(tree)
         except (Budget, RecursionError):
             self.truncated = True
+        self.within_entity(tree)
         return self.finish()
+
+    def uncalled_functions(self, tree: ast.Module) -> None:
+        """Module-level functions the file never calls are analysed once with unknown arguments (research code
+        often defines its experiment in functions driven from another file)."""
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef | ast.AsyncFunctionDef) and node not in self.called:
+                self.stmt_line = (node.lineno, node.end_lineno or node.lineno)
+                self.call_func(FuncV(node), [])
+
+    def within_entity(self, tree: ast.Module) -> None:
+        for w in handwritten.within_entity_splits(tree, entity_strength):
+            ent = w["entity"]
+            self.emit(
+                "group",
+                "LL-GRP-005",
+                (w["line"], w["end_line"]),
+                "within_entity_split",
+                "medium",
+                f"Each `{ent}` contributes rows to both sides: the loop from line {w['loop_line']} sends a first part "
+                f"of every {ent}'s rows to `{w['head']}` and the rest to `{w['tail']}`. The score "
+                f"measures performance on {ent}s seen in training; this is legitimate only if the model is meant "
+                f"for those same {ent}s.",
+                [{"kind": "split_call", "detail": f"per-{ent} split in a loop (line {w['loop_line']})"},
+                 {"kind": "entity_column", "detail": f"`{ent}` (grouping key, name evidence)"}],
+                f"Hold out whole {ent}s (GroupShuffleSplit, or leave-one-{ent}-out) if the claim is about new {ent}s.",
+                "replace_splitter:GroupShuffleSplit",
+                {"entity_columns": [ent], "entity_strengths": {ent: "strong"}},
+            )
+
+    # ------------------------------------------------------------------ hand-written random splits
+
+    def attr_collection(self, name: str) -> Data:
+        d = self.attr_data.get(name)
+        if d is None:
+            attr = self.attr_coll[name]
+            o = self.new_origin(f"items of `{name}`")
+            o.entity[attr] = (f"`{attr}` attribute of the items of `{name}`", "strong")
+            d = self.attr_data[name] = Data(o, Rows("all", None, o.id), "array")
+        return d
+
+    def new_draw(self, node: ast.Call, call: str) -> DrawV:
+        data = None
+        kws = {k.arg: k.value for k in node.keywords}
+        if call.endswith("uniform"):  # uniform(low, high, size)
+            size = kws.get("size", node.args[2] if len(node.args) > 2 else None)
+        else:
+            size = kws.get("size", node.args[0] if node.args else None)
+        if isinstance(size, ast.Call) and isinstance(size.func, ast.Name) and size.func.id == "len" and size.args:
+            data = self.to_data(self.ev(size.args[0]))
+        elif isinstance(size, ast.Subscript) and isinstance(size.value, ast.Attribute) and size.value.attr == "shape":
+            data = self.to_data(self.ev(size.value.value))
+        return DrawV(self.stmt_line[0], self.stmt_line[1], call, data)
+
+    def mask_select(self, d: Data, mask: MaskV) -> Data:
+        draw = mask.draw
+        sp = draw.split
+        if sp is None:
+            sp = draw.split = self.new_split(
+                f"random mask ({draw.call})", d.rows, d.origin, row_level=True, checked=False,
+                info={"manual": True, "mask": True, "roles": set()},
+            )
+            sp.line, sp.end_line = mask.line, mask.end_line
+        role = mask.role or {"low": "train", "high": "test", "mid": "test"}[mask.side]
+        sp.info["roles"].add(role)
+        if {"train", "test"} <= sp.info["roles"] and not sp.info.get("confirmed"):
+            sp.info["confirmed"] = True
+            self.check_split(sp, d, None)
+        return replace(d, rows=Rows(role, sp, d.origin.id), subset=False)
 
     def finish(self) -> list[Finding]:
         out = sorted(self.findings.values(), key=lambda f: (f.flat_line_start, f.type))
@@ -587,6 +667,10 @@ class Analyzer:
 
     def hint_role(self, name: str, value: AVal) -> AVal:
         """A row subset stored under a name like `test_df` or `X_val` is one side of a manual split."""
+        if isinstance(value, MaskV):
+            toks = set(tokens(name))
+            role = "train" if toks & HINT_TRAIN else "test" if toks & (HINT_TEST | HINT_VAL) else None
+            return replace(value, role=role) if role else value
         if not isinstance(value, Data):
             return value
         toks = set(tokens(name))
@@ -714,6 +798,8 @@ class Analyzer:
             return UNKNOWN
         if isinstance(node, ast.Name):
             v = self.get(node.id)
+            if node.id in self.attr_coll and not isinstance(v, Data | FuncV | Ref):
+                return self.attr_collection(node.id)
             return Ref(node.id) if v is None else v
         if isinstance(node, ast.Attribute):
             return self.ev_attribute(node)
@@ -725,11 +811,19 @@ class Analyzer:
             return self.binop(self.ev(node.left), self.ev(node.right), node.op)
         if isinstance(node, ast.UnaryOp):
             v = self.ev(node.operand)
+            if isinstance(v, MaskV) and isinstance(node.op, ast.Invert):
+                return replace(v, side={"low": "high", "high": "low", "mid": "mid"}[v.side], role=None)
             if isinstance(v, Num) and isinstance(node.op, ast.USub) and v.value is not None:
                 return Num(-v.value)
             return v if isinstance(v, Data | Score) else UNKNOWN
         if isinstance(node, ast.Compare):
             vals = [self.ev(node.left)] + [self.ev(c) for c in node.comparators]
+            if len(node.ops) == 1 and any(isinstance(v, DrawV) for v in vals):
+                op = node.ops[0]
+                lower = isinstance(op, ast.Lt | ast.LtE) == isinstance(vals[0], DrawV)
+                draw = vals[0] if isinstance(vals[0], DrawV) else vals[1]
+                if isinstance(op, ast.Lt | ast.LtE | ast.Gt | ast.GtE):
+                    return MaskV(draw, "low" if lower else "high", *self.stmt_line)
             datas = [v for v in vals if isinstance(v, Data)]
             if datas:
                 out = datas[0]
@@ -772,6 +866,10 @@ class Analyzer:
         return UNKNOWN
 
     def binop(self, left: AVal, right: AVal, op: ast.operator) -> AVal:
+        if isinstance(left, MaskV) and isinstance(right, MaskV) and left.draw is right.draw:
+            if isinstance(op, ast.BitAnd) and left.side != right.side:
+                return replace(left, side="mid", role=None)
+            return left
         if isinstance(left, Data) and isinstance(right, Data):
             return self.combine(left, right)
         if isinstance(left, Data):
@@ -944,6 +1042,10 @@ class Analyzer:
     def ev_subscript(self, node: ast.Subscript) -> AVal:
         base = self.ev(node.value)
         sl = node.slice
+        if isinstance(sl, ast.Name | ast.Compare | ast.UnaryOp | ast.BinOp):
+            key = self.ev(sl)
+            if isinstance(key, MaskV):
+                return self.mask_select(base, key) if isinstance(base, Data) else base
         if isinstance(base, Data):
             return self.data_index(base, sl)
         if isinstance(base, Indexer):
@@ -1242,6 +1344,10 @@ class Analyzer:
 
     def call_method(self, recv: AVal, m: str, node: ast.Call, recv_node: ast.expr | None) -> AVal:
         args, kw = self.ev_args(node)
+        if isinstance(recv, RngV):
+            if m in DRAW_FUNCS and (node.args or any(k.arg == "size" for k in node.keywords)):
+                return self.new_draw(node, f"rng.{m}")
+            return self.opaque(args, kw)
         if isinstance(recv, Data):
             res = self.data_method(recv, m, args, kw, node, recv_node)
             if is_true(kw.get("inplace")) and isinstance(res, Data) and recv_node is not None:
@@ -1336,6 +1442,7 @@ class Analyzer:
         self.scopes.append(scope)
         self.rets.append([])
         self.call_stack.append(f.node)
+        self.called.add(f.node)
         saved = self.stmt_line
         try:
             if isinstance(f.node, ast.Lambda):
@@ -1355,6 +1462,11 @@ class Analyzer:
     def call_ref(self, ref: Ref, node: ast.Call) -> AVal:
         name = ref.name
         args, kw = self.ev_args(node)
+        if ref.root in ("numpy", "np") and ".random." in f".{ref.qual}.":
+            if name in ("default_rng", "RandomState", "Generator"):
+                return RngV()
+            if name in DRAW_FUNCS and (node.args or any(k.arg == "size" for k in node.keywords)):
+                return self.new_draw(node, f"np.random.{name}")
         if ref.qual.startswith("<class>."):
             return self.opaque(args, kw)
         if name == "train_test_split":

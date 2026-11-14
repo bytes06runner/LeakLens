@@ -104,3 +104,7 @@ limits:
   max_inline_depth: 4          # user-function inlining depth
   max_statements: 200000       # give up on pathological inputs instead of hanging
   positional_trim_max_rows: 10 # x[:-1] or x[2:] with a literal this small drops rows; it is not a manual split
+
+# NumPy calls that draw one uniform [0, 1) number per row; comparing the draw with a threshold makes a mask that
+# is one side of a hand-written random split (EVAL_CHANGES.md #13).
+random_draws: [random, rand, random_sample, uniform]

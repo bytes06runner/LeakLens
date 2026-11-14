@@ -1,0 +1,797 @@
+{
+ "schema": "leaklens/report/v1",
+ "tool": {
+  "name": "leaklens",
+  "version": "0.0.1",
+  "commit": "923416b"
+ },
+ "scan": {
+  "mode": "static",
+  "started_utc": "2026-11-14T10:13:55Z",
+  "config_hash": "f290d947a00516b4"
+ },
+ "files": [
+  {
+   "path": "src/calibraeeg/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/calibrate/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/calibrate/temperature.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/controls/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/card.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/chbmit.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/download.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/edf_header.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/edf_window.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/data/siena.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/eval/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/eval/gap.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/eval/metrics.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/eval/summary.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/features/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/features/cache.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/features/classical.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/cache_audit.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/feature_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/gap_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/preprocess_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/qc_verify_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/t8p8_check_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/threshold_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/jobs/train_job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/models/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/models/cnn.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/postprocess/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/postprocess/events.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/postprocess/thresholds.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/preprocess/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/preprocess/cache.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/preprocess/montage.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/preprocess/pipeline.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/preprocess/runner.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/provenance.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/alignment.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/labels.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/plots.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/t8p8.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/qc/verify.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/__init__.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/data.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/fold.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/guard.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/learners.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/regimes.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "src/calibraeeg/train/splits.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/00_probe_s3/probe.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/00_probe_s3_v2/probe.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/00_smoke_cpu/smoke.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/00_smoke_gpu/smoke.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/01_download_preprocess/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/01a_preprocess_chbmit/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/01b_preprocess_siena/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/01c_cache_audit/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/01d_qc_verify/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02_train_cnn/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02_train_cnn_transformer/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02_train_lgbm/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02a_features/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02b_t8p8_check/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02c_regimes_cnn/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02c_regimes_cnn_transformer/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02c_regimes_lgbm/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/02d_gap/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "kaggle/05a_thresholds/job.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/build_data_card.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/fetch_data.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/make_meeting_brief_figure.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/make_readme_figures.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/preprocess_local.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/qc_chb12_27.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/scan_edf_headers.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  },
+  {
+   "path": "scripts/summarise_lopo.py",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": null,
+    "skipped_cells": []
+   }
+  }
+ ],
+ "findings": [
+  {
+   "id": "de758829fca40fb6",
+   "rule_id": "LL-GRP-005",
+   "type": "group",
+   "subtype": "within_entity_split",
+   "severity": "high",
+   "confidence": "medium",
+   "location": {
+    "file": "src/calibraeeg/train/regimes.py",
+    "line_start": 54,
+    "line_end": 55,
+    "cell": null,
+    "flat_line_start": 54,
+    "flat_line_end": 55
+   },
+   "message": "Each `subject` contributes rows to both sides: the loop from line 46 sends a first part of every subject's rows to `train` and the rest to `test`. The score measures performance on subjects seen in training; this is legitimate only if the model is meant for those same subjects.",
+   "evidence": [
+    {
+     "kind": "split_call",
+     "detail": "per-subject split in a loop (line 46)"
+    },
+    {
+     "kind": "entity_column",
+     "detail": "`subject` (grouping key, name evidence)"
+    }
+   ],
+   "related": [],
+   "suggested_fix": {
+    "description": "Hold out whole subjects (GroupShuffleSplit, or leave-one-subject-out) if the claim is about new subjects.",
+    "canonical_fix": "replace_splitter:GroupShuffleSplit"
+   },
+   "dynamic": {
+    "status": "not_run"
+   },
+   "impact": {
+    "status": "not_run"
+   },
+   "suppressed": null
+  },
+  {
+   "id": "58d0d818e43ab3f3",
+   "rule_id": "LL-GRP-001",
+   "type": "group",
+   "subtype": "row_split",
+   "severity": "high",
+   "confidence": "medium",
+   "location": {
+    "file": "src/calibraeeg/train/regimes.py",
+    "line_start": 99,
+    "line_end": 99,
+    "cell": null,
+    "flat_line_start": 99,
+    "flat_line_end": 99
+   },
+   "message": "Rows are split without regard to `subject`; the same subject can be in training and evaluation rows, so the score does not measure performance on new entities.",
+   "evidence": [
+    {
+     "kind": "split_call",
+     "detail": "random mask (rng.random): row-level, not group-aware"
+    },
+    {
+     "kind": "entity_column",
+     "detail": "`subject` attribute of the items of `recs`"
+    }
+   ],
+   "related": [],
+   "suggested_fix": {
+    "description": "Split by entity: use GroupShuffleSplit with groups=`subject` (same folds, test size and seed).",
+    "canonical_fix": "replace_splitter:GroupShuffleSplit"
+   },
+   "dynamic": {
+    "status": "not_run"
+   },
+   "impact": {
+    "status": "not_run"
+   },
+   "suppressed": null
+  }
+ ]
+}
