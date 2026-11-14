@@ -15,7 +15,11 @@ import sys
 from math import comb
 from pathlib import Path
 
-YANG = {"Pre-processing leakage": "preprocessing", "Overlap leakage": "overlap", "No independence test data": "multi_test"}
+YANG = {
+    "Pre-processing leakage": "preprocessing",
+    "Overlap leakage": "overlap",
+    "No independence test data": "multi_test",
+}
 TYPES = ("preprocessing", "overlap", "multi_test")
 
 
@@ -29,7 +33,10 @@ def main() -> None:
         rec = json.loads(line)
         ll[rec["notebook_id"]] = {f["type"] for f in rec["findings"] if f["confidence"] != "low"}
     y = json.loads(yang_p.read_text())["items"]
-    yp = {k: {YANG[t] for t, x in (v.get("summary") or {}).items() if t in YANG and x["detected"] > 0} for k, v in y.items()}
+    yp = {
+        k: {YANG[t] for t, x in (v.get("summary") or {}).items() if t in YANG and x["detected"] > 0}
+        for k, v in y.items()
+    }
     a_only = b_only = both = neither = 0
     for nb in sorted(ll):
         for t in TYPES:
