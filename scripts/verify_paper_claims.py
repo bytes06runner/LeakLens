@@ -263,7 +263,7 @@ def main() -> None:
                        capture_output=True, text=True)
     mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
     got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
-    check("4.5", "test suite (387 tests; 385 pass on a laptop, 2 root-only skipped)", "385 passed, 2 skipped", got,
+    check("4.5", "test suite (398 tests; 396 pass on a laptop, 2 root-only skipped)", "396 passed, 2 skipped", got,
           "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
 
     # ---------------------------------------------------------------- review response (2026-11-14)
@@ -443,6 +443,27 @@ def main() -> None:
           f"{dfl['preprocessing']['precision']:.2f}/{dfl['preprocessing']['recall']:.2f}; "
           f"{dfl['multi_test']['precision']:.2f}/{dfl['multi_test']['recall']:.2f}; "
           f"{dfl['group']['tp']} of {dfl['group']['tp'] + dfl['group']['fn']}", "results/2026-11-14_real_dev_static")
+    r2 = R / "2026-11-15_real_test_static_second_look_v2"
+    fl2 = load_json(r2 / "filelevel.json")["LeakLens static, confidence medium+"]
+    for t, paper_v in (("group", "4: 0.50/0.75"), ("target_derived", "4: 0.20/0.25"), ("preprocessing", "23: 0.76/0.70"),
+                       ("overlap", "7: 0.83/0.71"), ("multi_test", "25: 0.74/0.56"), ("temporal", "13: 0.75/0.23")):
+        check("7.2", f"second look, notebook level {t}: n: P/R", paper_v, pr(fl2, t), str(r2 / "filelevel.json"))
+    s2 = {x["type"]: x for x in load_json(r2 / "summary.json")["strict (headline)|medium"]}
+    s1 = {x["type"]: x for x in sm}
+    check("7.2", "multi-test leaks located (line rule): first / second look", "5 / 10",
+          f"{s1['multi_test']['tp']} / {s2['multi_test']['tp']}", str(r2 / "summary.json"))
+    g2 = [json.loads(ln) for ln in (r2 / "findings.jsonl").open()]
+    gl = {x["notebook_id"]: x.get("entity_column") for x in rlab if x["leak_type"] == "group"}
+    named = []
+    for rec in g2:
+        if rec["notebook_id"] in gl:
+            fs = [f for f in rec["findings"] if f["type"] == "group" and f["confidence"] != "low"]
+            if fs:
+                col = gl[rec["notebook_id"]]
+                named.append(not col or any(f"`{col}`" in f["message"] for f in fs))
+    check("7.2", "second look: group notebooks found / all naming the right entity", "3 / True",
+          f"{len(named)} / {all(named)}", str(r2 / "findings.jsonl"))
+
     st_txt = (ROOT / "benchmark/real/review/REVIEW_STATUS.md").read_text()
     st_line = next((ln for ln in st_txt.splitlines() if ln.startswith("Status:")), "no status line")
     check("7.2", "labels reviewed by the first author (review recorded as complete)", "Status: COMPLETE",

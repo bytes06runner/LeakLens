@@ -99,7 +99,7 @@
 | PASS | 6.6 | impact, findings both estimate / MAE LeakHound / MAE LeakLens | 11 / 0.065 / 0.086 | 11 / 0.065 / 0.086 | paper/numbers.json |
 | PASS | 6.6 | LeakHound error range on duplicates and time splits | 0.01 to 0.08 | 0.01 to 0.08 | paper/numbers.json |
 | PASS | 5.4 | scicode-lint: files attempted (all timed out) / results | 29 / 0 | 29 / 0 | results/2026-11-14_kaggle_06_scicode_gpu_test |
-| PASS | 4.5 | test suite (387 tests; 385 pass on a laptop, 2 root-only skipped) | 385 passed, 2 skipped | 385 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
+| PASS | 4.5 | test suite (398 tests; 396 pass on a laptop, 2 root-only skipped) | 396 passed, 2 skipped | 396 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
 | PASS | 6.5 | fixes keeping the split: identical eval rows / changing the split: different rows | 18 / 16 | 18 / 16 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
 | PASS | 6.5 | mean overlap by split-changing fix type, range | 0.14 to 0.28 | 0.14 to 0.28 | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
 | PASS | 6.5 | kinds of fix that keep the split all identical | True | True | results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv |
@@ -145,6 +145,14 @@
 | PASS | 7.2 | paired decisions right: LeakLens / Yang of N; p<0.001 | 206 / 162 of 237; True | 206 / 162 of 237; True | results/2026-11-14_kaggle_10_yang_real_test/paired_vs_leaklens.json |
 | PASS | 7.2 | Yang: notebooks without a report / of them timed out at 300 s | 10 / 7 | 10 / 7 | results/2026-11-14_kaggle_10_yang_real_test/yang_real_test_results.json |
 | PASS | 7.2 | DEV (not blind) notebook level pre / multi P/R; group TP of n | 0.53/0.50; 0.60/0.40; 0 of 4 | 0.53/0.50; 0.60/0.40; 0 of 4 | results/2026-11-14_real_dev_static |
+| PASS | 7.2 | second look, notebook level group: n: P/R | 4: 0.50/0.75 | 4: 0.50/0.75 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | second look, notebook level target_derived: n: P/R | 4: 0.20/0.25 | 4: 0.20/0.25 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | second look, notebook level preprocessing: n: P/R | 23: 0.76/0.70 | 23: 0.76/0.70 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | second look, notebook level overlap: n: P/R | 7: 0.83/0.71 | 7: 0.83/0.71 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | second look, notebook level multi_test: n: P/R | 25: 0.74/0.56 | 25: 0.74/0.56 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | second look, notebook level temporal: n: P/R | 13: 0.75/0.23 | 13: 0.75/0.23 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/filelevel.json |
+| PASS | 7.2 | multi-test leaks located (line rule): first / second look | 5 / 10 | 5 / 10 | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/summary.json |
+| PASS | 7.2 | second look: group notebooks found / all naming the right entity | 3 / True | 3 / True | /Users/srijeetprasadbanerjee/Desktop/leaklens/results/2026-11-15_real_test_static_second_look_v2/findings.jsonl |
 | PASS | 7.2 | labels reviewed by the first author (review recorded as complete) | Status: COMPLETE | Status: COMPLETE | benchmark/real/review/REVIEW_STATUS.md |
 | PASS (source read) | 1-2 | Kapoor & Narayanan: papers / fields | 294 / 17 | 294 / 17 | literature/related_work.csv (verified) |
 | PASS (source read) | 1-2 | Yang et al.: notebooks / share with leak | 107,603 / 29.6% | 107,603 / 29.6% | literature/related_work.csv (verified) |

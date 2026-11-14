@@ -64,8 +64,8 @@ it names the true entity, the static pass finds 59 leaks with no false positive 
 four. Per file, the analyser of Yang et al.\ is right for 20 of 37 files and \tool{} for 33 ($p<0.001$). On real
 code it flags the random-window and within-patient regimes of an EEG study and leaves the leave-one-patient-out
 regime alone. On 79 held-out public Kaggle notebooks, scored per notebook, it is right in 206 of 237 decisions on
-the three types both tools report, against 162 for the Yang analyser ($p<0.001$), but it finds none of the four
-notebooks with group leakage. Impact estimates are preliminary: fixes that change the split also change the rows
+the three types both tools report, against 162 for the Yang analyser ($p<0.001$); group leaks there take forms the
+benchmark lacked, and rules added for them after the first look find 3 of the 4, each naming the right entity. Impact estimates are preliminary: fixes that change the split also change the rows
 being scored.
 \end{abstract}
 
@@ -266,7 +266,7 @@ Notebooks from the internet run only in an offline cloud session (Kaggle), in a 
 environment, a throwaway directory, a timeout and an unprivileged user, so that it cannot read the session's
 tokens. Findings (location, type, rule, confidence, evidence, proposed fix, and the before/after metric where
 measured) are written as text, JSON or SARIF, with a pre-commit hook and a GitHub Action. The tool is deterministic
-and uses no language model. Of its 387 tests, 385 pass on a laptop; two need root and run only in the cloud.
+and uses no language model. Of its 398 tests, 396 pass on a laptop; two need root and run only in the cloud.
 
 \section{Benchmark and Evaluation Protocol}
 
@@ -355,7 +355,7 @@ False positives & & 0 & & 4$^{*}$ & \\
 \code{patient\_id}; the frozen line-and-type rule had counted them, giving 7 and 65.
 \end{table}
 
-\subsection{What went wrong, and a second look}
+\subsection{What went wrong, and a second look}\label{sec:second}
 
 Three faults explain most misses. In a patient-visits pipeline the static pass guessed a weak column,
 \code{visit}; the run checked only that column, found visit numbers on both sides as always, and raised its
@@ -370,10 +370,8 @@ front of us, so the second look is diagnostic only and Table~\ref{tab:test} stay
 
 On the three types the baseline supports (Table~\ref{tab:yang}) it was right for 20 of 37 files with one false
 alarm, and the static pass of \tool{} for 33 with none; both analysed all 79 files and stayed silent on the
-leak-free ones. Over the 37 file-and-type pairs, only \tool{} was right in 14, only the baseline in 1, and
-19 were right for both and 3 for neither (exact McNemar test, $p<0.001$). Preprocessing makes the difference (12
-against 1); for overlap the two tools give identical answers. The setting favours \tool{}: the files come from our operators, which target the leaks
-\tool{} was built for.
+leak-free ones. Only \tool{} was right in 14 file-type pairs, only the baseline in 1 (exact McNemar,
+$p<0.001$), mostly on preprocessing.
 
 \begin{table}[t]
 \caption{Yang et al.\ and \tool{} (static) on the 79 injected TEST files, scored per file and type. Found: files
@@ -395,8 +393,7 @@ time-ordered data, 7 group splits and 2 sets of duplicated records. With no colu
 7 group splits, all with the right column, and 3 of 8 time splits; LeakHound, Deepchecks and splitguard find
 neither. Told the column, leakcheck-ml and LeakHound reach 7 of 8 and 7 of 7. dataleaks finds 7 of 7 group splits
 unaided but names an unrelated column in 3 and flags 2 of 9 leak-free files. \tool{} finds 8 of 8 time splits with
-no column named; on group splits it names the true entity in 3 of 7, against 4 for leakcheck-ml without a hint.
-Every other tool also needs exported tables, which our run supplied here.
+no column named and, on group splits, the true entity in 3 of 7; every other tool needs exported tables.
 
 \begin{table}[t]
 \caption{Leaks at a split call, injected TEST. Col.: true column named to the tool. T1: non-chronological
@@ -491,46 +488,46 @@ unconf.: not confirmed by the run.
 We sampled 150 public Kaggle notebooks in three strata (tabular, time series, grouped data) and split them by
 author into TEST (79) and DEV (71). The labels were drafted by an AI coding assistant following the
 written guide and reviewed by the first author; with no second annotator there is no agreement statistic. The TEST labels were committed before either tool's output on these
-notebooks was looked at. They mark 99 leaks in 56 notebooks (39 preprocessing, 26 multi-test, 15 temporal, 8
-overlap, 6 group, 5 target-derived). Both tools ran once (Table~\ref{tab:real}).
+notebooks was looked at. They mark 99 leaks in 56 notebooks. Both tools ran once (Table~\ref{tab:real}).
 
 \begin{table}[t]
 \centering
 \caption{Real TEST notebooks (79), scored per notebook and type, confidence medium or above. $n$: notebooks with a
-label of the type. P/R: precision/recall.}
+label of the type. P/R: precision/recall. 2nd: after the rules of Section~\ref{sec:realrules} (second look).}
 \label{tab:real}
-\small
-\begin{tabular}{@{}lrcc@{}}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrccc@{}}
 \toprule
-Type & $n$ & \tool{} P/R & Yang et al.\ P/R \\
+Type & $n$ & \tool{} P/R & \tool{} 2nd P/R & Yang et al.\ P/R \\
 \midrule
-preprocessing & 23 & 0.76/0.70 & 0.43/0.52 \\
-overlap & 7 & 0.83/0.71 & 0.20/0.29 \\
-multi-test & 25 & 0.74/0.56 & 0.32/0.36 \\
-group & 4 & 0.00/0.00 & -- \\
-temporal & 13 & 0.75/0.23 & -- \\
-target-derived & 4 & 0.20/0.25 & -- \\
+preprocessing & 23 & 0.76/0.70 & 0.76/0.70 & 0.43/0.52 \\
+overlap & 7 & 0.83/0.71 & 0.83/0.71 & 0.20/0.29 \\
+multi-test & 25 & 0.74/0.56 & 0.74/0.56 & 0.32/0.36 \\
+group & 4 & 0.00/0.00 & 0.50/0.75 & -- \\
+temporal & 13 & 0.75/0.23 & 0.75/0.23 & -- \\
+target-derived & 4 & 0.20/0.25 & 0.20/0.25 & -- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 On the three shared types \tool{} is right in 206 of 237 notebook-type decisions and the Yang analyser in 162
-(exact McNemar, $p<0.001$); the latter gave no report for 10 notebooks (7 timed out at 300\,s), counted as no
-finding. Under the line rule \tool{} locates only 33 of the 99 leaks, with 87 false positives, partly because it points
-at a selection's scoring call and the guide at the selection line. Group leakage, our
-main target, fails on real code: none of the four notebooks is found at the threshold (one at low confidence,
-with the right column), and three others get group findings on identifiers the labels do not treat as entities.
-Of ten temporal misses, three
-are below the threshold; most others have implicit order (EEG samples, engine cycles). DEV, not blind, is no better
-(preprocessing 0.53/0.50, multi-test 0.60/0.40, group 0 of 4).
+(exact McNemar, $p<0.001$); its 10 notebooks without a report count as no finding. Under the line rule the gap is mostly location (33 of 99 leaks at first).
+
+\textbf{Group leakage in real code.}\label{sec:realrules} The first look missed all four group notebooks, each in a
+form the injected benchmark lacked: overlapping subject lists (\code{range(1,110)} and \code{range(51,110)});
+trials pooled from per-subject \code{.mat} files without the file kept; an engine \code{id} the code groups by;
+and a patient column present only in the loaded table. Three rules for the first three (developed on DEV, where
+they also find a 30-subject EEG notebook) and multi-test findings moved to the selection line give, in a logged
+second look, 3 of 4 group notebooks, each naming the right entity, and twice the multi-test leaks located (5 to
+10); injected findings are unchanged. As in Section~\ref{sec:second}, the first look stays the result of record.
 
 \section{Limitations and Threats to Validity}
 
 \textbf{Shared authorship.} The benchmark, the real-notebook labels and the tool share authors, and the AI assistant
 that drafted the labels also wrote the rules, so all may miss the same leaks; injected TEST reuses DEV's mutation
 operators. \textbf{Labels.} One draft and one reviewer, no second annotator; parts of 32 long TEST notebooks may
-have been read only partly, and labels the review adds are reported as added after scoring. \textbf{Small
-samples.} Injected TEST has 4 target-derived, 6 multi-test and 7 group leaks; real TEST has 4 group notebooks.
+have been read only partly, and labels the review adds are reported as added after scoring. \textbf{Small samples} for group and target-derived leaks.
 \textbf{Blindness.} TEST column names were seen by mistake while rules were written. \textbf{Coverage.} Custom
 classes and deep learning code are largely outside the analysis. \textbf{Baselines.} The Yang analyser was scored per file;
 scicode-lint, LeakCheck, leakray and unleak were not run on real code.
@@ -540,9 +537,9 @@ scicode-lint, LeakCheck, leakray and unleak were not run on real code.
 \tool{} reads ML code for six leakage types, takes entity evidence from more than column names, checks findings at
 the split while the code runs, and can re-run a pipeline with a fix. On held-out injected leaks, with group findings
 counted only when they name the right entity, it found 81\% statically and 84\% with the run, more than the
-reference analyser ($p<0.001$). On 79 real notebooks it again beats that analyser on the shared types but finds no
-group leak, so the main contribution is not yet shown on real code, and impact estimates for split-changing fixes
-compare different rows. Next: an independent human annotator, the remaining linters, and prevalence and cost of each
+reference analyser ($p<0.001$). On 79 real notebooks it again beats that analyser on the shared types; real group
+leaks took new forms (overlapping subject lists, trials pooled from per-subject files), and rules written for them
+find 3 of 4 in a logged second look. Impact estimates for split-changing fixes compare different rows. Next: an independent human annotator, the remaining linters, and prevalence and cost of each
 type in public notebooks.
 
 \textbf{Data and code availability.} The code, benchmark generators, frozen protocol, change log and the output of
