@@ -1,0 +1,72 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-mfbrt55_",
+    "mode": "impact",
+    "started_utc": "2026-11-14T11:16:07Z",
+    "config_hash": "f290d947a00516b4"
+  },
+  "files": [
+    {
+      "path": "C3a.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "fcfc3471be30d1fd",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "C3a.ipynb",
+        "line_start": 5,
+        "line_end": 5,
+        "cell": 73,
+        "flat_line_start": 264,
+        "flat_line_end": 264
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `date` (date-like name); column `datetime` (parsed as datetime); column `day` (date-like name); column `forecast_date_x` (date-like name); column `month` (date-like name); column `origin_datetime` (date-like name); column `year` (date-like name)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "no timestamp column is row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "unknown",
+        "metric": "Mean squared error",
+        "value_leaky": 20561.572406266816,
+        "note": "fixed run failed: RuntimeError: fix failed: no time column is row-aligned with the split data"
+      },
+      "suppressed": null
+    }
+  ]
+}

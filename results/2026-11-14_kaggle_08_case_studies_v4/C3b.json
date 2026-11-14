@@ -1,0 +1,726 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-t2ov1vg8",
+    "mode": "impact",
+    "started_utc": "2026-11-14T11:19:22Z",
+    "config_hash": "f290d947a00516b4"
+  },
+  "files": [
+    {
+      "path": "C3b.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "9d5a5925d63a9ad2",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 25,
+        "line_end": 27,
+        "cell": 46,
+        "flat_line_start": 181,
+        "flat_line_end": 183
+      },
+      "message": "Rows are split without regard to `Store`; the same Store can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Store` (name evidence)"
+        }
+      ],
+      "related": [
+        "b44415f2258769dd"
+      ],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`Store` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "the nominated column is not row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "measured",
+        "metric": "r2_score (line 205)",
+        "metric_source": "recorded at run time",
+        "value_leaky": 0.9593678951047735,
+        "value_fixed": -0.1693893421201147,
+        "delta": 1.128757,
+        "n_runs": 1,
+        "all_scores": [
+          {
+            "score": "plt.xticks(rotation=45)[0] (line 122)",
+            "leaky": 15096.222222222223,
+            "fixed": 15096.222222222223,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 433270.43422742275,
+            "fixed": 533800.0546591628,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 272330846318.5775,
+            "fixed": 392784244481.4658,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.1546578064842935,
+            "fixed": -0.04746083333484008,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 75320.22606837608,
+            "fixed": 658459.3004739705,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 18496655596.816654,
+            "fixed": 707066933238.0703,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9425845304478425,
+            "fixed": -0.8855769535532032,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 62143.851399922285,
+            "fixed": 479683.287096348,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 13089818062.673883,
+            "fixed": 438505855905.82965,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9593678951047735,
+            "fixed": -0.1693893421201147,
+            "reached_by_fix": true
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -520787.3832665581,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -520787.3832665581,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -132680.42963522248,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -132680.42963522248,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -108584.51323426593,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -108584.51323426593,
+            "reached_by_fix": false
+          }
+        ],
+        "note": "train_test_split -> GroupShuffleSplit(groups=Store)"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "b44415f2258769dd",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 25,
+        "line_end": 27,
+        "cell": 46,
+        "flat_line_start": 181,
+        "flat_line_end": 183
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Quarter` (date-like name); column `Week` (date-like name); column `Year` (date-like name)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9926184926184927,
+          "detail": "99% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [
+        "9d5a5925d63a9ad2"
+      ],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9926
+        }
+      },
+      "impact": {
+        "status": "measured",
+        "metric": "r2_score (line 205)",
+        "metric_source": "recorded at run time",
+        "value_leaky": 0.9593678951047735,
+        "value_fixed": 0.8947120276973943,
+        "delta": 0.064656,
+        "n_runs": 1,
+        "all_scores": [
+          {
+            "score": "plt.xticks(rotation=45)[0] (line 122)",
+            "leaky": 15096.222222222223,
+            "fixed": 15096.222222222223,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 433270.43422742275,
+            "fixed": 414992.6500107128,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 272330846318.5775,
+            "fixed": 245155575266.6323,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.1546578064842935,
+            "fixed": 0.1334251945924898,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 75320.22606837608,
+            "fixed": 142346.1032944833,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 18496655596.816654,
+            "fixed": 45382053640.01157,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9425845304478425,
+            "fixed": 0.8395837245010069,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 62143.851399922285,
+            "fixed": 103080.93176985222,
+            "reached_by_fix": true
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 13089818062.673883,
+            "fixed": 29786157245.091347,
+            "reached_by_fix": true
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9593678951047735,
+            "fixed": 0.8947120276973943,
+            "reached_by_fix": true
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -520787.3832665581,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -520787.3832665581,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -132680.42963522248,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -132680.42963522248,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -108584.51323426593,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -108584.51323426593,
+            "reached_by_fix": false
+          }
+        ],
+        "note": "train_test_split -> chronological split in time order"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "c68d382efb2e606e",
+      "rule_id": "LL-MUL-001",
+      "type": "multi_test",
+      "subtype": "test_set_tuning",
+      "severity": "medium",
+      "confidence": "high",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 8,
+        "line_end": 8,
+        "cell": 49,
+        "flat_line_start": 203,
+        "flat_line_end": 203
+      },
+      "message": "Several candidates are scored on the same evaluation rows and the best one is selected; its score on those rows is an optimistic estimate.",
+      "evidence": [
+        {
+          "kind": "selection",
+          "detail": "scores from this line are compared by .sort_values()"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "mean_absolute_error on evaluation rows, repeated for several candidates"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Select with a separate validation split or nested cross-validation, then score the chosen candidate once on untouched rows.",
+        "canonical_fix": "nested_validation"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "candidates_scored_on_the_same_rows": 3
+        }
+      },
+      "impact": {
+        "status": "unknown",
+        "note": "nested validation is not automated in this version"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "a92f30559395ca38",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_cv",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 13,
+        "line_end": 19,
+        "cell": 53,
+        "flat_line_start": 243,
+        "flat_line_end": 249
+      },
+      "message": "Rows are split without regard to `Store`; the same Store can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "cross_val_score with KFold: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Store` (name evidence)"
+        }
+      ],
+      "related": [
+        "13d3f38b4b382785",
+        "b89409ca434a3236"
+      ],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupKFold with groups=`Store` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupKFold"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "the nominated column is not row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "measured",
+        "metric": "cross_validate (line 243)",
+        "metric_source": "recorded at run time",
+        "value_leaky": -108584.51323426593,
+        "value_fixed": -796710.2651812974,
+        "delta": 688125.751947,
+        "n_runs": 1,
+        "all_scores": [
+          {
+            "score": "plt.xticks(rotation=45)[0] (line 122)",
+            "leaky": 15096.222222222223,
+            "fixed": 15096.222222222223,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 433270.43422742275,
+            "fixed": 433270.43422742275,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 272330846318.5775,
+            "fixed": 272330846318.5775,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.1546578064842935,
+            "fixed": 0.1546578064842935,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 75320.22606837608,
+            "fixed": 75320.22606837608,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 18496655596.816654,
+            "fixed": 18496655596.816654,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9425845304478425,
+            "fixed": 0.9425845304478425,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 62143.851399922285,
+            "fixed": 62143.851399922285,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 13089818062.673883,
+            "fixed": 13089818062.673883,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9593678951047735,
+            "fixed": 0.9593678951047735,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -534401.9554398204,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -534401.9554398204,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -831061.6354259902,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -831061.6354259902,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -796710.2651812974,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -796710.2651812974,
+            "reached_by_fix": false
+          }
+        ],
+        "note": "KFold -> GroupKFold(groups=Store); _CVIterableWrapper -> GroupKFold(groups=Store)"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "13d3f38b4b382785",
+      "rule_id": "LL-MUL-001",
+      "type": "multi_test",
+      "subtype": "cv_selection_reported",
+      "severity": "medium",
+      "confidence": "high",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 13,
+        "line_end": 19,
+        "cell": 53,
+        "flat_line_start": 243,
+        "flat_line_end": 249
+      },
+      "message": "Several candidates are compared by cross-validation on all rows and the best score is kept; no rows remain that were not used for the selection.",
+      "evidence": [
+        {
+          "kind": "selection",
+          "detail": "scores from this line are compared by .sort_values()"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "cross_val_score on evaluation rows, repeated for several candidates"
+        }
+      ],
+      "related": [
+        "a92f30559395ca38",
+        "b89409ca434a3236"
+      ],
+      "suggested_fix": {
+        "description": "Select with a separate validation split or nested cross-validation, then score the chosen candidate once on untouched rows.",
+        "canonical_fix": "nested_validation"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "candidates_scored_on_the_same_rows": 3
+        }
+      },
+      "impact": {
+        "status": "unknown",
+        "note": "nested validation is not automated in this version"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "b89409ca434a3236",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "C3b.ipynb",
+        "line_start": 13,
+        "line_end": 19,
+        "cell": 53,
+        "flat_line_start": 243,
+        "flat_line_end": 249
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "KFold: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Quarter` (date-like name); column `Week` (date-like name); column `Year` (date-like name)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9941724941724942,
+          "detail": "99% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [
+        "13d3f38b4b382785",
+        "a92f30559395ca38"
+      ],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:TimeSeriesSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9942
+        }
+      },
+      "impact": {
+        "status": "measured",
+        "metric": "cross_validate (line 243)",
+        "metric_source": "recorded at run time",
+        "value_leaky": -108584.51323426593,
+        "value_fixed": -258036.452395945,
+        "delta": 149451.939162,
+        "n_runs": 1,
+        "all_scores": [
+          {
+            "score": "plt.xticks(rotation=45)[0] (line 122)",
+            "leaky": 15096.222222222223,
+            "fixed": 15096.222222222223,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 433270.43422742275,
+            "fixed": 433270.43422742275,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 272330846318.5775,
+            "fixed": 272330846318.5775,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.1546578064842935,
+            "fixed": 0.1546578064842935,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 75320.22606837608,
+            "fixed": 75320.22606837608,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 18496655596.816654,
+            "fixed": 18496655596.816654,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9425845304478425,
+            "fixed": 0.9425845304478425,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_absolute_error (line 203)",
+            "leaky": 62143.851399922285,
+            "fixed": 62143.851399922285,
+            "reached_by_fix": false
+          },
+          {
+            "score": "mean_squared_error (line 204)",
+            "leaky": 13089818062.673883,
+            "fixed": 13089818062.673883,
+            "reached_by_fix": false
+          },
+          {
+            "score": "r2_score (line 205)",
+            "leaky": 0.9593678951047735,
+            "fixed": 0.9593678951047735,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -563926.9985138865,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -520787.3832665581,
+            "fixed": -563926.9985138865,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -335926.5062175953,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -132680.42963522248,
+            "fixed": -335926.5062175953,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_val_score (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -258036.452395945,
+            "reached_by_fix": false
+          },
+          {
+            "score": "cross_validate (line 243)",
+            "leaky": -108584.51323426593,
+            "fixed": -258036.452395945,
+            "reached_by_fix": false
+          }
+        ],
+        "note": "KFold -> TimeSeriesSplit(5) in time order; _CVIterableWrapper -> TimeSeriesSplit(5) in time order"
+      },
+      "suppressed": null
+    }
+  ]
+}

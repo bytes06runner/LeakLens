@@ -880,12 +880,12 @@ Underfull \hbox (badness 1231) in paragraph at lines 148--150
 
 
 ] (comparison_table)
-Underfull \hbox (badness 10000) in paragraph at lines 18--178
+Underfull \hbox (badness 10000) in paragraph at lines 18--177
 
  []
 
 
-Overfull \hbox (1.28708pt too wide) in paragraph at lines 230--231
+Overfull \hbox (1.28708pt too wide) in paragraph at lines 229--230
  [][] 
  []
 
@@ -906,7 +906,10 @@ Underfull \hbox (badness 1024) in paragraph at lines 274--282
 \T1/ptm/m/n/10 Some en-ti-ties never ap-pear in the code, for ex-am-ple a
  []
 
-[2]
+
+Underfull \vbox (badness 2781) has occurred while \output is active []
+
+ [2]
 Underfull \vbox (badness 1874) has occurred while \output is active []
 
 
@@ -921,55 +924,55 @@ Underfull \hbox (badness 2293) in paragraph at lines 391--399
  []
 
 (yang_measured_table) (baselines_table) [4] (impact_table) [5]
-Underfull \hbox (badness 1527) in paragraph at lines 578--580
+Underfull \hbox (badness 1527) in paragraph at lines 579--581
 \T1/ptm/m/n/7 machine-learning-based sci-ence,'' \T1/ptm/m/it/7 Pat-terns\T1/pt
 m/m/n/7 , vol. 4, no. 9, 100804, 2023.
  []
 
 
-Underfull \hbox (badness 1681) in paragraph at lines 581--584
+Underfull \hbox (badness 1681) in paragraph at lines 582--585
 []\T1/ptm/m/n/7 C. Yang, R. A. Brower-Sinning, G. A. Lewis, and C. Käst-ner, ``
 Data
  []
 
 
-Underfull \hbox (badness 2538) in paragraph at lines 581--584
+Underfull \hbox (badness 2538) in paragraph at lines 582--585
 \T1/ptm/m/n/7 leak-age in note-books: static de-tec-tion and bet-ter pro-cesses
 ,'' in \T1/ptm/m/it/7 Proc.
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 588--590
+Underfull \hbox (badness 10000) in paragraph at lines 589--591
 []\T1/ptm/m/n/7 G. Brook-shire \T1/ptm/m/it/7 et al.\T1/ptm/m/n/7 , ``Data leak
 -age in deep learn-ing stud-ies of
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 588--590
+Underfull \hbox (badness 10000) in paragraph at lines 589--591
 \T1/ptm/m/n/7 trans-la-tional EEG,'' \T1/ptm/m/it/7 Front. Neu-rosci.\T1/ptm/m/
 n/7 , vol. 18, 1373515, 2024.
  []
 
 
-Underfull \hbox (badness 1259) in paragraph at lines 619--622
+Underfull \hbox (badness 1259) in paragraph at lines 620--623
 []\T1/ptm/m/n/7 S. Schel-ter, S. Graf-berger, S. Guha, B. Karla², and C. Zhang,
  ``Proac-
  []
 
 
-Underfull \hbox (badness 2913) in paragraph at lines 619--622
+Underfull \hbox (badness 2913) in paragraph at lines 620--623
 \T1/ptm/m/n/7 tively screen-ing ma-chine learn-ing pipelines with Ar-gusEyes,''
  in \T1/ptm/m/it/7 Com-
  []
 
 
-Underfull \hbox (badness 2096) in paragraph at lines 619--622
+Underfull \hbox (badness 2096) in paragraph at lines 620--623
 \T1/ptm/m/it/7 pan-ion of the 2023 Int. Conf. Man-age-ment of Data (SIG-MOD)\T1
 /ptm/m/n/7 , 2023.
  []
 
 
-Underfull \hbox (badness 1708) in paragraph at lines 642--644
+Underfull \hbox (badness 1708) in paragraph at lines 643--645
 []\T1/ptm/m/n/7 DeMONLab-BioFINDER, ``Leakly: leak-age checks for machine-learn
 ing
  []
@@ -978,4 +981,4 @@ ing
 Package rerunfilecheck Info: File `leaklens_paper.out' has not changed.
 (rerunfilecheck)             Checksum: E3E35C7B81B8F65A38D1549162C97C44;4006.
  )
-Output written on leaklens_paper.xdv (6 pages, 89860 bytes).
+Output written on leaklens_paper.xdv (6 pages, 90088 bytes).

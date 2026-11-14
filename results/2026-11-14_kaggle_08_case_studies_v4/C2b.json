@@ -1,0 +1,98 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-snh5386_",
+    "mode": "impact",
+    "started_utc": "2026-11-14T11:11:19Z",
+    "config_hash": "f290d947a00516b4"
+  },
+  "files": [
+    {
+      "path": "C2b.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "363d8b2c6f181600",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "C2b.ipynb",
+        "line_start": 1,
+        "line_end": 1,
+        "cell": 47,
+        "flat_line_start": 100,
+        "flat_line_end": 100
+      },
+      "message": "Rows are split without regard to `patient_id`; the same patient_id can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `patient_id` (name evidence)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9620253164556962,
+          "detail": "115 values of `patient_id` occur on both sides of the split; 96% of evaluation rows belong to them"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`patient_id` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "patient_id",
+          "shared_entities": 115,
+          "entities": 194,
+          "test_rows_with_entity_in_train": 0.962
+        }
+      },
+      "impact": {
+        "status": "unreliable",
+        "metric": "val_smape (line 124)",
+        "metric_source": "recorded at run time",
+        "value_leaky": 84.73675376525401,
+        "value_fixed": 98.4933411524242,
+        "delta": -13.756587,
+        "n_runs": 1,
+        "all_scores": [
+          {
+            "score": "val_predictions (line 116)",
+            "leaky": 6.962784810126582,
+            "fixed": 7.4594531250000005,
+            "reached_by_fix": false
+          },
+          {
+            "score": "val_smape (line 124)",
+            "leaky": 84.73675376525401,
+            "fixed": 98.4933411524242,
+            "reached_by_fix": false
+          }
+        ],
+        "note": "train_test_split -> GroupShuffleSplit(groups=patient_id) | the fixed run took a different path, ended differently, or reached no score"
+      },
+      "suppressed": null
+    }
+  ]
+}

@@ -108,11 +108,22 @@
 | PASS | 7.1 | EEG AUPRC A / B / C (lgbm) | 0.779 / 0.595 / 0.364 | 0.779 / 0.595 / 0.364 | results/2026-11-14_case_studies/calibraeeg_gap_summary.csv (copied from CalibraEEG a062f45) |
 | PASS | 7.1 | EEG A-C / B-C AUPRC differences | +0.415 / +0.231 | +0.415 / +0.231 | results/2026-11-14_case_studies/calibraeeg_gap_summary.csv |
 | PASS | 7.1 | notebooks inspected / taken | 253 / 4 | 253 / 4 | results/2026-11-14_case_studies/case_selection_log.csv |
-| PASS | 7.1 | C3b temporal: confidence / run status (both splits) | low / confirmed | low / confirmed | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
-| PASS | 7.1 | C3b share of training rows dated after first test row | 99% | 99% | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
-| PASS | 7.1 | C3b chronological fix: RF test R2 leaky -> fixed / delta | 0.959 -> 0.895 / +0.065 | 0.959 -> 0.895 / +0.065 | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
-| PASS | 7.1 | C3b CV RMSE leaky -> fixed (k) | 108.6k -> 258.0k | 108.6k -> 258.0k | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
-| PASS | 7.1 | C3b multi-test confirmed | high / confirmed | high / confirmed | results/2026-11-14_kaggle_08_case_studies_v3/C3b.json |
+| PASS | 7.1 | C3b: job 08 v4 reproduces v3 exactly | True | True | results/2026-11-14_kaggle_08_case_studies_v3 and _v4 C3b.json |
+| PASS | 7.1 | C3b temporal: confidence / run status (both splits) | low / confirmed | low / confirmed | results/2026-11-14_kaggle_08_case_studies_v4/C3b.json |
+| PASS | 7.1 | C3b share of training rows dated after first test row | 99% | 99% | results/2026-11-14_kaggle_08_case_studies_v4/C3b.json |
+| PASS | 7.1 | C3b chronological fix: RF test R2 leaky -> fixed / delta | 0.959 -> 0.895 / +0.065 | 0.959 -> 0.895 / +0.065 | results/2026-11-14_kaggle_08_case_studies_v4/C3b.json |
+| PASS | 7.1 | C3b CV RMSE leaky -> fixed (k) | 108.6k -> 258.0k | 108.6k -> 258.0k | results/2026-11-14_kaggle_08_case_studies_v4/C3b.json |
+| PASS | 7.1 | C3b multi-test confirmed | high / confirmed | high / confirmed | results/2026-11-14_kaggle_08_case_studies_v4/C3b.json |
+| PASS | 7.1 | job 08 v4: cases run / timed out | 4 / 0 | 4 / 0 | results/2026-11-14_kaggle_08_case_studies_v4/run_info.json |
+| PASS | 7.1 | job 08 v4: data paths adapted | 0 | 0 | results/2026-11-14_kaggle_08_case_studies_v4/adaptations.json |
+| PASS | 7.1 | C2a: findings after static + run | 0 | 0 | results/2026-11-14_kaggle_08_case_studies_v4/C2a.json |
+| PASS | 7.1 | C2b: run confirms column / confidence after run | patient_id / high | patient_id / high | results/2026-11-14_kaggle_08_case_studies_v4/C2b.json |
+| PASS | 7.1 | C2b: patients on both sides / all, share of validation rows | 115 / 194, 96% | 115 / 194, 96% | results/2026-11-14_kaggle_08_case_studies_v4/C2b.json |
+| PASS | 7.1 | C2b: impact status / SMAPE leaky -> fixed / delta | unreliable / 84.7 -> 98.5 / -13.8 | unreliable / 84.7 -> 98.5 / -13.8 | results/2026-11-14_kaggle_08_case_studies_v4/C2b.json |
+| PASS | 7.1 | C3a: temporal confidence / run / impact | low / not_run / unknown | low / not_run / unknown | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
+| PASS | 7.1 | C3a: static evidence names datetime (parsed) | True | True | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
+| PASS | 7.1 | C3a: run found no timestamp column at the split | True | True | results/2026-11-14_kaggle_08_case_studies_v4/C3a.json |
+| PASS | 7.1 | case labels found: at threshold / with low (of all labels) | 1 / 4 of 6 | 1 / 4 of 6 | results/2026-11-14_case_studies/PROPOSED_LABELS.md + _v4 reports |
 | PASS | 7.1 | C2a static result | none | none | results/2026-11-14_case_studies/static_C2a.json |
 | PASS | 7.1 | C2b static result | group:medium:patient_id | group:medium:patient_id | results/2026-11-14_case_studies/static_C2b.json |
 | PASS | 7.1 | C3a static result | temporal:low | temporal:low | results/2026-11-14_case_studies/static_C3a.json |

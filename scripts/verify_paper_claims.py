@@ -304,8 +304,19 @@ def main() -> None:
           f"{len(sel)} / {sum(r['decision'] == 'TAKEN' for r in sel)}",
           "results/2026-11-14_case_studies/case_selection_log.csv")
 
-    c3 = load_json(R / "2026-11-14_kaggle_08_case_studies_v3" / "C3b.json")
-    src = "results/2026-11-14_kaggle_08_case_studies_v3/C3b.json"
+    V4 = R / "2026-11-14_kaggle_08_case_studies_v4"
+    c3 = load_json(V4 / "C3b.json")
+    src = "results/2026-11-14_kaggle_08_case_studies_v4/C3b.json"
+
+    def fkey(f):
+        i = f["impact"]
+        return (f["rule_id"], f["confidence"], f["location"]["cell"], f["location"]["line_start"],
+                f["dynamic"]["status"], i.get("status"), i.get("value_leaky"), i.get("value_fixed"))
+
+    v3 = load_json(R / "2026-11-14_kaggle_08_case_studies_v3" / "C3b.json")["findings"]
+    check("7.1", "C3b: job 08 v4 reproduces v3 exactly", True,
+          sorted(map(fkey, v3)) == sorted(map(fkey, c3["findings"])),
+          "results/2026-11-14_kaggle_08_case_studies_v3 and _v4 C3b.json")
     tmp = [f for f in c3["findings"] if f["type"] == "temporal"]
     first = next(f for f in tmp if "chronological" in f["impact"].get("note", ""))
     cvf = next(f for f in tmp if "TimeSeriesSplit" in f["impact"].get("note", ""))
@@ -322,6 +333,54 @@ def main() -> None:
     check("7.1", "C3b multi-test confirmed", "high / confirmed",
           "/".join(sorted({f["confidence"] for f in c3["findings"] if f["type"] == "multi_test"})) + " / "
           + "/".join(sorted({f["dynamic"]["status"] for f in c3["findings"] if f["type"] == "multi_test"})), src)
+    info = load_json(V4 / "run_info.json")
+    check("7.1", "job 08 v4: cases run / timed out", "4 / 0",
+          f"{sum('returncode' in c for c in info['cases'].values())} / "
+          f"{sum(bool(c.get('timed_out')) for c in info['cases'].values())}", "results/2026-11-14_kaggle_08_case_studies_v4/run_info.json")
+    check("7.1", "job 08 v4: data paths adapted", 0,
+          sum(len(v) for v in load_json(V4 / "adaptations.json").values()),
+          "results/2026-11-14_kaggle_08_case_studies_v4/adaptations.json")
+    check("7.1", "C2a: findings after static + run", 0, len(load_json(V4 / "C2a.json")["findings"]),
+          "results/2026-11-14_kaggle_08_case_studies_v4/C2a.json")
+    (c2b,) = load_json(V4 / "C2b.json")["findings"]
+    d, im = c2b["dynamic"], c2b["impact"]
+    src = "results/2026-11-14_kaggle_08_case_studies_v4/C2b.json"
+    check("7.1", "C2b: run confirms column / confidence after run", "patient_id / high",
+          f"{d['details']['column']} / {c2b['confidence']}" if d["status"] == "confirmed" else d["status"], src)
+    check("7.1", "C2b: patients on both sides / all, share of validation rows", "115 / 194, 96%",
+          f"{d['details']['shared_entities']} / {d['details']['entities']}, "
+          f"{d['details']['test_rows_with_entity_in_train']:.0%}", src)
+    check("7.1", "C2b: impact status / SMAPE leaky -> fixed / delta", "unreliable / 84.7 -> 98.5 / -13.8",
+          f"{im['status']} / {im['value_leaky']:.1f} -> {im['value_fixed']:.1f} / {im['delta']:.1f}"
+          if "smape" in im["metric"].lower() else im["metric"], src)
+    (c3a,) = load_json(V4 / "C3a.json")["findings"]
+    src = "results/2026-11-14_kaggle_08_case_studies_v4/C3a.json"
+    check("7.1", "C3a: temporal confidence / run / impact", "low / not_run / unknown",
+          f"{c3a['confidence']} / {c3a['dynamic']['status']} / {c3a['impact']['status']}", src)
+    check("7.1", "C3a: static evidence names datetime (parsed)", True,
+          any("`datetime` (parsed as datetime)" in e["detail"] for e in c3a["evidence"]), src)
+    check("7.1", "C3a: run found no timestamp column at the split", True,
+          "no timestamp column" in c3a["dynamic"]["details"]["reason"], src)
+    # proposed labels (owner confirmation pending) against v4 findings; cells displayed from 1, report cells 0-based
+    labs = []
+    for line in (R / "2026-11-14_case_studies" / "PROPOSED_LABELS.md").read_text().splitlines():
+        m = re.match(r"\| (C\d[ab]) \| (\w+) \| (\d+), (\d+)(?:-(\d+))? \|", line)
+        if m:
+            labs.append((m[1], m[2], int(m[3]) - 1, int(m[4]), int(m[5] or m[4])))
+    order = {"low": 0, "medium": 1, "high": 2}
+
+    def found(min_conf):
+        n = 0
+        for cid, typ, cell, lo, hi in labs:
+            fs = load_json(V4 / f"{cid}.json")["findings"]
+            n += any(f["type"] == typ and f["location"]["cell"] == cell and f["location"]["line_start"] <= hi
+                     and f["location"]["line_end"] >= lo and order[f["confidence"]] >= order[min_conf]
+                     and f["dynamic"]["status"] != "refuted" for f in fs)
+        return n
+
+    check("7.1", "case labels found: at threshold / with low (of all labels)", "1 / 4 of 6",
+          f"{found('medium')} / {found('low')} of {len(labs)}",
+          "results/2026-11-14_case_studies/PROPOSED_LABELS.md + _v4 reports")
     for cid, paper in (("C2a", "none"), ("C2b", "group:medium:patient_id"), ("C3a", "temporal:low")):
         st_ = load_json(R / "2026-11-14_case_studies" / f"static_{cid}.json")["findings"]
         got = "none" if not st_ else ";".join(
