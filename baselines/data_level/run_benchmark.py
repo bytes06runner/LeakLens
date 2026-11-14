@@ -113,7 +113,11 @@ def main() -> None:
     ap.add_argument("--venvs", required=True)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--items", default="")
+    ap.add_argument("--tools", nargs="+", default=list(TOOLS))
     a = ap.parse_args()
+    for t in list(TOOLS):
+        if t not in a.tools:
+            del TOOLS[t]
     meta = yaml.safe_load((BENCH / "bases.yaml").read_text())
     rows = [r for r in csv.DictReader((BENCH / "manifest.csv").open()) if r["split"] == a.split
             and a.items in r["item_id"]]
@@ -142,13 +146,13 @@ def main() -> None:
                             continue
                         for t, hit in res["flags"].items():
                             if hit:
-                                finds.append({"type": t, "confidence": "medium", "suppressed": None,
+                                finds.append({"id": f"{r['item_id']}:{t}:{s['line']}", "type": t, "confidence": "medium", "suppressed": None,
                                               "dynamic": {"status": "not_run"},
                                               "location": {"cell": s["cell"], "line_start": s["item_line"],
                                                            "line_end": s["item_line"]},
                                               "column": res["columns"].get(t)})
                     f.write(json.dumps({"item_id": r["item_id"], "split": r["split"], "base": r["base"],
-                                        "seed": 0, "status": "ok", "static": finds, "dynamic": finds}) + "\n")
+                                        "seed": 0, "static_seconds": 0.0, "dynamic_seconds": 0.0, "run_status": "ok", "status": "ok", "static": finds, "dynamic": finds}) + "\n")
     print(f"done in {time.time() - t0:.0f}s")
 
 

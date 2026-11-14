@@ -1,0 +1,821 @@
+{
+ "tool": "splitguard",
+ "split": "TEST",
+ "items": 79,
+ "labels": 73,
+ "modes": {
+  "static": {
+   "medium": [
+    {
+     "type": "preprocessing",
+     "labels": 22,
+     "tp": 15,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.6818181818181818,
+     "f1": 0.8108108108108109,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.47619047619047616,
+      0.875
+     ],
+     "recall_ci_bases": [
+      0.6666666666666666,
+      0.7142857142857143
+     ],
+     "f1_ci": [
+      0.6451612903225806,
+      0.9333333333333333
+     ],
+     "f1_ci_bases": [
+      0.8,
+      0.8333333333333333
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 9,
+     "tp": 3,
+     "fp": 0,
+     "fn": 6,
+     "precision": 1.0,
+     "recall": 0.3333333333333333,
+     "f1": 0.5,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.6666666666666666
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.6666666666666666
+     ],
+     "f1_ci": [
+      0.19999999999999998,
+      0.8
+     ],
+     "f1_ci_bases": [
+      0.4,
+      0.8181818181818181
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 6,
+     "tp": 0,
+     "fp": 0,
+     "fn": 6,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    },
+    {
+     "type": "group",
+     "labels": 7,
+     "tp": 7,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 3,
+     "fp": 0,
+     "fn": 22,
+     "precision": 1.0,
+     "recall": 0.12,
+     "f1": 0.21428571428571425,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.2631578947368421
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.2727272727272727
+     ],
+     "f1_ci": [
+      0.0689655172413793,
+      0.4186046511627907
+     ],
+     "f1_ci_bases": [
+      0.10714285714285715,
+      0.42857142857142855
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 4,
+     "tp": 0,
+     "fp": 0,
+     "fn": 4,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    }
+   ],
+   "recall_by_category": {
+    "standard": [
+     18,
+     21
+    ],
+    "group": [
+     7,
+     0
+    ],
+    "dynamic_only": [
+     0,
+     2
+    ],
+    "temporal_hard": [
+     3,
+     10
+    ],
+    "temporal_common": [
+     0,
+     5
+    ],
+    "temporal_differentiating": [
+     0,
+     7
+    ]
+   },
+   "clean_files": {
+    "n": 9,
+    "with_finding": 0
+   },
+   "low": [
+    {
+     "type": "preprocessing",
+     "labels": 22,
+     "tp": 15,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.6818181818181818,
+     "f1": 0.8108108108108109,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.47619047619047616,
+      0.875
+     ],
+     "recall_ci_bases": [
+      0.6666666666666666,
+      0.7142857142857143
+     ],
+     "f1_ci": [
+      0.6451612903225806,
+      0.9333333333333333
+     ],
+     "f1_ci_bases": [
+      0.8,
+      0.8333333333333333
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 9,
+     "tp": 3,
+     "fp": 0,
+     "fn": 6,
+     "precision": 1.0,
+     "recall": 0.3333333333333333,
+     "f1": 0.5,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.6666666666666666
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.6666666666666666
+     ],
+     "f1_ci": [
+      0.19999999999999998,
+      0.8
+     ],
+     "f1_ci_bases": [
+      0.4,
+      0.8181818181818181
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 6,
+     "tp": 0,
+     "fp": 0,
+     "fn": 6,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    },
+    {
+     "type": "group",
+     "labels": 7,
+     "tp": 7,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 3,
+     "fp": 0,
+     "fn": 22,
+     "precision": 1.0,
+     "recall": 0.12,
+     "f1": 0.21428571428571425,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.2631578947368421
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.2727272727272727
+     ],
+     "f1_ci": [
+      0.0689655172413793,
+      0.4186046511627907
+     ],
+     "f1_ci_bases": [
+      0.10714285714285715,
+      0.42857142857142855
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 4,
+     "tp": 0,
+     "fp": 0,
+     "fn": 4,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    }
+   ]
+  },
+  "static+dynamic": {
+   "medium": [
+    {
+     "type": "preprocessing",
+     "labels": 22,
+     "tp": 15,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.6818181818181818,
+     "f1": 0.8108108108108109,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.47619047619047616,
+      0.875
+     ],
+     "recall_ci_bases": [
+      0.6666666666666666,
+      0.7142857142857143
+     ],
+     "f1_ci": [
+      0.6451612903225806,
+      0.9333333333333333
+     ],
+     "f1_ci_bases": [
+      0.8,
+      0.8333333333333333
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 9,
+     "tp": 3,
+     "fp": 0,
+     "fn": 6,
+     "precision": 1.0,
+     "recall": 0.3333333333333333,
+     "f1": 0.5,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.6666666666666666
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.6666666666666666
+     ],
+     "f1_ci": [
+      0.19999999999999998,
+      0.8
+     ],
+     "f1_ci_bases": [
+      0.4,
+      0.8181818181818181
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 6,
+     "tp": 0,
+     "fp": 0,
+     "fn": 6,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    },
+    {
+     "type": "group",
+     "labels": 7,
+     "tp": 7,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 3,
+     "fp": 0,
+     "fn": 22,
+     "precision": 1.0,
+     "recall": 0.12,
+     "f1": 0.21428571428571425,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.2631578947368421
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.2727272727272727
+     ],
+     "f1_ci": [
+      0.0689655172413793,
+      0.4186046511627907
+     ],
+     "f1_ci_bases": [
+      0.10714285714285715,
+      0.42857142857142855
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 4,
+     "tp": 0,
+     "fp": 0,
+     "fn": 4,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    }
+   ],
+   "recall_by_category": {
+    "standard": [
+     18,
+     21
+    ],
+    "group": [
+     7,
+     0
+    ],
+    "dynamic_only": [
+     0,
+     2
+    ],
+    "temporal_hard": [
+     3,
+     10
+    ],
+    "temporal_common": [
+     0,
+     5
+    ],
+    "temporal_differentiating": [
+     0,
+     7
+    ]
+   },
+   "clean_files": {
+    "n": 9,
+    "with_finding": 0
+   },
+   "low": [
+    {
+     "type": "preprocessing",
+     "labels": 22,
+     "tp": 15,
+     "fp": 0,
+     "fn": 7,
+     "precision": 1.0,
+     "recall": 0.6818181818181818,
+     "f1": 0.8108108108108109,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.47619047619047616,
+      0.875
+     ],
+     "recall_ci_bases": [
+      0.6666666666666666,
+      0.7142857142857143
+     ],
+     "f1_ci": [
+      0.6451612903225806,
+      0.9333333333333333
+     ],
+     "f1_ci_bases": [
+      0.8,
+      0.8333333333333333
+     ]
+    },
+    {
+     "type": "overlap",
+     "labels": 9,
+     "tp": 3,
+     "fp": 0,
+     "fn": 6,
+     "precision": 1.0,
+     "recall": 0.3333333333333333,
+     "f1": 0.5,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.6666666666666666
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.6666666666666666
+     ],
+     "f1_ci": [
+      0.19999999999999998,
+      0.8
+     ],
+     "f1_ci_bases": [
+      0.4,
+      0.8181818181818181
+     ]
+    },
+    {
+     "type": "multi_test",
+     "labels": 6,
+     "tp": 0,
+     "fp": 0,
+     "fn": 6,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    },
+    {
+     "type": "group",
+     "labels": 7,
+     "tp": 7,
+     "fp": 0,
+     "fn": 0,
+     "precision": 1.0,
+     "recall": 1.0,
+     "f1": 1.0,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      1.0,
+      1.0
+     ],
+     "recall_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "f1_ci": [
+      1.0,
+      1.0
+     ],
+     "f1_ci_bases": [
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "type": "temporal",
+     "labels": 25,
+     "tp": 3,
+     "fp": 0,
+     "fn": 22,
+     "precision": 1.0,
+     "recall": 0.12,
+     "f1": 0.21428571428571425,
+     "precision_ci": [
+      1.0,
+      1.0
+     ],
+     "precision_ci_bases": [
+      1.0,
+      1.0
+     ],
+     "recall_ci": [
+      0.0,
+      0.2631578947368421
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.2727272727272727
+     ],
+     "f1_ci": [
+      0.0689655172413793,
+      0.4186046511627907
+     ],
+     "f1_ci_bases": [
+      0.10714285714285715,
+      0.42857142857142855
+     ]
+    },
+    {
+     "type": "target_derived",
+     "labels": 4,
+     "tp": 0,
+     "fp": 0,
+     "fn": 4,
+     "precision": null,
+     "recall": 0.0,
+     "f1": null,
+     "precision_ci": null,
+     "precision_ci_bases": null,
+     "recall_ci": [
+      0.0,
+      0.0
+     ],
+     "recall_ci_bases": [
+      0.0,
+      0.0
+     ],
+     "f1_ci": null,
+     "f1_ci_bases": null
+    }
+   ]
+  }
+ },
+ "coverage": {
+  "ok": 79
+ },
+ "static_seconds": {
+  "median": 0.0,
+  "mean": 0.0,
+  "max": 0.0
+ },
+ "dynamic_runs": {
+  "ok": 79
+ },
+ "dynamic_seconds": {
+  "median": 0.0,
+  "max": 0.0
+ },
+ "dynamic_effect": {
+  "group|not_run": 7,
+  "preprocessing|not_run": 18,
+  "overlap|not_run": 3
+ },
+ "dynamic_only": {}
+}

@@ -197,7 +197,10 @@ def dump_fold(site: dict, fold: int, cols: dict, y, train, test) -> None:
         if a.ndim == 1 and a.dtype.kind in "biufcMmOUS":
             data[name] = a
     if y is not None and n_rows(y) == len(next(iter(data.values()), [])):
-        data["__target__"] = np.asarray(y).ravel()
+        yy = np.asarray(y).ravel()
+        # the label column itself must not reappear as a feature in the exported tables
+        data = {k: v for k, v in data.items() if not (len(v) == len(yy) and np.array_equal(v, yy))}
+        data["__target__"] = yy
     if not data:
         return
     df = pd.DataFrame(data)

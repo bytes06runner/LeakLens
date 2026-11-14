@@ -1,0 +1,660 @@
+% LeakLens paper draft.
+% Compiles with pdflatex and a standard TeX Live (no venue class needed).
+% To move to a venue template (IEEEtran, acmart, LNCS), keep the body from \section{Introduction}
+% onwards and replace the preamble and the title block.
+\documentclass[10pt,a4paper,twocolumn]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[scaled=0.9]{helvet}
+\usepackage{courier}
+\usepackage[a4paper,top=19mm,bottom=22mm,left=16mm,right=16mm,columnsep=6.5mm]{geometry}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{9pt plus 2pt minus 1pt}{4pt}
+\titlespacing*{\subsection}{0pt}{7pt plus 2pt minus 1pt}{3pt}
+\captionsetup{font=small,labelfont=bf,labelsep=period}
+\setlist{nosep,leftmargin=1.3em}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1em}
+\renewcommand{\arraystretch}{1.12}
+\definecolor{codebg}{HTML}{F5F6F8}
+\definecolor{codegrey}{HTML}{5A626B}
+\definecolor{navy}{HTML}{1F4E79}
+\definecolor{sand}{HTML}{C9A66B}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  backgroundcolor=\color{codebg},
+  frame=single, rulecolor=\color{codebg},
+  breaklines=true, columns=fullflexible, keepspaces=true,
+  showstringspaces=false, xleftmargin=2pt, xrightmargin=2pt,
+  aboveskip=5pt, belowskip=3pt,
+  commentstyle=\color{codegrey}
+}
+
+\newcommand{\tool}{LeakLens}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\twocolumn[
+\begin{center}
+{\LARGE\bfseries LeakLens: Detecting Group and Temporal Data Leakage in Machine Learning Code by Linking Static Analysis to an Instrumented Run\par}
+\vspace{11pt}
+{\normalsize
+\begin{tabular}{@{}c@{\hspace{9mm}}c@{\hspace{9mm}}c@{}}
+\textbf{Srijeet Prasad Banerjee} & \textbf{Adrish Sarkar} & \textbf{Ankur Roy} \\[5pt]
+\textbf{Sayandeep Dey} & \textbf{Soumyarik Mukherjee} & \textbf{Tridib Chakraborty} \\
+\end{tabular}\par}
+\vspace{7pt}
+{\small Department of Information Technology, Guru Nanak Institute of Technology, Kolkata, India\par}
+\vspace{12pt}
+\begin{minipage}{0.90\textwidth}
+\small
+\noindent\textbf{Abstract.}
+Data leakage lets information from the evaluation data reach model training, so a reported score no longer
+predicts performance on new data. Existing tools that read machine learning code detect three kinds of leakage:
+preprocessing, overlap and multi-test. They do not detect group leakage, where the same patient, user or device
+appears on both sides of a split, and they cover temporal leakage only in part, although controlled studies find
+these to be the kinds that distort results most. We present \tool{}, a research prototype for Python scripts and
+Jupyter notebooks. A static pass based on abstract interpretation reports six leakage types and nominates the
+split call and the candidate entity or time column. An optional instrumented run then checks, fold by fold,
+whether entities or time periods really overlap at that call, with nothing declared by the user. For a located
+leak, \tool{} can apply a canonical fix to a copy of the pipeline, re-run it, and report the change in the
+pipeline's own metric. On the held-out half of our benchmark of injected leaks (79 files, 73 leaks), scored once
+under a protocol frozen beforehand, the static pass finds 59 leaks and the combined mode 65, with no false
+positive. On the same files, scored per file, the static analyser of Yang et al.\ is right for 20 of the 37 files that
+hold a leak of the three types it supports, against 33 for the static pass of \tool{}. The run raises group detection from 3 of 7 to 7 of 7 by the matching rule, but only 3 findings name
+the true entity column. All results are on synthetic files written by the authors of the tool; no result on
+human-labelled real notebooks exists yet. We report the failures in detail, including a case study in which
+the tool found nothing in real code with known leakage.
+
+\vspace{4pt}
+\noindent\textbf{Keywords:} data leakage, static analysis, dynamic analysis, Jupyter notebooks, machine learning
+engineering, reproducibility
+\end{minipage}
+\end{center}
+\vspace{10pt}
+]
+
+\section{Introduction}
+
+A machine learning score is meaningful only if the model never saw the evaluation data during training.
+\emph{Data leakage} is any path by which evaluation rows, or information that is not available at prediction
+time, influence training~\cite{kaufman2012}. Leaky code runs without error and its tests pass. The only symptom
+is a score that is better than it should be.
+
+Leakage is common. A survey of earlier reviews found it in 294 papers across 17 scientific fields; in one case
+study, complex models lost their reported advantage over logistic regression once the errors were
+corrected~\cite{kapoor2023}. A static analysis of 107,603 public GitHub notebooks reported at least one leak in
+29.6\% of them~\cite{yang2022}.
+
+Not all leaks do equal damage. Across 2,047 tabular datasets, fitting a scaler on all rows before splitting,
+the textbook example, changed AUC by at most 0.005 in all nine conditions tested, while leakage across group and
+time boundaries was invisible under random cross-validation~\cite{roth2026}. In translational EEG research, only
+17 of 63 surveyed deep learning studies clearly avoided placing segments of one subject in both training and
+test data, and in one experiment accuracy fell from 99.8\% to 53.0\% when subjects were held out
+properly~\cite{brookshire2024}.
+
+The tools that read code look mostly at the first kind. The reference static analyser of Yang et
+al.~\cite{yang2022} and the tools built on it~\cite{alomar2025,truong2025,draoui2026} detect preprocessing,
+overlap and multi-test leakage. To our knowledge, no published static analyser detects group leakage from source
+code, and temporal leakage is covered in part by one recent LLM-based linter~\cite{samsonau2026}. Tools that
+check the data itself can find date overlap~\cite{chorev2022} and group overlap~\cite{leakcheckml,leakhound}, but the user
+has to export the training and test tables and usually name the column, and the result does not point to a line
+of code. None of these tools reports how much a detected leak changes the user's own result.
+
+This paper describes \tool{}\footnote{An unrelated package with the same name exists on PyPI. The name of
+this project may change before any release.}, which addresses these three gaps. Its contributions are:
+
+\begin{enumerate}
+\item \textbf{Group leakage detected from source code}, with the entity inferred from column and variable names
+and from identifiers derived from file paths. Temporal leakage is detected through data flow. This is not a
+first for temporal leakage~\cite{samsonau2026}; we treat it as an improvement on existing code-level checks.
+\item \textbf{A link from static findings to an instrumented run.} The static pass nominates the split call and
+candidate columns; the run checks entity and time overlap at that call, per fold, with no user declaration.
+\item \textbf{A per-finding impact estimate} obtained by re-running the user's own pipeline with a canonical fix.
+\item \textbf{A benchmark of 175 files with 162 injected leaks} that includes group and temporal leakage, with a
+development and test split fixed before any detection rule was written.
+\end{enumerate}
+
+We state the limits of the evidence at the outset. Every number in this paper is measured on synthetic
+files that we generated ourselves. A set of 150 real notebooks has been sampled but not yet labelled, so we
+make no claim about precision or recall on real code.
+
+\section{Background and Related Work}
+
+\textbf{Taxonomies.} Kaufman et al.~\cite{kaufman2012} gave the first formal treatment of leakage. Kapoor and
+Narayanan~\cite{kapoor2023} describe eight types, among them preprocessing on training and test data together,
+duplicates, temporal leakage and non-independence between training and test samples. Roth~\cite{roth2026}
+measured severity by type in controlled experiments and found that the commonly taught type matters least.
+
+\textbf{Static analysis of ML code.} Yang et al.~\cite{yang2022} model data flow in Datalog and report three
+leakage types, with a precision of 97.6\% and a recall of 67.8\% on hand-labelled notebooks. NBLyzer and later
+abstract-interpretation work verify the absence of contamination between training and test
+data~\cite{subotic2022a,subotic2022b,drobnjakovic2024}. LeakageDetector wraps the analyser of Yang et al.\ in an
+IDE and adds quick fixes~\cite{alomar2025,truong2025}. Draoui et al.~\cite{draoui2026} combine static slicing
+with LLM prompts; their abstract reports F1 gains of 22\% for preprocessing and 15\% for overlap leakage over
+earlier work (we could read only the abstract). scicode-lint~\cite{samsonau2026} asks a local LLM pattern
+questions about scientific code; two of its patterns concern temporal leakage (shuffled cross-validation on
+temporal data, and forward-looking shifts and centred windows). We found no group-leakage pattern among its
+definitions.
+
+\textbf{Checks on data and at run time.} Deepchecks~\cite{chorev2022} checks duplicate rows and date overlap between training and test tables supplied
+by the user, and several recent packages add group overlap~\cite{leakcheckml,leakhound}. splitguard~\cite{splitguard} instruments splits and fits at run time and flags group
+overlap at the split line, but only for group identifiers the user registers. ArgusEyes~\cite{schelter2023}
+detects row overlap through provenance tracking in an instrumented run.
+
+\textbf{Measuring the effect.} LeakHound~\cite{leakhound} estimates inflation with a proxy model that it trains
+itself on the given split. mlwhatif~\cite{grafberger2023} re-executes user pipelines with patches, for
+data-cleaning questions rather than leakage. Leakly~\cite{leakly} re-runs a whole pipeline on permuted labels;
+a score above chance suggests leakage somewhere, without locating it or applying a fix. \tool{} differs in that
+the estimate belongs to one located finding and is measured on the user's own pipeline and metric.
+
+Table~\ref{tab:design} compares \tool{} with the analyser of Yang et al., the closest prior work and the engine
+inside the LeakageDetector tools.
+
+\begin{table*}[t]
+\caption{Design comparison between the static analyser of Yang et al.\ and \tool{}. Entries for Yang et al.\
+are taken from their paper and from our own runs of their released tool.}
+\label{tab:design}
+\small
+\input{comparison_table}
+\end{table*}
+
+\section{Leakage Taxonomy}
+
+\tool{} reports six types (Table~\ref{tab:types}). The first three correspond to the types of Yang et
+al.~\cite{yang2022}. Group and temporal leakage correspond to non-independence and temporal leakage in the
+taxonomy of Kapoor and Narayanan~\cite{kapoor2023}, and target-derived features to their illegitimate features.
+
+\begin{table}[t]
+\caption{The six leakage types and the signal used by each pass.}
+\label{tab:types}
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}>{\raggedright\arraybackslash}p{0.19\columnwidth}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Type} & \textbf{Static signal} & \textbf{Run-time check} \\
+\midrule
+Preprocessing & A transformer, selector or encoder is fitted on rows that later reach the evaluation side & The fit included evaluation rows \\
+Overlap & Resampling or concatenation before the split; evaluation rows flow into a fit & Identical rows on both sides of the split \\
+Multi-test & Several candidates scored on the same evaluation rows feed a selection & Same rows scored repeatedly \\
+Group & A row-level splitter or default CV on data with a candidate entity & The same entity value on both sides \\
+Temporal & A shuffled split on time-ordered data; forward-looking feature & Training rows dated after evaluation rows \\
+Target-derived & A feature computed from the label & Very high single-feature score \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+A group finding depends on the claim being made. A model meant to be used on the same patients it was trained
+on may legitimately share patients across a split. The tool cannot know the claim, so group findings carry a
+confidence level and can be suppressed inline with a stated reason.
+
+\section{Design of LeakLens}
+
+Figure~\ref{fig:pipeline} shows the three stages. The static stage never runs the analysed code. The other two
+execute it and are optional.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  node distance=4.2mm and 3.2mm,
+  box/.style={draw=navy, rounded corners=2pt, align=center, font=\scriptsize, inner sep=3.5pt, minimum height=8.5mm, text width=24mm, fill=white},
+  opt/.style={box, dashed},
+  arr/.style={-{Stealth[length=1.6mm]}, navy, semithick}]
+\node[box] (in) {\code{.py} / \code{.ipynb}\\ingest, cell order};
+\node[box, right=of in] (st) {\textbf{Static pass}\\abstract interpretation};
+\node[box, right=of st] (fi) {Findings\\type, line, confidence};
+\node[opt, below=of st] (dy) {\textbf{Instrumented run}\\entity, time and row overlap per fold};
+\node[opt, below=of fi] (im) {\textbf{Impact}\\re-run with canonical fix};
+\node[box, below=of in] (re) {Report\\terminal, JSON, SARIF};
+\draw[arr] (in) -- (st);
+\draw[arr] (st) -- (fi);
+\draw[arr] (fi.south west) -- (dy.north east);
+\draw[arr] (dy) -- (im);
+\draw[arr] (dy) -- (re);
+\draw[arr] (st.south west) -- (re.north east);
+\draw[arr] (im.south) -- ++(0,-3.2mm) -| (re.south);
+\end{tikzpicture}
+\caption{Stages of \tool{}. Dashed stages execute the code and are optional.}
+\label{fig:pipeline}
+\end{figure}
+
+\subsection{Static pass}
+
+Notebooks are read in execution order when every code cell has a unique execution count, and in cell order
+otherwise. The analyser then makes one pass of abstract interpretation over the flattened module. Each variable
+receives an abstract value that records what the analysis knows: the origin of a data frame, its known columns,
+which statistics have been computed over which rows, whether rows have been copied or resampled, and the
+training or evaluation role of the result of a split.
+
+Rules fire at \emph{sinks}. At a split point (\code{train\_test\_split}, a splitter's \code{split}, a
+cross-validation helper, a search object, or a manual random sample with its complement) the analyser checks for
+group and temporal leakage and reports every statistic or copied row that reached the data being split. At a
+model fit it reports statistics computed on rows that include the evaluation side. At a prediction or score it
+checks whether the model was fitted on rows that include the scored rows. A selection over scores computed in a
+loop gives a multi-test finding.
+
+For group leakage, the evidence for an entity is a column or variable name, or an identifier derived from a file
+path (for example a subject code split from a recording's file name). Names are matched against two lists.
+Strong names such as \code{patient}, \code{subject} or \code{user} can give a finding of medium confidence. Weak
+names such as \code{customer}, \code{id} or \code{visit} give low confidence only. Listing~\ref{lst:example}
+shows a file-path case.
+
+\begin{lstlisting}[float=t, caption={Group leakage through cross-validation with the default splitter, and the finding the static pass reports for the full file (code and message shortened).}, label={lst:example}, captionpos=b]
+recordings = {f"sub-{i:02d}_run-1.npy": ... }
+windows, labels, subjects = [], [], []
+for fname, signal in recordings.items():
+    subject = fname.split("_")[0]
+    for w in signal.reshape(-1, 500):
+        windows.append([w.mean(), w.std()])
+        labels.append(...)
+        subjects.append(subject)
+X, y = np.array(windows), np.array(labels)
+print(cross_val_score(LogisticRegression(), X, y, cv=5).mean())
+
+line 16  [high/medium] group (LL-GRP-003)
+  Rows are split without regard to `subjects`; the same
+  subjects can be in training and evaluation rows.
+  fix: use GroupKFold with groups=`subjects`
+\end{lstlisting}
+
+The analyser prefers missing a leak to inventing one. A call it does not model is treated as depending on all its
+inputs, and anything it cannot resolve produces no finding. Loops are analysed once, functions are inlined to a
+fixed depth, and classes are opaque. pandas, NumPy, scikit-learn~\cite{sklearn} and imbalanced-learn are
+modelled by name; all catalogues and thresholds are in configuration files.
+
+\subsection{Instrumented run}
+
+Static analysis cannot see an entity column that the code never mentions. A script may load a table with a
+\code{patient\_id} column and split it at random without naming that column. The dynamic pass handles this
+case. It runs the script in a child process with scikit-learn entry points wrapped: \code{train\_test\_split},
+the \code{split} method of every splitter, the cross-validation helpers, estimator \code{fit}, \code{predict}
+and \code{score}, and the metric functions.
+
+At each split, and for each fold, the wrapper records three facts. Rows are hashed by value, after rounding
+numbers, to find identical rows on both sides. Entity columns are looked up in the data frames of the script's
+own namespace that are row-aligned with the data being split; a column is reported when its values repeat and
+enough evaluation rows belong to an entity that also has training rows. If a time column is found, the wrapper
+checks whether training rows are dated after the earliest evaluation row.
+
+These facts are linked to the static findings by call site. A finding ends up \emph{confirmed}, \emph{refuted}
+or \emph{not checked} (no run-time check exists for that rule). Findings that only the run can make, such as
+duplicate records already present in the raw data, are added.
+
+\subsection{Impact estimation}
+
+For a located finding, \tool{} re-runs the script with one call site changed and nothing else. Six kinds of fix
+are implemented: duplicated records are removed before a split; a row-level split becomes a group-aware one on
+the detected column; a non-chronological split becomes a chronological one; evaluation rows are removed from a
+model fit; a transformer fitted on all rows is fitted on the training rows of a hold-out split; and a feature is
+removed. The estimate is the script's printed metric in the original run minus the metric in the fixed run.
+Findings without an automatic fix, or whose fixed run fails, are reported as ``impact unknown'' and are never
+dropped. When the fixed run takes a different path through the code, the estimate is marked unreliable.
+
+\subsection{Running untrusted code}
+
+The dynamic and impact modes execute the analysed file. For notebooks from the internet, \tool{} runs them only
+through a sandbox inside an offline cloud session: a child process with an allow-listed environment, a
+throwaway working directory, a process-group timeout and an unprivileged user. Each layer answers a problem we
+measured. The platform we use (Kaggle) injects session tokens into every job, and a child process running as root could
+read them from \code{/proc} even with a clean environment. After the privilege drop, a scan from the child
+found the token in none of its ancestor processes, while a control scan as root found it in two.
+
+\subsection{Reporting and integration}
+
+Each finding carries the file, line range, type, rule identifier, confidence, severity, evidence, a suggested
+fix and, when measured, the metric before and after the fix. Output formats are terminal text, JSON with a
+published schema, and SARIF, which GitHub code scanning accepts. A pre-commit hook and a GitHub Action are
+provided. The tool is deterministic and uses no language model. Its test suite has 371 passing tests, including
+property-based tests that the analyser terminates and gives identical output on repeated runs.
+
+\section{Benchmark and Evaluation Protocol}
+
+\subsection{Injected benchmark}
+
+No public labelled dataset includes group and temporal leakage, so we built one. Thirteen clean base pipelines
+in three families (tabular, time series and grouped data such as multi-visit patients and EEG-style windows) are
+mutated by 18 operators. Seventeen inject a leak, for example a scaler fitted before the split, oversampling
+before the split, a shuffled split on time-ordered data, or a row-level split on grouped data. One produces a
+\emph{trap}: code that resembles a leak but is correct. Six files combine two leaks. The result is 175 files (94
+scripts and 81 notebooks) with 162 labelled leaks, 13 clean files and 6 traps. The lines that carry each leak
+are known by construction, and every leaky file has a corrected version, so the true inflation of its metric
+can be measured.
+
+Temporal leaks are divided into three categories: \emph{common} (for example an explicit shuffled split),
+\emph{differentiating} (cases that pattern-based checks do not cover, such as the default shuffle of
+\code{train\_test\_split}) and \emph{hard} (for example a time column with a name that does not suggest time).
+
+The benchmark is split by base pipeline into DEV (7 pipelines, 96 files, 89 leaks) and TEST (6 pipelines, 79
+files, 73 leaks). The assignment was committed before any detection rule existed. Rules and thresholds were
+tuned on DEV only.
+
+\subsection{Real notebooks}
+
+We sampled 150 public Kaggle notebooks in three query-based strata of 50 and split them by author into DEV (71)
+and TEST (79). They are to be labelled by two people who do not see any tool output, with agreement reported as
+Cohen's kappa. \textbf{This labelling has not been done.} The static pass was run on the 71 DEV notebooks only
+to check robustness: it analysed all of them without a crash, at a median of 4\,ms per notebook. What it
+flagged there is not a result, because there are no labels.
+
+\subsection{Protocol}
+
+The protocol was written after DEV results had been seen and frozen before any TEST result existed. A finding
+matches a label when it is in the same file and cell, its lines overlap the labelled lines, and its type is the
+labelled type or a listed alternative. Matching is one-to-one. An unmatched finding is a false positive and an
+unmatched label is a miss. The primary operating point is findings of medium or higher confidence. Recall is
+reported per type with 95\% percentile bootstrap intervals over files (2,000 resamples); we do not report a
+single pooled score as the headline. TEST is scored once per release, and any later change is logged and its
+result labelled as a second look.
+
+For impact estimation, the true inflation of an injected file is the metric of the leaky file minus the metric
+of its corrected version, averaged over five data seeds. The generators were designed, and for group leakage
+adjusted after a first measurement, so that each leak type can change the metric. These inflation values
+are therefore used only to score detection and the accuracy of impact estimates. They are not evidence of how
+severe any leakage type is in practice.
+
+\subsection{Baseline}
+
+We built the released analyser of Yang et al.~\cite{yang2022} from source in a Linux cloud job and ran it with
+its default command. Its packaged Datalog engine no longer installs on the current image, so the engine was
+built from source at version 2.4.1; this is a deviation from the released setup. The tool accepts Python
+scripts, so notebooks were given to it in a plain-script rendering. It reports the affected evaluation line and
+not the line that causes the leak, so the line-overlap rule cannot be applied to it. For this comparison only,
+both tools are scored per file and type: a tool is right about a type in a file when it reports that type and
+the file has a labelled leak of that type. This rule was fixed before any output of the baseline on TEST existed.
+
+Other tools were not run. scicode-lint needs a GPU with 20\,GB of memory in its published setup; in a CPU attempt with a
+different model server, both leaky test files hit a 25-minute cap. LeakCheck~\cite{draoui2026} needs a paid LLM interface and an
+access-restricted package. Data-level tools need exported splits and remain future work.
+
+\section{Results}
+
+\subsection{Detection on the held-out split}
+
+Table~\ref{tab:test} gives the single TEST run. There was no false positive in either mode and no finding on any
+of the 9 files without a leak. The static pass found 59 of 73 leaks (0.81) and the combined mode 65 (0.89).
+Figure~\ref{fig:recall} shows recall by type.
+
+\begin{table}[t]
+\caption{Detection on the injected TEST split (79 files, 73 leaks), scored once. Findings of medium or higher
+confidence. Recall with 95\% bootstrap interval over files. No false positive in either mode.}
+\label{tab:test}
+\footnotesize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{@{}lrrlrl@{}}
+\toprule
+ & & \multicolumn{2}{c}{\textbf{Static}} & \multicolumn{2}{c}{\textbf{Static + run}} \\
+\cmidrule(lr){3-4}\cmidrule(l){5-6}
+\textbf{Type} & \textbf{Leaks} & \textbf{Found} & \textbf{Recall} & \textbf{Found} & \textbf{Recall} \\
+\midrule
+Preprocessing & 22 & 21 & 0.95 (0.84--1.00) & 21 & 0.95 (0.84--1.00) \\
+Overlap & 9 & 7 & 0.78 (0.44--1.00) & 9 & 1.00 (1.00--1.00) \\
+Multi-test & 6 & 5 & 0.83 (0.43--1.00) & 5 & 0.83 (0.43--1.00) \\
+Group & 7 & 3 & 0.43 (0.00--0.83) & 7$^{*}$ & 1.00$^{*}$ \\
+Temporal & 25 & 20 & 0.80 (0.62--0.95) & 20 & 0.80 (0.62--0.95) \\
+Target-derived & 4 & 3 & 0.75 (0.00--1.00) & 3 & 0.75 (0.00--1.00) \\
+\midrule
+All types & 73 & 59 & 0.81 & 65 & 0.89 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\raggedright $^{*}$By the matching rule, which checks type and line. Only 3 of the 7 findings name the true
+entity column, so the strict figure is 0.43.
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar, bar width=4.6pt, width=\columnwidth, height=44mm,
+  ymin=0, ymax=1.12, ytick={0,0.25,0.5,0.75,1},
+  ylabel={Recall}, ylabel style={font=\scriptsize},
+  symbolic x coords={Preproc.,Overlap,Multi-test,Group,Temporal,Target},
+  xtick=data, x tick label style={font=\scriptsize, rotate=25, anchor=east},
+  y tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.5,1.03)}, anchor=south, legend columns=2, draw=none},
+  area legend,
+  enlarge x limits=0.11, axis lines*=left, ymajorgrids, grid style={gray!25}]
+\addplot[fill=sand, draw=sand] coordinates {(Preproc.,0.95) (Overlap,0.78) (Multi-test,0.83) (Group,0.43) (Temporal,0.80) (Target,0.75)};
+\addplot[fill=navy, draw=navy] coordinates {(Preproc.,0.95) (Overlap,1.00) (Multi-test,0.83) (Group,1.00) (Temporal,0.80) (Target,0.75)};
+\legend{Static, Static + run}
+\end{axis}
+\end{tikzpicture}
+\caption{Recall by type on injected TEST. The group bar for the combined mode follows the matching rule; with
+the true entity column required it is 0.43.}
+\label{fig:recall}
+\end{figure}
+
+The run confirmed 43 static findings, refuted none, could not check 25 (no run-time check exists for
+forward-looking features or pandas statistics) and made 2 findings of its own, both duplicated records. By
+temporal category, the tool found 5 of 5 common, 7 of 7 differentiating and 8 of 13 hard leaks. On DEV, where
+the rules were tuned, the static pass found 80 of 89 leaks and the combined mode 89 of 89; the drop from DEV to
+TEST is real.
+
+\subsection{What went wrong on TEST}
+
+\textbf{Right line, wrong column.} In a patient-visits pipeline the static pass made a low-confidence guess on a
+column named \code{visit}. The confirmation step looked only at nominated columns, found that visit numbers
+occur on both sides of the split, as they always do, and raised the confidence. It never examined
+\code{patient\_id}. The matching rule does not check the column, so Table~\ref{tab:test} counts these four
+findings as correct. They are not: the entity is wrong, and so is the impact estimate that follows from it.
+
+\textbf{A slice mistaken for a split.} One pipeline drops its last row with \code{data.iloc[:-1]}. The analyser
+treated this as the training side of a manual split. Five temporal leaks were reported at low confidence only
+and one multi-test leak was missed.
+
+\textbf{An unresolved column filter.} A feature list built with a \code{startswith} filter could not be
+resolved, so two leaks in that pipeline were not reported.
+
+\subsection{Second look}
+
+These three faults were then fixed and the change logged. DEV was re-run and came out unchanged, and TEST was
+run again: 67 of 73 with the static pass and 73 of 73 with the run, with no false positive, and all group
+findings now naming the true entity. The fixes were written knowing which TEST files they repair, so this
+is not a held-out result and Table~\ref{tab:test} remains the result of record. The injected benchmark is now
+saturated on both halves and cannot measure further progress.
+
+\subsection{Comparison with Yang et al.\ on the same files}
+
+Table~\ref{tab:yang} gives the per-file comparison. On the three types the baseline supports, it found 20 of 37
+files with one false alarm, and the static pass of \tool{} found 33 of 37 with none. Both tools analysed all 79
+files and reported nothing on the 9 leak-free files.
+
+\begin{table}[t]
+\caption{Yang et al.\ and \tool{} (static mode) on the 79 injected TEST files, scored per file and type.
+``Found'': files with this leak in which the tool reports the type. ``False'': files where it reports the type
+wrongly.}
+\label{tab:yang}
+\footnotesize
+\setlength{\tabcolsep}{4.5pt}
+\input{yang_measured_table}
+
+\vspace{2pt}
+\raggedright $^{\dagger}$Not a type the baseline claims to detect. It is credited under temporal in 3 files where
+it reports whole-series scaling as preprocessing leakage. Temporal has 24 files for 25 leaks because one file
+holds two.
+\end{table}
+
+This comparison favours \tool{}, and should be read with that in mind. Neither tool was tuned on these files,
+but the files were generated by our own operators, with the kinds of leak \tool{} was built for, in a style
+that may differ from the notebooks the baseline was designed on. The figures its authors report on their own
+hand-labelled notebooks (precision 97.6\%, recall 67.8\%) are a different measurement and cannot be set against
+Table~\ref{tab:yang}. A fair comparison needs the labelled real notebooks.
+
+\subsection{Impact estimates}
+
+On TEST an estimate could be produced for 34 of 70 located leaks: all 7 group findings, 3 of 3 target-derived,
+7 of 9 overlap, 10 of 21 preprocessing, 7 of 25 temporal and none of the 5 multi-test findings. The rest were
+reported as unknown with the reason. The instrumented script printed exactly the plain script's metric in all
+395 runs.
+
+For 26 single-leak findings with a bounded metric, averaged over five data seeds, the mean absolute error
+against the true inflation was 0.035 and the rank correlation 0.58. The estimate was exact where the fix is the
+same operation as the benchmark's corrected file, which is a weak test. It was wrong in direction for hold-out
+group splits ($-0.084$ estimated against a true $+0.212$ AUC), because the fix grouped by the wrong column.
+In the second look, with the column fault repaired, the mean absolute error was 0.0006 and the rank correlation
+0.97; the same caveat applies as for detection.
+
+\subsection{Running time}
+
+The static pass took a median of 2.6\,ms per file and the instrumented run a median of 1.3\,s (maximum 12.7\,s)
+on a laptop. The baseline took a median of 6.2\,s per file in a cloud CPU job. The machines differ, so these
+figures indicate scale only.
+
+\subsection{A negative case study}
+
+We ran the static pass on a separate EEG seizure-detection codebase written by the first author. It has three
+evaluation regimes whose leakage status is known: random windows, a within-patient split and
+leave-one-patient-out. The tool reported nothing in any of its 78 files. That is correct for the third regime
+and a miss for the first two. The code splits with hand-written NumPy masks and by position over lists of
+custom objects, and subject identity is an attribute of an object. There is no scikit-learn splitter, data
+frame or column name for the analyser to model, and the dynamic pass, which wraps scikit-learn entry points,
+would not see these splits either. No rule was changed after this result.
+
+\section{Limitations and Threats to Validity}
+
+\textbf{No result on real code.} All detection and impact figures come from our own injected benchmark. The
+tool and the benchmark have the same authors, and TEST uses different pipelines but the same mutation operators
+as DEV. The results measure generalisation across pipelines, not across the ways people actually write leaks. A
+precision of 1.00 on short synthetic files will not hold on real notebooks.
+
+\textbf{Small samples.} TEST has 4 target-derived, 6 multi-test and 7 group leaks. The intervals are wide.
+
+\textbf{Blindness.} While the rules were being written, the column names of the TEST pipelines were seen by
+mistake. No TEST code, label or operator was read, but TEST group results are not blind to entity names.
+
+\textbf{Heuristic entity inference.} Evidence for an entity is a name, repetition, or a file path. A name can
+mislead in both directions, and the first TEST run shows the consequence.
+
+\textbf{Coverage of code styles.} The static pass models pandas, NumPy and scikit-learn by name. Hand-written
+splits, custom classes and deep learning frameworks are largely outside it, as the case study shows.
+
+\textbf{Impact estimates.} Automatic fixes exist for six situations, covering about half of the located
+leaks. A group-aware or chronological split changes which rows are evaluated, so the estimate is the change under
+the canonical fix, not a causal decomposition.
+
+\textbf{One baseline.} Only the analyser of Yang et al.\ was run, under a looser scoring rule than the protocol's.
+
+\section{Conclusion and Future Work}
+
+\tool{} detects six types of data leakage in Python machine learning code, including group leakage from source
+code, links static findings to facts observed in an instrumented run, and estimates the effect of a located leak
+by re-running the pipeline with a fix. On a held-out set of injected leaks it found 81\% of leaks statically and
+89\% with the run, with no false positive, and it found more leaks than the reference static analyser on the
+three types they share. The same evaluation exposed a confirmation fault that named the wrong entity in four of
+seven group findings, and a case study on real code showed that hand-written splits are invisible to it.
+
+The next step is the one that decides whether these results mean anything outside our benchmark: labelling the
+150 sampled notebooks and scoring \tool{} and the baselines on them. After that we plan to run the data-level
+tools on the splits that the instrumented run exports, to extend the analysis to manual and framework-specific
+splits, and to measure how often each leakage type occurs in public notebooks and how much it changes their
+reported scores.
+
+\section*{Data and Code Availability}
+
+The source code, benchmark generators, frozen protocol, evaluation change log and the output of every run cited
+here are in the project repository: \url{https://github.com/bytes06runner/LeakLens}.
+
+\section*{Acknowledgement}
+
+The implementation was written with the help of an AI coding assistant. The authors made the design and
+protocol decisions and reviewed the results reported here.
+
+\begin{thebibliography}{99}
+\footnotesize
+\setlength{\itemsep}{1.5pt}
+
+\bibitem{kaufman2012} S. Kaufman, S. Rosset, C. Perlich, and O. Stitelman, ``Leakage in data mining: formulation,
+detection, and avoidance,'' \emph{ACM Trans. Knowl. Discov. Data}, vol. 6, no. 4, 2012.
+doi:10.1145/2382577.2382579.
+
+\bibitem{kapoor2023} S. Kapoor and A. Narayanan, ``Leakage and the reproducibility crisis in
+machine-learning-based science,'' \emph{Patterns}, vol. 4, no. 9, 100804, 2023. doi:10.1016/j.patter.2023.100804.
+
+\bibitem{yang2022} C. Yang, R. A. Brower-Sinning, G. A. Lewis, and C. K\"{a}stner, ``Data leakage in notebooks:
+static detection and better processes,'' in \emph{Proc. 37th IEEE/ACM Int. Conf. Automated Software Engineering
+(ASE)}, 2022. doi:10.1145/3551349.3556918.
+
+\bibitem{roth2026} S. Roth, ``Which leakage types matter? A quantitative landscape across 2,047 benchmark
+datasets,'' arXiv:2604.04199, 2026.
+
+\bibitem{brookshire2024} G. Brookshire \emph{et al.}, ``Data leakage in deep learning studies of translational
+EEG,'' \emph{Front. Neurosci.}, vol. 18, 1373515, 2024. doi:10.3389/fnins.2024.1373515.
+
+\bibitem{alomar2025} E. A. AlOmar, C. DeMario, R. Shagawat, and B. Kreiser, ``LeakageDetector: an open source
+data leakage analysis tool in machine learning pipelines,'' arXiv:2503.14723, 2025.
+
+\bibitem{truong2025} Truong \emph{et al.}, ``LeakageDetector 2.0: analyzing data leakage in Jupyter-driven
+machine learning pipelines,'' arXiv:2509.15971, 2025.
+
+\bibitem{draoui2026} T. Draoui, M. W. Mkaouer, and C. Newman, ``Improving data leakage detection in machine
+learning notebooks through static slicing and structured LLM prompts,'' \emph{Proc. ACM Softw. Eng.}, vol. 3,
+no. FSE, 2026. doi:10.1145/3808199.
+
+\bibitem{samsonau2026} Samsonau, ``scicode-lint: detecting methodology bugs in scientific Python code with
+LLM-generated patterns,'' arXiv:2603.17893, 2026.
+
+\bibitem{subotic2022a} P. Suboti\'{c}, L. Miliki\'{c}, and M. Stoji\'{c}, ``A static analysis framework for data
+science notebooks,'' in \emph{Proc. 44th Int. Conf. Software Engineering: Software Engineering in Practice
+(ICSE-SEIP)}, 2022. doi:10.1145/3510457.3513032.
+
+\bibitem{subotic2022b} P. Suboti\'{c}, U. Bojani\'{c}, and M. Stoji\'{c}, ``Statically detecting data leakages in
+data science code,'' in \emph{Proc. 11th ACM SIGPLAN Int. Workshop on the State of the Art in Program Analysis
+(SOAP)}, 2022. doi:10.1145/3520313.3534657.
+
+\bibitem{drobnjakovic2024} F. Drobnjakovi\'{c}, P. Suboti\'{c}, and C. Urban, ``An abstract interpretation-based
+data leakage static analysis,'' in \emph{Theoretical Aspects of Software Engineering (TASE)}, LNCS, Springer,
+2024. doi:10.1007/978-3-031-64626-3\_7.
+
+\bibitem{chorev2022} S. Chorev \emph{et al.}, ``Deepchecks: a library for testing and validating machine learning
+models and data,'' \emph{J. Mach. Learn. Res.}, vol. 23, no. 285, 2022.
+
+\bibitem{schelter2023} S. Schelter, S. Grafberger, S. Guha, B. Karla\v{s}, and C. Zhang, ``Proactively screening
+machine learning pipelines with ArgusEyes,'' in \emph{Companion of the 2023 Int. Conf. Management of Data
+(SIGMOD)}, 2023. doi:10.1145/3555041.3589682.
+
+\bibitem{grafberger2023} S. Grafberger, P. Groth, and S. Schelter, ``Automating and optimizing data-centric
+what-if analyses on native machine learning pipelines,'' \emph{Proc. ACM Manag. Data (SIGMOD)}, 2023.
+doi:10.1145/3589273.
+
+\bibitem{sklearn} F. Pedregosa \emph{et al.}, ``Scikit-learn: machine learning in Python,'' \emph{J. Mach.
+Learn. Res.}, vol. 12, pp. 2825--2830, 2011.
+
+\bibitem{splitguard} T. Aiello, ``splitguard,'' software, version 0.1.0, 2026.
+\url{https://github.com/Tommasoaiello13/splitguard}.
+
+\bibitem{leakhound} J. Gomes, ``LeakHound,'' software, version 0.5.0, 2026.
+\url{https://github.com/happyhellpt/leakhound}.
+
+\bibitem{leakcheckml} ``leakcheck-ml,'' software, version 0.3.0, 2026.
+\url{https://github.com/Sofienguy1/leakcheck}.
+
+\bibitem{leakly} DeMONLab-BioFINDER, ``Leakly: leakage checks for machine-learning pipelines using permutation tests,''
+software, version 0.1.2, 2026. \url{https://github.com/DeMONLab-BioFINDER/Leakly}.
+
+\end{thebibliography}
+
+\end{document}
