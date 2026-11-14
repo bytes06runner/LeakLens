@@ -97,14 +97,15 @@ numbers["table5"] = rows5
 numbers["table5_denominators"] = {"T1": len(T1), "group": len(G), "raw_dup": len(DUP), "leak_free": len(clean)}
 
 tex = [r"\begin{tabular}{@{}llrrrrr@{}}", r"\toprule",
-       r"\textbf{Tool} & \textbf{Column given} & \textbf{T1} & \textbf{Grp} & \textbf{Grp, col.} & \textbf{Dup.} "
+       r"\textbf{Tool} & \textbf{Col.} & \textbf{T1} & \textbf{Grp} & \textbf{Grp, col.} & \textbf{Dup.} "
        r"& \textbf{Clean} \\",
        rf" & & /{len(T1)} & /{len(G)} & /{len(G)} & /{len(DUP)} & /{len(clean)} \\", r"\midrule"]
 prev = None
 for tool, hint, t1, g, gc, dp, al in rows5:
     shown = "" if tool == prev else tool.replace("LeakLens", r"\tool{}")
     prev = tool
-    tex.append(rf"{shown} & {hint} & {t1} & {g} & {gc} & {dp} & {al} \\")
+    shown_hint = {"none (default)": "no", "true column named": "yes", "none needed": "no"}[hint]
+    tex.append(rf"{shown} & {shown_hint} & {t1} & {g} & {gc} & {dp} & {al} \\")
     if tool.startswith("LeakLens"):
         tex.append(r"\midrule")
 tex += [r"\bottomrule", r"\end{tabular}"]

@@ -1,0 +1,12 @@
+[{"stream_name":"stdout","time":186.608605685,"data":"apt rc=0\n"}
+,{"stream_name":"stdout","time":186.608642885,"data":"W: Skipping acquire of configured file 'main/source/Sources' as repository 'https://r2u.stat.illinois.edu/ubuntu noble InRelease' does not seem to provide it (sources.list entry misspelt?)\n"}
+,{"stream_name":"stdout","time":186.608649799,"data":"\n"}
+,{"stream_name":"stdout","time":186.608653928,"data":"pass 1 rc=0\n"}
+,{"stream_name":"stdout","time":186.608657577,"data":"pass 2 rc=0\n"}
+,{"stream_name":"stderr","time":189.262479243,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":189.262511106,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":189.632145179,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":189.632171259,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":191.621739618,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":192.761468862,"data":"[NbConvertApp] Writing 279798 bytes to __results__.html\n"}
+]
