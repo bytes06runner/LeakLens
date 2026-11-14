@@ -1,0 +1,43 @@
+[{"stream_name":"stdout","time":15.890635547,"data":"C2a {'skipped': 'data not attached (tlvmc-parkinsons-freezing-gait-prediction)'}\n"}
+,{"stream_name":"stdout","time":15.890733591,"data":"C2b {'skipped': 'data not attached (amp-parkinsons-disease-progression-prediction)'}\n"}
+,{"stream_name":"stdout","time":15.890896478,"data":"C3a {'skipped': 'data not attached (predict-energy-behavior-of-prosumers)'}\n"}
+,{"stream_name":"stdout","time":217.676302396,"data":"C3b {'returncode': 1, 'timed_out': False, 'seconds': 134.5}\n"}
+,{"stream_name":"stdout","time":217.70989092,"data":"{\n"}
+,{"stream_name":"stdout","time":217.709918885,"data":"  \"code_version\": {\n"}
+,{"stream_name":"stdout","time":217.709925079,"data":"    \"commit\": \"81ede62f2075c0984f6bd33761ef3cb92be18f7b\",\n"}
+,{"stream_name":"stdout","time":217.709930036,"data":"    \"built_utc\": \"2026-11-14T10:37:37Z\"\n"}
+,{"stream_name":"stdout","time":217.709934798,"data":"  },\n"}
+,{"stream_name":"stdout","time":217.709939469,"data":"  \"cases\": {\n"}
+,{"stream_name":"stdout","time":217.709944176,"data":"    \"C2a\": {\n"}
+,{"stream_name":"stdout","time":217.709949074,"data":"      \"skipped\": \"data not attached (tlvmc-parkinsons-freezing-gait-prediction)\"\n"}
+,{"stream_name":"stdout","time":217.709954149,"data":"    },\n"}
+,{"stream_name":"stdout","time":217.709958483,"data":"    \"C2b\": {\n"}
+,{"stream_name":"stdout","time":217.709963192,"data":"      \"skipped\": \"data not attached (amp-parkinsons-disease-progression-prediction)\"\n"}
+,{"stream_name":"stdout","time":217.709968157,"data":"    },\n"}
+,{"stream_name":"stdout","time":217.709972475,"data":"    \"C3a\": {\n"}
+,{"stream_name":"stdout","time":217.709977519,"data":"      \"skipped\": \"data not attached (predict-energy-behavior-of-prosumers)\"\n"}
+,{"stream_name":"stdout","time":217.709982232,"data":"    },\n"}
+,{"stream_name":"stdout","time":217.709986548,"data":"    \"C3b\": {\n"}
+,{"stream_name":"stdout","time":217.709991177,"data":"      \"returncode\": 1,\n"}
+,{"stream_name":"stdout","time":217.709995793,"data":"      \"timed_out\": false,\n"}
+,{"stream_name":"stdout","time":217.710000582,"data":"      \"seconds\": 134.5\n"}
+,{"stream_name":"stdout","time":217.710005142,"data":"    }\n"}
+,{"stream_name":"stdout","time":217.710009369,"data":"  },\n"}
+,{"stream_name":"stdout","time":217.710013549,"data":"  \"python\": \"3.13.18\",\n"}
+,{"stream_name":"stdout","time":217.710019,"data":"  \"versions\": {\n"}
+,{"stream_name":"stdout","time":217.710023682,"data":"    \"scikit-learn\": \"1.6.1\",\n"}
+,{"stream_name":"stdout","time":217.710028327,"data":"    \"pandas\": \"2.3.3\",\n"}
+,{"stream_name":"stdout","time":217.710033172,"data":"    \"numpy\": \"2.1.3\",\n"}
+,{"stream_name":"stdout","time":217.710037836,"data":"    \"xgboost\": \"3.4.1\",\n"}
+,{"stream_name":"stdout","time":217.710042318,"data":"    \"lightgbm\": \"4.6.0\",\n"}
+,{"stream_name":"stdout","time":217.710046871,"data":"    \"scipy\": \"1.16.3\"\n"}
+,{"stream_name":"stdout","time":217.71005156,"data":"  },\n"}
+,{"stream_name":"stdout","time":217.710056457,"data":"  \"seconds\": 216.7\n"}
+,{"stream_name":"stdout","time":217.71006152,"data":"}\n"}
+,{"stream_name":"stderr","time":220.354839372,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":220.354872939,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":220.710887138,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":220.710932276,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":222.706260879,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":223.518290166,"data":"[NbConvertApp] Writing 300226 bytes to __results__.html\n"}
+]

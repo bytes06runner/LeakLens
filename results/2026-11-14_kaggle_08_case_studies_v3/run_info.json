@@ -1,0 +1,32 @@
+{
+  "code_version": {
+    "commit": "81ede62f2075c0984f6bd33761ef3cb92be18f7b",
+    "built_utc": "2026-11-14T10:37:37Z"
+  },
+  "cases": {
+    "C2a": {
+      "skipped": "data not attached (tlvmc-parkinsons-freezing-gait-prediction)"
+    },
+    "C2b": {
+      "skipped": "data not attached (amp-parkinsons-disease-progression-prediction)"
+    },
+    "C3a": {
+      "skipped": "data not attached (predict-energy-behavior-of-prosumers)"
+    },
+    "C3b": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 134.5
+    }
+  },
+  "python": "3.13.18",
+  "versions": {
+    "scikit-learn": "1.6.1",
+    "pandas": "2.3.3",
+    "numpy": "2.1.3",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.6.0",
+    "scipy": "1.16.3"
+  },
+  "seconds": 216.7
+}

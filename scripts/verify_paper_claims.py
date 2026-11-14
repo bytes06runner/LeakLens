@@ -92,10 +92,22 @@ def main() -> None:
         got = tuple(round(x, 2) for x in st[t]["recall_ci"])
         check("Table 3", f"{t}: static recall 95% CI", ci, got, src)
         check("Table 3", f"{t}: static+run found", f_dy, dy[t]["tp"], src)
-    check("Table 3", "all: static / static+run found", "59 / 65",
-          f"{sum(r['tp'] for r in st.values())} / {sum(r['tp'] for r in dy.values())}", src)
-    check("Table 3", "false positives, both modes", 0,
-          sum(r["fp"] for r in st.values()) + sum(r["fp"] for r in dy.values()), src)
+    check("Table 3 note", "frozen line-and-type rule: static+run group / all found", "7 / 65",
+          f"{dy['group']['tp']} / {sum(r['tp'] for r in dy.values())}", src)
+    check("Table 3", "static false positives", 0, sum(r["fp"] for r in st.values()), src)
+    # strict entity rule (EVAL_CHANGES #10): the headline of Table 3
+    ss = load_json(v1 / "summary_strict.json")
+    sst, sdy = per_type(ss, "static"), per_type(ss, "static+dynamic")
+    srcs = f"{v1.relative_to(ROOT)}/summary_strict.json"
+    for t, (n, f_st, ci, f_dy) in {**paper_t3, "group": (7, 3, (0.00, 0.83), 3)}.items():
+        check("Table 3 (strict)", f"{t}: static / static+run found", f"{f_st} / {f_dy}",
+              f"{sst[t]['tp']} / {sdy[t]['tp']}", srcs)
+    check("Table 3 (strict)", "group static+run recall CI", (0.0, 0.83),
+          tuple(round(x, 2) for x in sdy["group"]["recall_ci"]), srcs)
+    check("Table 3 (strict)", "all: static / static+run found", "59 / 61",
+          f"{sum(r['tp'] for r in sst.values())} / {sum(r['tp'] for r in sdy.values())}", srcs)
+    check("Table 3 (strict)", "false positives static / static+run", "0 / 4",
+          f"{sum(r['fp'] for r in sst.values())} / {sum(r['fp'] for r in sdy.values())}", srcs)
     eff = s["dynamic_effect"]
     conf = sum(v for k, v in eff.items() if k.endswith("|confirmed"))
     notrun = sum(v for k, v in eff.items() if k.endswith("|not_run"))
@@ -215,8 +227,8 @@ def main() -> None:
     # ---------------------------------------------------------------- new baseline sections (2026-11-14)
     num = load_json(ROOT / "paper/numbers.json")
     pr = num["paired"]
-    check("6.4", "paired: both / only LeakLens / only Yang / neither / p", "19 / 14 / 1 / 3 / 0.001",
-          f"{pr['both']} / {pr['ll']} / {pr['y']} / {pr['n']} / {round(pr['p'], 3)}",
+    check("6.4", "paired: both / only LeakLens / only Yang / neither / p<0.001", "19 / 14 / 1 / 3 / True",
+          f"{pr['both']} / {pr['ll']} / {pr['y']} / {pr['n']} / {pr['p'] < 0.001}",
           "results/2026-11-13_yang_paired_test/output.txt")
     t5 = {(r[0], r[1]): r[2:] for r in num["table5"]}
     for key, paper in ((("LeakLens (static + run)", "none needed"), "8 / 7 / 3 / 2 / 0"),
@@ -251,8 +263,46 @@ def main() -> None:
                        capture_output=True, text=True)
     mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
     got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
-    check("4.5", "test suite (373 tests; 371 pass on a laptop, 2 root-only skipped)", "371 passed, 2 skipped", got,
+    check("4.5", "test suite (383 tests; 381 pass on a laptop, 2 root-only skipped)", "381 passed, 2 skipped", got,
           "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
+
+    # ---------------------------------------------------------------- review response (2026-11-14)
+    es = list(csv.DictReader((R / "2026-11-14_test_eval_set_identity_v1code" / "eval_set.csv").open()))
+    src = "results/2026-11-14_test_eval_set_identity_v1code/eval_set.csv"
+    keep = [x for x in es if x["identical"] == "True"]
+    chg = [x for x in es if x["identical"] != "True"]
+    check("6.5", "fixes keeping the split: identical eval rows / changing the split: different rows", "18 / 16",
+          f"{len(keep)} / {len(chg)}", src)
+    by: dict = {}
+    for x in chg:
+        by.setdefault(x["fix"], []).append(float(x["jaccard"]))
+    means = sorted(round(sum(v) / len(v), 2) for v in by.values())
+    check("6.5", "mean overlap by split-changing fix type, range", "0.14 to 0.28", f"{means[0]:.2f} to {means[-1]:.2f}",
+          src)
+    check("6.5", "kinds of fix that keep the split all identical", True,
+          all(x["identical"] == "True" for x in es if x["fix"] in (
+              "transformer refitted on training rows", "feature removed", "evaluation rows removed from fit")), src)
+    cal = load_json(R / "2026-11-14_case_studies" / "calibraeeg_static_after_13.json")
+    check("7.1", "EEG after #13: findings / rules / lines", "2 / LL-GRP-001,LL-GRP-005 / 99,54",
+          f"{len(cal['findings'])} / {','.join(sorted(f['rule_id'] for f in cal['findings']))} / "
+          f"{','.join(str(f['location']['line_start']) for f in sorted(cal['findings'], key=lambda f: -f['location']['line_start']))}",
+          "results/2026-11-14_case_studies/calibraeeg_static_after_13.json")
+    check("7.1", "EEG regime C (fold.py) has no finding", True,
+          not any("fold.py" in f["location"]["file"] for f in cal["findings"]),
+          "results/2026-11-14_case_studies/calibraeeg_static_after_13.json")
+    g = {(r["model"], r["gap"], r["data"], r["metric"]): r for r in
+         csv.DictReader((R / "2026-11-14_case_studies" / "calibraeeg_gap_summary.csv").open())}
+    a_c, b_c = g[("lgbm", "A-C", "common", "auprc")], g[("lgbm", "B-C", "common", "auprc")]
+    check("7.1", "EEG AUPRC A / B / C (lgbm)", "0.779 / 0.595 / 0.364",
+          f"{float(a_c['mean_A']):.3f} / {float(b_c['mean_B']):.3f} / {float(a_c['mean_C']):.3f}",
+          "results/2026-11-14_case_studies/calibraeeg_gap_summary.csv (copied from CalibraEEG a062f45)")
+    check("7.1", "EEG A-C / B-C AUPRC differences", "+0.415 / +0.231",
+          f"+{float(a_c['mean_diff']):.3f} / +{float(b_c['mean_diff']):.3f}",
+          "results/2026-11-14_case_studies/calibraeeg_gap_summary.csv")
+    sel = list(csv.DictReader((R / "2026-11-14_case_studies" / "case_selection_log.csv").open()))
+    check("7.1", "notebooks inspected / taken", "253 / 4",
+          f"{len(sel)} / {sum(r['decision'] == 'TAKEN' for r in sel)}",
+          "results/2026-11-14_case_studies/case_selection_log.csv")
 
     # ---------------------------------------------------------------- literature numbers (verified earlier)
     for claim, val in (("Kapoor & Narayanan: papers / fields", "294 / 17"),
