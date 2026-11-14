@@ -298,8 +298,8 @@ def filelevel(labels_path: Path, out: Path, yang_path: Path | None, boot: int = 
     md = [
         f"# Notebook-level scores on the real {labels_path.stem.split('_')[-1]} notebooks",
         "",
-        f"{len(items)} notebooks; labels `{labels_path.name}`. A tool is right about a type in a notebook when it reports"
-        " that type there and the notebook has a label of that type (EVAL_CHANGES #6); a group finding must name the "
+        f"{len(items)} notebooks; labels `{labels_path.name}`. A tool is right about a type in a notebook when it "
+        "reports that type there and the notebook has a label of that type (EVAL_CHANGES #6); a group finding must name the "
         "labelled entity when one is given. 95% CIs resample notebooks. A notebook the tool could not analyse counts "
         "as analysed with no finding (Rule 5).",
         "",
