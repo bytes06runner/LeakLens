@@ -69,3 +69,8 @@ Every inspected notebook, in pool order, with the reason it was taken or skipped
 `results/2026-11-14_case_studies/case_selection_log.csv`. Notebooks are identified there by a hash of their
 Kaggle reference, not by name or pool rank (Rule 8); the mapping is kept outside the repository with the other
 raw notebooks.
+
+Counts (from the log): 253 notebooks inspected in pool order, 243 for healthcare and 10 for forecasting, until
+two qualified for each. 118 were excluded automatically under criterion 3 (deep-learning framework, or no
+scikit-learn fit), 7 could not be pulled as notebooks, and the rest were read: most medical datasets have one row
+per patient (criterion 1).
