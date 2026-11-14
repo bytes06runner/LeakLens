@@ -11,7 +11,7 @@ Leakage types & Preprocessing, overlap, multi-test & The same three, plus group,
 Group and temporal leakage & Not types it claims & Group: entity from column names, file paths, attributes of items, or a column found at run time; confirmed at the split. Temporal: non-chronological splits, forward-looking features \\
 Location reported & The affected evaluation line (as observed in our runs) & The line that causes the leak, with a suggested fix \\
 Impact on the score & Not estimated & Re-runs the pipeline with a canonical fix (six kinds); preliminary \\
-Evaluation data & 100 hand-labelled real notebooks (94 analysed) and 107,603 public GitHub notebooks & 175 synthetic files with injected leaks; five real-code case studies; 79 real notebooks being labelled \\
+Evaluation data & 100 hand-labelled real notebooks (94 analysed) and 107,603 public GitHub notebooks & 175 synthetic files with injected leaks; five real-code case studies; 150 labelled public notebooks (79 held out) \\
 Accuracy reported by the authors & Precision 97.6\% (40/41), recall 67.8\% (40/59), real notebooks & Recall 0.81 (static, no false positive) and 0.84 (with the run, 4 false positives), own injected TEST split, correct entity required \\
 Time per file & Mean 3.23\,s (their paper); median 6.2\,s on our files (Kaggle CPU) & Static: median 2.6\,ms. Instrumented run: median 1.3\,s (laptop) \\
 \bottomrule
