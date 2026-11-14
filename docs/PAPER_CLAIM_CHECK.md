@@ -76,7 +76,21 @@
 | PASS | 5.2 | real DEV: notebooks / crashes / median ms | 71 / 0 / 4 | 71 / 0 / 4 | results/2026-11-12_real_dev_static_unlabelled/aggregates.json |
 | PASS | 6.7 | case study: files / findings | 78 / 0 | 78 / 0 | results/2026-11-12_calibraeeg_static/report.json |
 | PASS | 4.4 | sandbox: ancestors with token, dropped / root control | 0 / 2 | 0 / 2 | results/2026-09-29_kaggle_01_sandbox_check_v2/sandbox_check.json |
-| FAIL | 4.5 | test suite (paper says '371 passing tests') | 371 passed, 0 skipped | 369 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
+| PASS | 6.4 | paired: both / only LeakLens / only Yang / neither / p | 19 / 14 / 1 / 3 / 0.001 | 19 / 14 / 1 / 3 / 0.001 | results/2026-11-13_yang_paired_test/output.txt |
+| PASS | 6.5 / Table 5 | LeakLens (static + run) (none needed): T1 / group / group right col / dup / clean alarms | 8 / 7 / 3 / 2 / 0 | 8 / 7 / 3 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | leakcheck-ml (none (default)): T1 / group / group right col / dup / clean alarms | 3 / 4 / 4 / 2 / 0 | 3 / 4 / 4 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | leakcheck-ml (true column named): T1 / group / group right col / dup / clean alarms | 7 / 7 / 7 / 2 / 0 | 7 / 7 / 7 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | leakhound-ml (true column named): T1 / group / group right col / dup / clean alarms | 7 / 7 / 7 / 2 / 0 | 7 / 7 / 7 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | leakhound-ml (none (default)): T1 / group / group right col / dup / clean alarms | 0 / 0 / 0 / 2 / 0 | 0 / 0 / 0 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | dataleaks (none (default)): T1 / group / group right col / dup / clean alarms | 0 / 7 / 4 / 2 / 2 | 0 / 7 / 4 / 2 / 2 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | deepchecks (true column named): T1 / group / group right col / dup / clean alarms | 7 / 0 / 0 / 2 / 0 | 7 / 0 / 0 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | deepchecks (none (default)): T1 / group / group right col / dup / clean alarms | 0 / 0 / 0 / 2 / 0 | 0 / 0 / 0 / 2 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | splitguard (none (default)): T1 / group / group right col / dup / clean alarms | 0 / 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.5 / Table 5 | splitguard (true column named): T1 / group / group right col / dup / clean alarms | 0 / 7 / 7 / 0 / 0 | 0 / 7 / 7 / 0 / 0 | paper/numbers.json <- results/2026-11-13_data_level_test, 2026-11-14_leakhound_test_rerun |
+| PASS | 6.6 | impact, findings both estimate / MAE LeakHound / MAE LeakLens | 11 / 0.065 / 0.086 | 11 / 0.065 / 0.086 | paper/numbers.json |
+| PASS | 6.6 | LeakHound error range on duplicates and time splits | 0.01 to 0.08 | 0.01 to 0.08 | paper/numbers.json |
+| PASS | 5.4 | scicode-lint: files attempted (all timed out) / results | 29 / 0 | 29 / 0 | results/2026-11-14_kaggle_06_scicode_gpu_test |
+| PASS | 4.5 | test suite (373 tests; 371 pass on a laptop, 2 root-only skipped) | 371 passed, 2 skipped | 371 passed, 2 skipped | pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job) |
 | PASS (source read) | 1-2 | Kapoor & Narayanan: papers / fields | 294 / 17 | 294 / 17 | literature/related_work.csv (verified) |
 | PASS (source read) | 1-2 | Yang et al.: notebooks / share with leak | 107,603 / 29.6% | 107,603 / 29.6% | literature/related_work.csv (verified) |
 | PASS (source read) | 1-2 | Yang et al.: precision / recall | 97.6% (40/41) / 67.8% (40/59) | 97.6% (40/41) / 67.8% (40/59) | literature/related_work.csv (verified) |

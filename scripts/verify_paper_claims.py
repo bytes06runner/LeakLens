@@ -212,12 +212,46 @@ def main() -> None:
           f"{sb['proc_scan']['ancestors_with_token']} / {sb['proc_scan_control_root_child']['ancestors_with_token']}",
           "results/2026-09-29_kaggle_01_sandbox_check_v2/sandbox_check.json")
 
+    # ---------------------------------------------------------------- new baseline sections (2026-11-14)
+    num = load_json(ROOT / "paper/numbers.json")
+    pr = num["paired"]
+    check("6.4", "paired: both / only LeakLens / only Yang / neither / p", "19 / 14 / 1 / 3 / 0.001",
+          f"{pr['both']} / {pr['ll']} / {pr['y']} / {pr['n']} / {round(pr['p'], 3)}",
+          "results/2026-11-13_yang_paired_test/output.txt")
+    t5 = {(r[0], r[1]): r[2:] for r in num["table5"]}
+    for key, paper in ((("LeakLens (static + run)", "none needed"), "8 / 7 / 3 / 2 / 0"),
+                       (("leakcheck-ml", "none (default)"), "3 / 4 / 4 / 2 / 0"),
+                       (("leakcheck-ml", "true column named"), "7 / 7 / 7 / 2 / 0"),
+                       (("leakhound-ml", "true column named"), "7 / 7 / 7 / 2 / 0"),
+                       (("leakhound-ml", "none (default)"), "0 / 0 / 0 / 2 / 0"),
+                       (("dataleaks", "none (default)"), "0 / 7 / 4 / 2 / 2"),
+                       (("deepchecks", "true column named"), "7 / 0 / 0 / 2 / 0"),
+                       (("deepchecks", "none (default)"), "0 / 0 / 0 / 2 / 0"),
+                       (("splitguard", "none (default)"), "0 / 0 / 0 / 0 / 0"),
+                       (("splitguard", "true column named"), "0 / 7 / 7 / 0 / 0")):
+        check("6.5 / Table 5", f"{key[0]} ({key[1]}): T1 / group / group right col / dup / clean alarms", paper,
+              " / ".join(map(str, t5[key])), "paper/numbers.json <- results/2026-11-13_data_level_test, "
+              "2026-11-14_leakhound_test_rerun")
+    import statistics as st
+
+    b = num["impact_both"]
+    check("6.6", "impact, findings both estimate / MAE LeakHound / MAE LeakLens", "11 / 0.065 / 0.086",
+          f"{len(b)} / {round(st.mean(abs(x['leakhound'] - x['true']) for x in b), 3)} / "
+          f"{round(st.mean(abs(x['leaklens'] - x['true']) for x in b), 3)}", "paper/numbers.json")
+    nb = [abs(x["leakhound"] - x["true"]) for x in b if x["type"] != "group"]
+    check("6.6", "LeakHound error range on duplicates and time splits", "0.01 to 0.08",
+          f"{round(min(nb), 2)} to {round(max(nb), 2)}", "paper/numbers.json")
+    sc = load_json(R / "2026-11-14_kaggle_06_scicode_gpu_test/scicode_test_results.json")
+    check("5.4", "scicode-lint: files attempted (all timed out) / results", "29 / 0",
+          f"{sum(v['status'] == 'timeout' for v in sc.values())} / {sum(v['status'] == 'done' for v in sc.values())}",
+          "results/2026-11-14_kaggle_06_scicode_gpu_test")
+
     # ---------------------------------------------------------------- test suite (4.5)
     p = subprocess.run([sys.executable, "-m", "pytest", "-o", "addopts=", "-q", "-p", "no:cacheprovider"], cwd=ROOT,
                        capture_output=True, text=True)
     mm = re.search(r"(\d+) passed(?:, (\d+) skipped)?", p.stdout)
     got = f"{mm[1]} passed, {mm[2] or 0} skipped" if mm else p.stdout[-200:]
-    check("4.5", "test suite (paper says '371 passing tests')", "371 passed, 0 skipped", got,
+    check("4.5", "test suite (373 tests; 371 pass on a laptop, 2 root-only skipped)", "371 passed, 2 skipped", got,
           "pytest run now (laptop; 2 tests need root and run only in the Kaggle sandbox job)")
 
     # ---------------------------------------------------------------- literature numbers (verified earlier)
