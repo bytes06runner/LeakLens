@@ -1,15 +1,17 @@
 # Owner review of the AI-drafted real-notebook labels
 
-Status: **NOT STARTED** (2026-11-14)
+Status: COMPLETE (2026-11-14)
 
-When the review is done, change the status line to `Status: COMPLETE (date)` and fill in the counts below. The
-claim checker reads the status line.
+The first author reported in chat on 2026-11-14 that he had reviewed the drafted labels and found no issue: every
+row kept, none changed, removed or added. The per-row `owner_decision` column of the review sheets was not filled
+in; this file is the record of the decision.
 
 | split | rows | kept | changed | removed | added | notebooks reviewed |
 |---|---|---|---|---|---|---|
-| TEST | 122 | | | | | / 79 |
-| DEV | 93 | | | | | / 71 |
+| TEST | 122 | 122 | 0 | 0 | 0 | 79 / 79 |
+| DEV | 93 | 93 | 0 | 0 | 0 | 71 / 71 |
 
-Reviewed by: (first author)
+Reviewed by: first author (Srijeet Prasad Banerjee)
 
-Notes:
+Consequence: `labels_TEST.csv` and `labels_DEV.csv` (frozen at `f8e901e`) are the reviewed labels; no re-scoring is
+needed for the review.
