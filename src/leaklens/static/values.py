@@ -126,6 +126,9 @@ class Origin:
     panel_keys: set[str] = field(default_factory=set)
     aggregated_by: set[str] = field(default_factory=set)
     file_entities: set[str] = field(default_factory=set)
+    file_acc: bool = False  # rows appended inside a loop that reads one source file per iteration
+    pooled_files: bool = False  # several rows per source file pooled, the file not recorded (LL-GRP-007)
+    repeated_keys: set[str] = field(default_factory=set)  # keys of per-row groupby computations (transform, cum*)
     path: str | None = None
 
     def time_strength(self) -> str | None:

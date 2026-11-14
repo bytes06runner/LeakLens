@@ -1,0 +1,37 @@
+{
+  "id": "srijeetbanerjee/leaklens-11-real-dynamic",
+  "title": "leaklens-11-real-dynamic",
+  "code_file": "real_dynamic.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [
+    "srijeetbanerjee/leaklens-code",
+    "srijeetbanerjee/leaklens-real-test-nb19",
+    "razanihababdellatif/diabetes-hospital-readmission-dataset",
+    "brianleung2020/eeg-motor-movementimagery-dataset",
+    "aadharshviswanath/aircraft-sensor-and-engine-performance",
+    "phhasian0710/seed-iv",
+    "shreyashautomation/nifty500-companies-5-years-stock-market-data",
+    "ethioel/time-series-101-grocery-sales-forecasting",
+    "nisargchodavadiya/daily-gold-price-20152021-time-series",
+    "prafullpandey1/celebal-dataset",
+    "mrsimple07/energy-consumption-prediction",
+    "ealaxi/paysim1",
+    "robikscube/eye-state-classification-eeg-dataset",
+    "micgonzalez/walmart-store-sales-forecasting",
+    "kamelhassan/eeg-eye-state",
+    "kanukushwaha/logo-banner",
+    "khanmuhammadrifat/ms-alternating-dataset",
+    "prevek18/ames-housing-dataset",
+    "dsrivastava2020/recommendation-system"
+  ],
+  "competition_sources": [
+    "store-sales-time-series-forecasting",
+    "house-prices-advanced-regression-techniques"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}

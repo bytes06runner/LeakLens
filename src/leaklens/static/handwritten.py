@@ -126,3 +126,92 @@ def within_entity_splits(tree: ast.Module, strength: Callable[[str], str | None]
                           "end_line": stmts[-1].end_lineno or stmts[-1].lineno, "loop_line": loop.lineno,
                           "head": head, "tail": tail})
     return found
+
+
+_ROLE_TRAIN = {"train", "training", "tr", "fit"}
+_ROLE_EVAL = {"test", "testing", "te", "val", "valid", "validation", "dev", "holdout", "eval", "evaluation"}
+_LIST_WORDS = {"list", "lst", "set", "ids", "id", "idx", "indices", "all", "range", "pool"}
+
+
+def _const_seq(node: ast.expr, env: dict[str, list]) -> list | None:
+    """Value of a literal collection of ints or strings: `[1, 2]`, `range(1, 80)`, `list(range(...))`, `set(...)`,
+    `NAME`, `NAME[a:b]` with constant bounds. None when it cannot be evaluated."""
+    if isinstance(node, ast.List | ast.Tuple | ast.Set):
+        vals = [e.value for e in node.elts if isinstance(e, ast.Constant) and isinstance(e.value, int | str)]
+        return vals if len(vals) == len(node.elts) and vals else None
+    if isinstance(node, ast.Name):
+        return env.get(node.id)
+    if isinstance(node, ast.Attribute):
+        return env.get(node.attr)
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+        f = node.func.id
+        if f in ("list", "tuple", "set", "sorted") and len(node.args) == 1:
+            return _const_seq(node.args[0], env)
+        if f == "range" and 1 <= len(node.args) <= 3:
+            nums = [a.value for a in node.args if isinstance(a, ast.Constant) and isinstance(a.value, int)]
+            if len(nums) == len(node.args) and len(range(*nums)) <= 1_000_000:
+                return list(range(*nums))
+    if isinstance(node, ast.Subscript) and isinstance(node.slice, ast.Slice):
+        base = _const_seq(node.value, env)
+        sl = node.slice
+        bounds = []
+        for b in (sl.lower, sl.upper, sl.step):
+            if b is None:
+                bounds.append(None)
+            elif isinstance(b, ast.Constant) and isinstance(b.value, int):
+                bounds.append(b.value)
+            elif isinstance(b, ast.UnaryOp) and isinstance(b.op, ast.USub) and isinstance(b.operand, ast.Constant):
+                bounds.append(-b.operand.value)
+            else:
+                return None
+        return base[slice(*bounds)] if base is not None else None
+    return None
+
+
+def _role_entity(name: str, strength: Callable[[str], str | None]) -> tuple[str, str] | None:
+    """(`train` or `eval`, entity) for names such as TRAIN_SUBJECTS, test_patient_ids, val_users."""
+    import re
+
+    toks = [t.lower() for t in re.findall(r"[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+", name) if not t.isdigit()]
+    role = "train" if set(toks) & _ROLE_TRAIN else "eval" if set(toks) & _ROLE_EVAL else None
+    rest = [t for t in toks if t not in _ROLE_TRAIN | _ROLE_EVAL | _LIST_WORDS]
+    if role is None or len(rest) != 1:
+        return None
+    ent = rest[0]
+    if strength(ent) != "strong":
+        return None
+    return role, ent.rstrip("s") or ent
+
+
+def overlapping_entity_lists(tree: ast.Module, strength: Callable[[str], str | None]) -> list[dict]:
+    """Explicit training and evaluation lists of entities (subjects, patients, ...) that share members, e.g.
+    `TRAIN_SUBJECTS = range(1, 110)` and `TEST_SUBJECTS = range(51, 110)`. Correct code keeps them disjoint."""
+    env: dict[str, list] = {}
+    defs: dict[str, tuple[str, str, list, ast.stmt]] = {}
+    for st in ast.walk(tree):
+        if not (isinstance(st, ast.Assign) and len(st.targets) == 1):
+            continue
+        t = st.targets[0]
+        name = t.id if isinstance(t, ast.Name) else t.attr if isinstance(t, ast.Attribute) else None
+        if name is None:
+            continue
+        val = _const_seq(st.value, env)
+        if val is None:
+            continue
+        env[name] = val
+        re_ = _role_entity(name, strength)
+        if re_:
+            defs[name] = (re_[0], re_[1], val, st)
+    found = []
+    for tn, (tr, ent, tv, ts) in defs.items():
+        if tr != "train":
+            continue
+        for en, (er, ent2, ev, es) in defs.items():
+            if er != "eval" or ent2 != ent:
+                continue
+            shared = set(tv) & set(ev)
+            if shared:
+                lines = sorted([ts.lineno, es.lineno, ts.end_lineno or ts.lineno, es.end_lineno or es.lineno])
+                found.append({"entity": ent, "train": tn, "eval": en, "shared": len(shared), "n_eval": len(set(ev)),
+                              "line": lines[0], "end_line": lines[-1]})
+    return found

@@ -166,6 +166,9 @@ _CONCAT_FUNCS = {
     "stack",
     "append",
 }
+MULTI_SPAN_MAX = int(CFG.get("limits", {}).get("multi_test_span_max_lines", 40))
+_FILE_READS = {"loadmat", "rdsamp", "rdrecord", "read_raw_edf", "read_raw_bdf", "read_raw_fif", "read_raw_gdf",
+               "read_raw", "read_epochs", "imread", "load", "open", "read_edf", "wavread", "read_signals"}
 _PATH_FUNCS = {"glob", "iglob", "listdir", "scandir", "walk", "rglob", "iterdir"}
 _SEQ_FUNCS = {"list", "tuple", "set", "reversed", "iter", "frozenset"}
 _SCORE_KEEP = {"mean", "median", "sum", "std", "round", "abs", "average", "nanmean", "float", "sqrt", "var"}
@@ -283,6 +286,9 @@ def join(vals: list[AVal]) -> AVal:
         for v in vals:
             if isinstance(v, cls):
                 return v
+    for v in vals:  # a list of rows built in a loop wins over an empty or literal alternative (`return [], []`)
+        if isinstance(v, ListV) and v.acc is not None:
+            return v
     first = vals[0]
     if isinstance(first, Str | Num | Const):
         return first if all(v == first for v in vals) else UNKNOWN
@@ -335,6 +341,8 @@ class Analyzer:
         self.findings: dict[tuple[str, int], Finding] = {}
         self.loops: list[int] = []
         self.path_loops: set[int] = set()
+        self.read_loops: set[int] = set()  # loops that read a source file in their body
+        self.pooled_loops: set[int] = set()  # loops over rows already pooled from several files
         self.loop_origins: dict[int, Origin] = {}
         self.rets: list[list[AVal]] = []
         self.call_stack: list[ast.AST] = []
@@ -363,6 +371,7 @@ class Analyzer:
         except (Budget, RecursionError):
             self.truncated = True
         self.within_entity(tree)
+        self.overlapping_lists(tree)
         return self.finish()
 
     def uncalled_functions(self, tree: ast.Module) -> None:
@@ -390,6 +399,24 @@ class Analyzer:
                  {"kind": "entity_column", "detail": f"`{ent}` (grouping key, name evidence)"}],
                 f"Hold out whole {ent}s (GroupShuffleSplit, or leave-one-{ent}-out) if the claim is about new {ent}s.",
                 "replace_splitter:GroupShuffleSplit",
+                {"entity_columns": [ent], "entity_strengths": {ent: "strong"}},
+            )
+
+    def overlapping_lists(self, tree: ast.Module) -> None:
+        for w in handwritten.overlapping_entity_lists(tree, entity_strength):
+            ent = w["entity"]
+            self.emit(
+                "group",
+                "LL-GRP-006",
+                (w["line"], w["end_line"]),
+                "overlapping_entity_lists",
+                "high",
+                f"The training list `{w['train']}` and the evaluation list `{w['eval']}` share {w['shared']} of "
+                f"{w['n_eval']} values of `{ent}`, so the same {ent}s are trained on and evaluated on.",
+                [{"kind": "split_call", "detail": f"explicit {ent} lists `{w['train']}` / `{w['eval']}`"},
+                 {"kind": "entity_column", "detail": f"`{ent}` (list names, values evaluated)"}],
+                f"Make the {ent} lists disjoint (each {ent} in exactly one of training, validation and test).",
+                None,
                 {"entity_columns": [ent], "entity_strengths": {ent: "strong"}},
             )
 
@@ -556,7 +583,17 @@ class Analyzer:
             self.ev(s.value)
         elif isinstance(s, ast.For | ast.AsyncFor):
             self.stmt_line = (s.lineno, s.iter.end_lineno or s.lineno)
-            elem = self.elem_of(self.ev(s.iter))
+            itv = self.ev(s.iter)
+            wrapped = (
+                [self.get(a.id) for a in s.iter.args if isinstance(a, ast.Name)]
+                if isinstance(s.iter, ast.Call)
+                and isinstance(s.iter.func, ast.Name)
+                and s.iter.func.id in ("zip", "enumerate", "reversed", "sorted", "list")
+                else []
+            )
+            if self.pooled_in(itv) or any(self.pooled_in(w) for w in wrapped):
+                self.pooled_loops.add(id(s))
+            elem = self.elem_of(itv)
             self.loops.append(id(s))
             try:
                 elem = self.path_hint(s.target, elem)
@@ -1203,7 +1240,10 @@ class Analyzer:
                     self.ev(cond)
             if isinstance(node, ast.DictComp):
                 return ListV([self.ev(node.value)], "dict", [self.ev(node.key)])
-            return ListV([self.ev(node.elt)], "list")
+            out = ListV([self.ev(node.elt)], "list")
+            if len(node.generators) == 1 and isinstance(it, ListV) and it.acc is not None:
+                out.acc = it.acc  # one output row per input row: the rows keep their lineage
+            return out
         finally:
             self.loops.pop()
 
@@ -1294,6 +1334,19 @@ class Analyzer:
         args = [self.ev(a.value if isinstance(a, ast.Starred) else a) for a in node.args]
         kw = {k.arg: self.ev(k.value) for k in node.keywords if k.arg}
         return args, kw
+
+    def pooled_in(self, v: AVal | None, depth: int = 0) -> bool:
+        """Whether an iterated value carries rows pooled from several files (through zip, enumerate, tuples)."""
+        if depth > 3 or v is None:
+            return False
+        d = self.to_data(v)
+        if d is not None and d.origin.pooled_files:
+            return True
+        if isinstance(v, Iter):
+            return self.pooled_in(v.elem, depth + 1)
+        if isinstance(v, ListV) and v.acc is None:
+            return any(self.pooled_in(i, depth + 1) for i in v.items)
+        return False
 
     def to_data(self, v: AVal | None, name: str | None = None) -> Data | None:
         if isinstance(v, Data):
@@ -1462,6 +1515,8 @@ class Analyzer:
     def call_ref(self, ref: Ref, node: ast.Call) -> AVal:
         name = ref.name
         args, kw = self.ev_args(node)
+        if self.loops and (name in READERS or name in _FILE_READS):
+            self.read_loops.add(self.loops[-1])
         if ref.root in ("numpy", "np") and ".random." in f".{ref.qual}.":
             if name in ("default_rng", "RandomState", "Generator"):
                 return RngV()
@@ -1920,6 +1975,8 @@ class Analyzer:
 
     def groupby_method(self, d: Data, m: str, args: list[AVal], kw: dict[str, AVal]) -> AVal:
         keys = ", ".join(d.gkeys) or "..."
+        if m in ("transform", "cumcount", "rank", "shift", "diff", "pct_change") or m in _CUM:
+            d.origin.repeated_keys |= set(d.gkeys)  # a value per row computed within each key: keys repeat
         if m in ("transform", "apply", "agg", "aggregate"):
             f = args[0] if args else kw.get("func", UNKNOWN)
             if isinstance(f, FuncV):
@@ -2024,13 +2081,22 @@ class Analyzer:
             lv.items.append(v)
             if lv.kind == "dict":
                 lv.keys.append(args[0] if len(args) > 1 else UNKNOWN)
-            if m == "append" and self.loops:
+            if m in ("append", "extend") and self.loops:
                 loop = self.loops[-1]
                 o = self.loop_origins.get(loop)
                 if o is None:
                     o = self.loop_origins[loop] = self.new_origin("rows built in a loop")
                 if lv.acc is None:
                     lv.acc = o
+                file_loops = [lp for lp in self.loops if lp in self.path_loops or lp in self.read_loops]
+                if file_loops:
+                    lv.acc.file_acc = True
+                    if loop not in file_loops:  # an inner loop: several rows from the same file
+                        lv.acc.pooled_files = True
+                if any(lp in self.pooled_loops for lp in self.loops):
+                    lv.acc.pooled_files = True
+            if m == "append" and self.loops:
+                loop = self.loops[-1]
                 multi = loop not in self.path_loops and any(lp in self.path_loops for lp in self.loops)
                 name = recv_node.id if isinstance(recv_node, ast.Name) else None
                 if isinstance(v, ListV) and v.kind == "dict":
@@ -2339,6 +2405,9 @@ class Analyzer:
                 continue  # per-entity lag features on time-ordered data: a panel forecast for the same entities
             if col in features and col not in o.file_entities:
                 strength = "weak"  # listed among the model's features: more likely a categorical feature than an id
+            elif strength == "weak" and col in o.repeated_keys and not panel:
+                strength = "strong"  # the code itself computes per-row values within each `col`: rows repeat per id
+                evidence += f"; rows repeat per `{col}` (per-{col} computations such as groupby('{col}').transform)"
             out.append((col, evidence, strength))
         out.sort(key=lambda c: (c[2] != "strong", c[0] not in o.file_entities, c[0]))
         return out
@@ -2352,6 +2421,30 @@ class Analyzer:
         loc = (split.line, split.end_line)
         if split.row_level and not split.group_aware:
             cands = self.entity_candidates(o, ycols, X)
+            if (
+                o.pooled_files
+                and X.rows.role != "test"  # re-splitting an evaluation side adds no new group leak
+                and not o.file_entities
+                and o.time_strength() is None
+                and not any(c[2] == "strong" for c in cands)
+            ):
+                self.emit(
+                    "group",
+                    "LL-GRP-007",
+                    loc,
+                    "pooled_source_files",
+                    "medium",
+                    "Rows were pooled from several source files with several rows per file, and the file each row "
+                    "came from is not kept; a row-level split puts rows of the same file (recording, subject, "
+                    "session) on both sides, so the score does not measure performance on new files.",
+                    [{"kind": "split_call", "detail": f"{split.call}: row-level, not group-aware"},
+                     {"kind": "entity_column", "detail": "source file (rows appended per file in a loop)"}],
+                    "Record the source file (or subject) of each row and split by it (GroupKFold / GroupShuffleSplit "
+                    "with groups=file).",
+                    None,
+                    {"entity_columns": ["<source file>"], "entity_strengths": {"<source file>": "strong"}},
+                )
+                cands = []
             if cands:
                 col, evidence, strength = cands[0]
                 is_file = col in o.file_entities
@@ -2655,15 +2748,23 @@ class Analyzer:
                     "Several candidates are compared by cross-validation on all rows and the best score is kept; "
                     "no rows remain that were not used for the selection."
                 )
+            sel = self.stmt_line
+            same_cell = self.src.locate(e.line)[0] == self.src.locate(sel[0])[0]
+            if sel[0] < e.line or sel[0] - e.line > MULTI_SPAN_MAX:
+                loc = (e.line, e.end_line)  # selection far away or before the scores: keep the scoring line
+            elif same_cell:
+                loc = (e.line, max(e.end_line, sel[1]))  # from the repeated scoring to the selection that uses it
+            else:
+                loc = sel  # the selection is where evaluation rows decide the outcome
             self.emit(
                 "multi_test",
                 "LL-MUL-001",
-                (e.line, e.end_line),
+                loc,
                 sub,
                 "medium",
                 msg,
                 [
-                    {"kind": "selection", "detail": f"scores from this line are compared by {how}"},
+                    {"kind": "selection", "detail": f"scores from line {e.line} are compared by {how} (line {sel[0]})"},
                     {"kind": "data_flow", "detail": f"{e.what} on evaluation rows, repeated for several candidates"},
                 ],
                 "Select with a separate validation split or nested cross-validation, then score the chosen "
@@ -2698,7 +2799,12 @@ class Analyzer:
             or name in ("hstack", "column_stack", "c_")
         )
         items = args[0].items if args and isinstance(args[0], ListV) else list(args)
+        acc_list = args[0] if args and isinstance(args[0], ListV) and args[0].acc is not None else None
+        if acc_list is not None and acc_list.acc.file_acc and not by_col:
+            acc_list.acc.pooled_files = True  # blocks of rows, one or more per file, stacked
         datas = [d for d in (self.to_data(i) for i in items) if d is not None]
+        if not datas and acc_list is not None:
+            return self.to_data(acc_list)
         if not datas:
             events = set().union(*(collect_events(i) for i in items)) if items else set()
             return Score(frozenset(events)) if events else UNKNOWN
