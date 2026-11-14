@@ -445,8 +445,9 @@ def main() -> None:
           f"{dfl['group']['tp']} of {dfl['group']['tp'] + dfl['group']['fn']}", "results/2026-11-14_real_dev_static")
     r2 = R / "2026-11-15_real_test_static_second_look_v2"
     fl2 = load_json(r2 / "filelevel.json")["LeakLens static, confidence medium+"]
-    for t, paper_v in (("group", "4: 0.50/0.75"), ("target_derived", "4: 0.20/0.25"), ("preprocessing", "23: 0.76/0.70"),
-                       ("overlap", "7: 0.83/0.71"), ("multi_test", "25: 0.74/0.56"), ("temporal", "13: 0.75/0.23")):
+    for t, paper_v in (("group", "4: 0.50/0.75"), ("target_derived", "4: 0.20/0.25"),
+                       ("preprocessing", "23: 0.76/0.70"), ("overlap", "7: 0.83/0.71"),
+                       ("multi_test", "25: 0.74/0.56"), ("temporal", "13: 0.75/0.23")):
         check("7.2", f"second look, notebook level {t}: n: P/R", paper_v, pr(fl2, t), str(r2 / "filelevel.json"))
     s2 = {x["type"]: x for x in load_json(r2 / "summary.json")["strict (headline)|medium"]}
     s1 = {x["type"]: x for x in sm}

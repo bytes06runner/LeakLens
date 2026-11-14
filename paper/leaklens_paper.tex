@@ -520,7 +520,7 @@ notebooks was looked at. They mark 99 leaks in 56 notebooks. Both tools ran once
 \begin{table}[t]
 \centering
 \caption{Real TEST notebooks (79), scored per notebook and type, confidence medium or above. $n$: notebooks with a
-label of the type. P/R: precision/recall. 2nd: after the rules of Section~\ref{sec:realrules} (second look).}
+label of the type. P/R: precision/recall. 2nd: second look after the rules for real group leaks (text).}
 \label{tab:real}
 \footnotesize
 \setlength{\tabcolsep}{3.5pt}
@@ -541,7 +541,7 @@ target-derived & 4 & 0.20/0.25 & 0.20/0.25 & -- \\
 On the three shared types \tool{} is right in 206 of 237 notebook-type decisions and the Yang analyser in 162
 (exact McNemar, $p<0.001$); its 10 notebooks without a report count as no finding. Under the line rule the gap is mostly location (33 of 99 leaks at first).
 
-\textbf{Group leakage in real code.}\label{sec:realrules} The first look missed all four group notebooks, each in a
+\textbf{Group leakage in real code.} The first look missed all four group notebooks, each in a
 form the injected benchmark lacked: overlapping subject lists (\code{range(1,110)} and \code{range(51,110)});
 trials pooled from per-subject \code{.mat} files without the file kept; an engine \code{id} the code groups by;
 and a patient column present only in the loaded table. Three rules for the first three (developed on DEV, where
