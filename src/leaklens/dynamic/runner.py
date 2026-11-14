@@ -22,11 +22,11 @@ the training rows only, or one feature is removed. The script's own printed metr
 from __future__ import annotations
 
 import argparse
+import ast
 import functools
 import hashlib
 import json
 import os
-import runpy
 import sys
 import traceback
 import warnings
@@ -49,6 +49,37 @@ STATE = {
 
 
 # ---------------------------------------------------------------------------------------------- helpers
+
+
+def as_number(v):
+    """A returned score as a float, or None (arrays are averaged, as cross_val_score results are reported)."""
+    try:
+        import numpy as np
+
+        if isinstance(v, bool):
+            return None
+        if isinstance(v, int | float | np.floating | np.integer):
+            f = float(v)
+        elif isinstance(v, np.ndarray) and v.size and np.issubdtype(v.dtype, np.number):
+            f = float(np.mean(v))
+        else:
+            return None
+        return f if np.isfinite(f) else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def shown(value, line: int, text: str):
+    """Called for every top-level expression of the script: records what a notebook cell would display."""
+    vals = value if isinstance(value, tuple) else (value,)
+    for k, v in enumerate(vals):
+        import numpy as np
+
+        f = None if isinstance(v, int | np.integer) else as_number(v)  # counts are not scores
+        if f is not None:
+            EVENTS.append({"kind": "shown", "line": line, "name": text if len(vals) == 1 else f"{text}[{k}]",
+                           "value": f})
+    return value
 
 
 def user_frame():
@@ -574,6 +605,10 @@ def invoke(bound, est, name: str, args: tuple, kwargs: dict):
                     "x_sig": hashlib.sha1(h.tobytes()).hexdigest()[:16] if h is not None else None,
                 }
             )
+            if name == "score":
+                result = bound(*args, **kwargs)
+                EVENTS[-1]["value"] = as_number(result)
+                return result
         return bound(*args, **kwargs)
     finally:
         STATE["depth"] -= 1
@@ -645,7 +680,13 @@ def patch_cv_helpers(ms, val_mod) -> None:
                     "x_sig": signature(X),
                 }
             )
-            return orig(estimator, X, y, **kw)
+            ev = EVENTS[-1]
+            result = orig(estimator, X, y, **kw)
+            if name == "cross_val_score":
+                ev["value"] = as_number(result)
+            elif name == "cross_validate" and isinstance(result, dict) and "test_score" in result:
+                ev["value"] = as_number(result["test_score"])
+            return result
 
         return helper
 
@@ -675,6 +716,10 @@ def patch_metrics() -> None:
                         "p_sig": signature(args[1]),
                     }
                 )
+                ev = EVENTS[-1]
+                result = orig(*args, **kw)
+                ev["value"] = as_number(result)
+                return result
             return orig(*args, **kw)
 
         return metric
@@ -726,6 +771,34 @@ def single_feature_scores() -> None:
             return
 
 
+class _ShowTopLevel(ast.NodeTransformer):
+    """Wrap each top-level expression statement in `shown(...)`, as a notebook displays a cell's last value."""
+
+    def __init__(self, src: str):
+        self.src = src
+
+    def visit_Module(self, node: ast.Module) -> ast.Module:
+        for i, st in enumerate(node.body):
+            if isinstance(st, ast.Expr) and not isinstance(st.value, ast.Constant):
+                text = (ast.get_source_segment(self.src, st.value) or "")[:80]
+                call = ast.Call(func=ast.Name(id="__leaklens_shown__", ctx=ast.Load()),
+                                args=[st.value, ast.Constant(st.lineno), ast.Constant(text)], keywords=[])
+                node.body[i] = ast.copy_location(ast.Expr(value=ast.copy_location(call, st.value)), st)
+        ast.fix_missing_locations(node)
+        return node
+
+
+def run_script(script: str) -> dict:
+    """Like runpy.run_path(script, run_name="__main__"), with top-level expressions recorded (`shown`)."""
+    import builtins
+
+    src = open(script, encoding="utf-8").read()
+    tree = _ShowTopLevel(src).visit(ast.parse(src, filename=script))
+    ns = {"__name__": "__main__", "__file__": script, "__builtins__": builtins, "__leaklens_shown__": shown}
+    exec(compile(tree, script, "exec"), ns)  # noqa: S102 - the analysed script, in the instrumented child
+    return ns
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("script")
@@ -759,7 +832,7 @@ def main(argv: list[str] | None = None) -> int:
         patch_metrics()
         sys.argv = [script]
         sys.path.insert(0, os.path.dirname(script))
-        STATE["namespace"] = runpy.run_path(script, run_name="__main__")
+        STATE["namespace"] = run_script(script)
         STATE["depth"] += 1
         single_feature_scores()
     except SystemExit as e:

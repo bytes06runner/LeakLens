@@ -551,6 +551,20 @@ def eval_set_change(base: dict, fixed: dict) -> dict | None:
             "jaccard": round(sum(jac) / len(jac), 4) if jac else None, "n_eval_leaky": n_a, "n_eval_fixed": n_b}
 
 
+def reported_values(log: dict) -> list[tuple[tuple, str, float]]:
+    """Every score the run produced, in order: metric functions, `.score`, cross-validation helpers, and numeric
+    values a notebook cell displays. Key = (kind, line, name, occurrence at that line and name)."""
+    out, seen = [], {}
+    for e in log.get("events", []):
+        if e.get("kind") not in ("metric", "eval", "cv", "shown") or e.get("value") is None:
+            continue
+        name = e.get("name") or e.get("method") or e["kind"]
+        k = (e["kind"], e["line"], name)
+        seen[k] = seen.get(k, 0) + 1
+        out.append(((*k, seen[k]), name, float(e["value"])))
+    return out
+
+
 def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict, timeout: float) -> None:
     """Re-run with the finding's canonical fix and record the change in the script's own printed metric."""
     fix, why = fix_for_finding(f, base)
@@ -558,10 +572,14 @@ def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict,
     if fix is None:
         f.impact = {"status": "unknown", "note": why}
         return
-    if base_metric is None:
-        f.impact = {"status": "unknown", "note": "the script prints no `name: value` metric line"}
+    if base_metric is None and not reported_values(base):
+        f.impact = {"status": "unknown", "note": "the script reports no score (no `name: value` line, metric call or "
+                    "displayed value)"}
         return
     fixed = run_instrumented(script, cwd, hints, fix, timeout)
+    if base_metric is None:
+        measure_from_reported(f, base, fixed)
+        return
     metric = parse_metric(fixed.get("stdout", ""))
     if fixed.get("status") != "ok" or metric is None or not fixed.get("fix_applied"):
         reason = fixed.get("error") or (
@@ -595,6 +613,45 @@ def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict,
         f.severity = severity_from_delta(base_metric[0], base_metric[1], metric[1])
 
 
+def measure_from_reported(f: Finding, base: dict, fixed: dict) -> None:
+    """Impact from the scores the run itself produced (no printed `name: value` line): the last score of the
+    original run that the fixed run also produced at the same call site is the headline; every shared score is
+    kept. Both runs may stop with the same error after their scores (common in real notebooks)."""
+    if not fixed.get("fix_applied"):
+        f.impact = {"status": "unknown", "note": "the fix did not apply at run time"}
+        return
+    a = reported_values(base)
+    b = {k: v for k, _, v in reported_values(fixed)}
+    shared = [(k, name, v, b[k]) for k, name, v in a if k in b]
+    if not shared:
+        f.impact = {"status": "unknown", "note": "the fixed run produced none of the original run's scores: "
+                    + (fixed.get("error") or "no score reached")[:200]}
+        return
+    k, name, leaky, fixed_v = shared[-1]
+    same_end = base.get("status") == fixed.get("status") and (base.get("error") or "").split(":")[0] == (
+        fixed.get("error") or "").split(":")[0]
+    sites = [sorted({e["line"] for e in log["events"] if e["kind"] == "split"}) for log in (base, fixed)]
+    reliable = same_end and sites[0] == sites[1]
+    label = f"{name} (line {k[1]})"
+    f.impact = {
+        "status": "measured" if reliable else "unreliable",
+        "metric": label,
+        "metric_source": "recorded at run time",
+        "value_leaky": leaky,
+        "value_fixed": fixed_v,
+        "delta": round(leaky - fixed_v, 6),
+        "n_runs": 1,
+        "all_scores": [{"score": f"{n} (line {kk[1]})", "leaky": x, "fixed": y} for kk, n, x, y in shared][-20:],
+        "note": "; ".join(dict.fromkeys(fixed["fix_applied"]))[:300]
+        + ("" if reliable else " | the fixed run took a different path or ended differently"),
+    }
+    change = eval_set_change(base, fixed)
+    if change is not None:
+        f.impact["eval_set"] = change
+    if reliable and f.type != "target_derived":
+        f.severity = severity_from_delta(label, leaky, fixed_v)
+
+
 def confirm_file(
     path: Path,
     src: Source,
@@ -616,9 +673,12 @@ def confirm_file(
         base = run_instrumented(script, cwd, hints, None, timeout)
         out = apply_events(findings, base, src)
         if with_impact:
+            # a run that stopped with an error after producing scores (common in real notebooks: a missing
+            # submission file, a removed library argument) can still be compared on those scores
+            usable = base.get("status") == "ok" or bool(reported_values(base))
             for f in out:
-                if f.dynamic.get("status") != "refuted" and base.get("status") == "ok":
+                if f.dynamic.get("status") != "refuted" and usable:
                     measure_impact(f, script, cwd, hints, base, timeout)
-                elif base.get("status") != "ok":
+                elif not usable:
                     f.impact = {"status": "unknown", "note": f"the original run failed: {base.get('error')}"[:300]}
     return out
