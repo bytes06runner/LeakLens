@@ -1,0 +1,16 @@
+{
+  "id": "srijeetbanerjee/leaklens-10-yang-real-test",
+  "title": "leaklens-10-yang-real-test",
+  "code_file": "run_yang_real.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "true",
+  "dataset_sources": [
+    "srijeetbanerjee/leaklens-real-test-py"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}
