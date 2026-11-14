@@ -62,6 +62,7 @@ select = ["E", "F", "I", "B", "UP"]
 # baseline runners are kept as they ran; table scripts embed long LaTeX lines
 "baselines/**" = ["E501"]
 "paper/**" = ["E501"]
+"paper_ieee/**" = ["E501", "UP031", "B905"]
 # The progress-report script is mostly prose in table cells.
 "scripts/make_progress_report.py" = ["E501"]
 "scripts/make_comparison_table.py" = ["E501"]

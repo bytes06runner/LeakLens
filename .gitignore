@@ -17,3 +17,5 @@ access_token
 benchmark/raw/
 mining/raw/
 results/**/tmp/
+paper_ieee/*.log
+paper_ieee/*.blg
