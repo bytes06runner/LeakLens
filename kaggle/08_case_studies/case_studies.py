@@ -29,6 +29,8 @@ subprocess.run([sys.executable, "-m", "pip", "install", "-q", "--no-deps", wheel
 from leaklens.sandbox import run_untrusted  # noqa: E402
 
 CASES = ["C2a", "C2b", "C3a", "C3b"]
+NEEDS = {"C2a": "tlvmc-parkinsons-freezing-gait-prediction", "C2b": "amp-parkinsons-disease-progression-prediction",
+         "C3a": "predict-energy-behavior-of-prosumers", "C3b": "Walmart.csv"}  # a case runs only if its data is attached
 TIMEOUT = 2400  # seconds per instrumented run inside LeakLens
 SANDBOX_TIMEOUT = 4 * 3600
 ALL_INPUT = [p for p in glob.glob("/kaggle/input/**/*", recursive=True) if os.path.isfile(p)]
@@ -77,6 +79,10 @@ nb_dir = os.path.dirname(glob.glob("/kaggle/input/**/C2a.ipynb", recursive=True)
 adaptations = {}
 for case in CASES:
     t = time.time()
+    if not any(NEEDS[case] in p for p in ALL_INPUT):
+        info["cases"][case] = {"skipped": f"data not attached ({NEEDS[case]})"}
+        print(case, info["cases"][case], flush=True)
+        continue
     adapted = f"/kaggle/working/{case}.ipynb"
     adaptations[case] = adapt(os.path.join(nb_dir, f"{case}.ipynb"), adapted)
     argv = [sys.executable, "-m", "leaklens.cli", "scan", f"{case}.ipynb", "--dynamic", "--impact", "--trust-code",

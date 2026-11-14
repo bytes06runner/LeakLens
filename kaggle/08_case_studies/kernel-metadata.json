@@ -7,8 +7,12 @@
   "is_private": "true",
   "enable_gpu": "false",
   "enable_internet": "false",
-  "dataset_sources": ["srijeetbanerjee/leaklens-code", "srijeetbanerjee/leaklens-case-notebooks", "yasserh/walmart-dataset"],
-  "competition_sources": ["tlvmc-parkinsons-freezing-gait-prediction", "amp-parkinsons-disease-progression-prediction", "predict-energy-behavior-of-prosumers"],
+  "dataset_sources": [
+    "srijeetbanerjee/leaklens-code",
+    "srijeetbanerjee/leaklens-case-notebooks",
+    "yasserh/walmart-dataset"
+  ],
+  "competition_sources": [],
   "kernel_sources": [],
   "model_sources": []
 }
