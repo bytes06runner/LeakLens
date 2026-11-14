@@ -187,7 +187,7 @@ def score(labels_path: Path, out: Path, boot: int = 2000) -> None:
         "unanalysable": sum(r["status"] != "ok" for r in recs),
     }
     md = [
-        "# LeakLens (static) on the real TEST notebooks",
+        f"# LeakLens (static) on the real {labels_path.stem.split('_')[-1]} notebooks",
         "",
         f"{report['notebooks']} notebooks, {report['labels']} labelled leaks in {report['notebooks_with_leak']} "
         f"notebooks, {report['unanalysable']} notebooks LeakLens could not read. Labels: `{labels_path.name}`. "
@@ -223,6 +223,134 @@ def score(labels_path: Path, out: Path, boot: int = 2000) -> None:
     print("\n".join(md))
 
 
+YANG_TYPES = {
+    "Pre-processing leakage": "preprocessing",
+    "Overlap leakage": "overlap",
+    "No independence test data": "multi_test",
+}
+
+
+def _boot_ci(pairs: list[tuple[int, int, int]], boot: int, seed: int = 0) -> tuple[tuple | None, tuple | None]:
+    """Percentile CIs of precision and recall, resampling notebooks; pairs = per-notebook (tp, fp, fn)."""
+    import random
+
+    rng = random.Random(seed)
+    ps, rs = [], []
+    n = len(pairs)
+    for _ in range(boot):
+        s = [pairs[rng.randrange(n)] for _ in range(n)]
+        tp, fp, fn = (sum(x[i] for x in s) for i in range(3))
+        if tp + fp:
+            ps.append(tp / (tp + fp))
+        if tp + fn:
+            rs.append(tp / (tp + fn))
+
+    def q(v):
+        if not v:
+            return None
+        v.sort()
+        return (v[int(0.025 * (len(v) - 1))], v[int(0.975 * (len(v) - 1))])
+
+    return q(ps), q(rs)
+
+
+def filelevel(labels_path: Path, out: Path, yang_path: Path | None, boot: int = 2000) -> None:
+    """Notebook-level scoring: a tool is right about type T in a notebook when it reports T there and the notebook has
+    a label of type T. Group findings must name the labelled entity when one is given (strict rule). This is the rule
+    of EVAL_CHANGES #6, used here so LeakLens and the Yang analyser are scored the same way."""
+    rows = read_sheet(labels_path)
+    recs = [json.loads(line) for line in (out / "findings.jsonl").open()]
+    items = [r["notebook_id"] for r in recs]
+    truth: dict[str, set[str]] = defaultdict(set)
+    ent: dict[str, set[str]] = defaultdict(set)
+    for r in rows:
+        if r["leak_type"] in TYPES:
+            truth[r["notebook_id"]].add(r["leak_type"])
+            if r["leak_type"] == "group" and r.get("entity_column"):
+                ent[r["notebook_id"]].add(r["entity_column"])
+    tools: dict[str, dict[str, set[str] | None]] = {}
+    for op in ("medium", "low"):
+        pred: dict[str, set[str] | None] = {}
+        for rec in recs:
+            s = set()
+            for f in rec["findings"]:
+                if op == "medium" and f["confidence"] == "low":
+                    continue
+                if f["type"] == "group" and ent[rec["notebook_id"]]:
+                    if not any(f"`{c}`" in f["message"] for c in ent[rec["notebook_id"]]):
+                        s.add("group_wrong_entity")
+                        continue
+                s.add(f["type"])
+            pred[rec["notebook_id"]] = s
+        tools[f"LeakLens static, confidence {op}+"] = pred
+    yang_meta = None
+    if yang_path:
+        y = json.loads(yang_path.read_text())
+        yang_meta = y
+        pred = {}
+        for it in items:
+            v = y["items"].get(it)
+            s = (v or {}).get("summary")
+            pred[it] = (
+                None if s is None else {YANG_TYPES[k] for k, x in s.items() if k in YANG_TYPES and x["detected"] > 0}
+            )
+        tools["Yang et al. analyser (notebook as .py)"] = pred
+    md = [
+        f"# Notebook-level scores on the real {labels_path.stem.split('_')[-1]} notebooks",
+        "",
+        f"{len(items)} notebooks; labels `{labels_path.name}`. A tool is right about a type in a notebook when it reports"
+        " that type there and the notebook has a label of that type (EVAL_CHANGES #6); a group finding must name the "
+        "labelled entity when one is given. 95% CIs resample notebooks. A notebook the tool could not analyse counts "
+        "as analysed with no finding (Rule 5).",
+        "",
+    ]
+    if yang_meta:
+        ok = sum(1 for it in items if (yang_meta["items"].get(it) or {}).get("summary") is not None)
+        md += [f"Yang analyser produced a report for {ok} of {len(items)} notebooks.", ""]
+    summary = {}
+    for name, pred in tools.items():
+        md += [
+            f"## {name}",
+            "",
+            "| type | notebooks with label | TP | FP | FN | precision (95% CI) | recall (95% CI) |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        summary[name] = {}
+        for t in TYPES:
+            if name.startswith("Yang") and t not in YANG_TYPES.values():
+                continue
+            per = []
+            for it in items:
+                p = pred.get(it) or set()
+                has, rep = t in truth[it], t in p
+                per.append((int(has and rep), int(rep and not has), int(has and not rep)))
+            tp, fp, fn = (sum(x[i] for x in per) for i in range(3))
+            pc, rc = _boot_ci(per, boot)
+            prec = tp / (tp + fp) if tp + fp else None
+            rec_ = tp / (tp + fn) if tp + fn else None
+
+            def f2(v):
+                return "n/a" if v is None else f"{v:.2f}"
+
+            def c2(v):
+                return "n/a" if v is None else f"{v[0]:.2f} to {v[1]:.2f}"
+
+            md.append(f"| {t} | {tp + fn} | {tp} | {fp} | {fn} | {f2(prec)} ({c2(pc)}) | {f2(rec_)} ({c2(rc)}) |")
+            summary[name][t] = {
+                "tp": tp,
+                "fp": fp,
+                "fn": fn,
+                "precision": prec,
+                "recall": rec_,
+                "precision_ci": pc,
+                "recall_ci": rc,
+            }
+        md.append("")
+    (out / "FILELEVEL.md").write_text("\n".join(md) + "\n")
+    (out / "filelevel.json").write_text(json.dumps(summary, indent=1))
+    print("\n".join(md))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -235,11 +363,17 @@ def main() -> None:
     a3 = sub.add_parser("score")
     a3.add_argument("labels")
     a3.add_argument("out")
+    a4 = sub.add_parser("filelevel")
+    a4.add_argument("labels")
+    a4.add_argument("out")
+    a4.add_argument("--yang", default=None)
     a = ap.parse_args()
     if a.cmd == "agree":
         agree(Path(a.sheet_dir).expanduser(), Path(a.out))
     elif a.cmd == "scan":
         scan(Path(a.out), a.split)
+    elif a.cmd == "filelevel":
+        filelevel(Path(a.labels), Path(a.out), Path(a.yang) if a.yang else None)
     else:
         score(Path(a.labels), Path(a.out))
 
