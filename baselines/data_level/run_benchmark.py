@@ -39,7 +39,7 @@ def true_hints(meta: dict, transform: dict) -> dict:
 
 
 def run_item(job) -> dict:
-    row, meta, venvs = job
+    row, meta, venvs, tools = job
     from measure_inflation import prepare_data
 
     from leaklens.ingest import load
@@ -72,7 +72,7 @@ def run_item(job) -> dict:
             s = sites.setdefault(e["line"], {"line": e["line"], "call": e["call"], "folds": 0, "skipped": [],
                                              "tools": {}})
             s["folds"] += 1
-            for tool, venv in TOOLS.items():
+            for tool, venv in ((t, v) for t, v in TOOLS.items() if t in tools):
                 py = str(Path(venvs) / venv / "bin" / "python")
                 env_bin = str(Path(venvs) / venv / "bin")
                 for mode, h in modes.items():
@@ -125,7 +125,7 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     t0 = time.time()
     with ProcessPoolExecutor(a.workers) as pool, (out / "sites.jsonl").open("w") as f:
-        for i, rec in enumerate(pool.map(run_item, [(r, meta[r["base"]], a.venvs) for r in rows]), start=1):
+        for i, rec in enumerate(pool.map(run_item, [(r, meta[r["base"]], a.venvs, a.tools) for r in rows]), start=1):
             f.write(json.dumps(rec, default=str) + "\n")
             f.flush()
             print(f"{i}/{len(rows)} {rec['item_id']} sites={len(rec['sites'])} {rec.get('seconds')}s "
