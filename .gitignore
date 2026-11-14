@@ -19,3 +19,5 @@ mining/raw/
 results/**/tmp/
 paper_ieee/*.log
 paper_ieee/*.blg
+# third-party notebooks copied into job outputs (CLAUDE.md Rule 9)
+results/*kaggle_08_case_studies*/C*.ipynb
