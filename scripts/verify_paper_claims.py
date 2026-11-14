@@ -400,7 +400,8 @@ def main() -> None:
     dlab = list(csv.DictReader((ROOT / "benchmark/real/labels_DEV.csv").open()))
     leaks = [x for x in rlab if x["leak_type"] != "none"]
     check("7.2", "real notebooks: TEST / DEV", "79 / 71",
-          f"{len({x['notebook_id'] for x in rlab})} / {len({x['notebook_id'] for x in dlab})}", "benchmark/real/labels_*.csv")
+          f"{len({x['notebook_id'] for x in rlab})} / {len({x['notebook_id'] for x in dlab})}",
+          "benchmark/real/labels_*.csv")
     from collections import Counter as _C
     cnt = _C(x["leak_type"] for x in leaks)
     check("7.2", "TEST draft labels: leaks in notebooks; pre/multi/temp/over/group/target",
