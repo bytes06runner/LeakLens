@@ -551,9 +551,10 @@ def eval_set_change(base: dict, fixed: dict) -> dict | None:
             "jaccard": round(sum(jac) / len(jac), 4) if jac else None, "n_eval_leaky": n_a, "n_eval_fixed": n_b}
 
 
-def reported_values(log: dict) -> list[tuple[tuple, str, float]]:
+def reported_values(log: dict, with_sig: bool = False) -> list[tuple]:
     """Every score the run produced, in order: metric functions, `.score`, cross-validation helpers, and numeric
-    values a notebook cell displays. Key = (kind, line, name, occurrence at that line and name)."""
+    values a notebook cell displays. Key = (kind, line, name, occurrence at that line and name). With `with_sig`,
+    a fourth item gives the signature of the score's inputs (to tell whether a fix reached it)."""
     out, seen = [], {}
     for e in log.get("events", []):
         if e.get("kind") not in ("metric", "eval", "cv", "shown") or e.get("value") is None:
@@ -561,8 +562,18 @@ def reported_values(log: dict) -> list[tuple[tuple, str, float]]:
         name = e.get("name") or e.get("method") or e["kind"]
         k = (e["kind"], e["line"], name)
         seen[k] = seen.get(k, 0) + 1
-        out.append(((*k, seen[k]), name, float(e["value"])))
+        item = ((*k, seen[k]), name, float(e["value"]))
+        out.append((*item, (e.get("y_sig"), e.get("p_sig"), e.get("x_sig"))) if with_sig else item)
     return out
+
+
+def is_recorded_score(value: float, log: dict) -> bool:
+    """A printed `name: value` line counts as the script's metric only if the run computed that value as a score
+    (real notebooks also print descriptive statistics in the same format)."""
+    vals = [v for _, _, v in reported_values(log)]
+    if not vals:
+        return True  # nothing recorded (e.g. a custom metric function): keep the printed line
+    return any(abs(v - value) <= 1e-3 * max(1.0, abs(value)) for v in vals)
 
 
 def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict, timeout: float) -> None:
@@ -576,6 +587,8 @@ def measure_impact(f: Finding, script: Path, cwd: Path, hints: dict, base: dict,
         f.impact = {"status": "unknown", "note": "the script reports no score (no `name: value` line, metric call or "
                     "displayed value)"}
         return
+    if base_metric is not None and not is_recorded_score(base_metric[1], base):
+        base_metric = None  # a printed statistic, not a score the run computed
     fixed = run_instrumented(script, cwd, hints, fix, timeout)
     if base_metric is None:
         measure_from_reported(f, base, fixed)
@@ -620,18 +633,21 @@ def measure_from_reported(f: Finding, base: dict, fixed: dict) -> None:
     if not fixed.get("fix_applied"):
         f.impact = {"status": "unknown", "note": "the fix did not apply at run time"}
         return
-    a = reported_values(base)
-    b = {k: v for k, _, v in reported_values(fixed)}
-    shared = [(k, name, v, b[k]) for k, name, v in a if k in b]
+    a = reported_values(base, with_sig=True)
+    b = {k: (v, sig) for k, _, v, sig in reported_values(fixed, with_sig=True)}
+    shared = [(k, name, v, b[k][0], sig != b[k][1]) for k, name, v, sig in a if k in b]
     if not shared:
         f.impact = {"status": "unknown", "note": "the fixed run produced none of the original run's scores: "
                     + (fixed.get("error") or "no score reached")[:200]}
         return
-    k, name, leaky, fixed_v = shared[-1]
+    # the headline is the last score the fix reached: computed at the fixed call, or on different inputs
+    fix_line = (fixed.get("fix") or {}).get("line")
+    reached = [x for x in shared if x[4] or x[0][1] == fix_line]
+    k, name, leaky, fixed_v, _ = (reached or shared)[-1]
     same_end = base.get("status") == fixed.get("status") and (base.get("error") or "").split(":")[0] == (
         fixed.get("error") or "").split(":")[0]
     sites = [sorted({e["line"] for e in log["events"] if e["kind"] == "split"}) for log in (base, fixed)]
-    reliable = same_end and sites[0] == sites[1]
+    reliable = same_end and sites[0] == sites[1] and bool(reached)
     label = f"{name} (line {k[1]})"
     f.impact = {
         "status": "measured" if reliable else "unreliable",
@@ -641,9 +657,10 @@ def measure_from_reported(f: Finding, base: dict, fixed: dict) -> None:
         "value_fixed": fixed_v,
         "delta": round(leaky - fixed_v, 6),
         "n_runs": 1,
-        "all_scores": [{"score": f"{n} (line {kk[1]})", "leaky": x, "fixed": y} for kk, n, x, y in shared][-20:],
+        "all_scores": [{"score": f"{n} (line {kk[1]})", "leaky": x, "fixed": y, "reached_by_fix": r}
+                       for kk, n, x, y, r in shared][-30:],
         "note": "; ".join(dict.fromkeys(fixed["fix_applied"]))[:300]
-        + ("" if reliable else " | the fixed run took a different path or ended differently"),
+        + ("" if reliable else " | the fixed run took a different path, ended differently, or reached no score"),
     }
     change = eval_set_change(base, fixed)
     if change is not None:

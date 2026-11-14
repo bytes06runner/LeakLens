@@ -67,3 +67,31 @@ def test_impact_measured_from_recorded_scores_after_a_late_error(tmp_path):
     assert imp["metric_source"] == "recorded at run time"
     assert imp["value_leaky"] > imp["value_fixed"]
     assert "GroupShuffleSplit" in imp["note"]
+
+
+def test_printed_statistic_is_not_taken_as_the_metric_and_unreached_scores_are_skipped(tmp_path):
+    """A notebook prints a descriptive `name: value` line before modelling and ends with a cross-validation that
+    the fixed split does not touch (the C3b case): the headline must be the score the fix reaches."""
+    _visits(tmp_path)
+    script = tmp_path / "nb.py"
+    script.write_text(
+        "import pandas as pd\n"
+        "from sklearn.model_selection import train_test_split, cross_val_score\n"
+        "from sklearn.ensemble import RandomForestClassifier\n"
+        "from sklearn.metrics import accuracy_score\n"
+        "df = pd.read_csv('visits.csv')\n"
+        "print(f'Average visits per patient: {len(df) / df.patient_id.nunique():.2f}')\n"
+        "X, y = df[['a', 'b', 'c']], df['y']\n"
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=0)\n"
+        "rf = RandomForestClassifier(n_estimators=20, random_state=0).fit(X_train, y_train)\n"
+        "acc = accuracy_score(y_test, rf.predict(X_test))\n"
+        "cv = cross_val_score(RandomForestClassifier(n_estimators=5, random_state=0), X[['a']], y, cv=3)\n"
+    )
+    from leaklens.dynamic.confirm import confirm_file
+
+    out = confirm_file(script, load(script), [], with_impact=True, cwd=tmp_path)
+    grp = [f for f in out if f.type == "group" and "GroupShuffleSplit" in (f.impact or {}).get("note", "")]
+    assert grp, [(f.type, f.impact) for f in out]
+    imp = grp[0].impact
+    assert imp["metric"].startswith("accuracy_score"), imp
+    assert imp["value_leaky"] != 6.0
