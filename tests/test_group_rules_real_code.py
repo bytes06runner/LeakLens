@@ -205,3 +205,33 @@ def test_multi_test_finding_spans_scoring_and_selection(tmp_path):
     )
     mt = [(r, a, b) for t, r, _, a, b, _ in out if t == "multi_test"]
     assert mt == [("LL-MUL-001", 9, 11)]
+
+
+# ------------------------------------------------------------------ LL-TGT-002
+
+WINDOW = """
+import pandas as pd
+from sklearn.model_selection import TimeSeriesSplit
+from sklearn.ensemble import RandomForestRegressor
+
+d = pd.read_csv("daily.csv").sort_values("date")
+d["lag1"] = d["revenue"].shift(1)
+d["roll7"] = {roll}
+X = d[["lag1", "roll7"]].values
+y = d[{target}].values
+for tr, te in TimeSeriesSplit(5).split(X):
+    RandomForestRegressor().fit(X[tr], y[tr]).predict(X[te])
+"""
+
+
+def test_window_of_the_target_that_includes_the_current_row(tmp_path):
+    out = scan(tmp_path, WINDOW.format(roll='d["revenue"].rolling(7).mean()', target='"revenue"'))
+    assert [(r, a) for t, r, _, a, _, _ in out if t == "target_derived"] == [("LL-TGT-002", 7)]
+
+
+def test_window_after_a_shift_or_for_a_shifted_target_is_fine(tmp_path):
+    out = scan(tmp_path, WINDOW.format(roll='d["revenue"].shift(1).rolling(7).mean()', target='"revenue"'))
+    assert [t for t, *_ in out if t == "target_derived"] == []
+    code = WINDOW.replace('y = d[{target}].values', 'd["next"] = d["revenue"].shift(-1)\ny = d["next"].values')
+    out = scan(tmp_path, code.format(roll='d["revenue"].rolling(7).mean()'))
+    assert [t for t, *_ in out if t == "target_derived"] == []

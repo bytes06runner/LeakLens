@@ -106,6 +106,7 @@ class ColFact:
     taints: set[Taint] = field(default_factory=set)
     thresholded: bool = False
     shifted: bool = False
+    cur_window: bool = False  # a rolling/expanding/ewm statistic whose window ends at, and includes, the current row
 
 
 @dataclass(eq=False)
@@ -232,6 +233,8 @@ class Data(AVal):
     subset: bool = False
     thresholded: bool = False
     shifted: bool = False
+    win_unshifted: bool = False  # window opened on values that were not shifted first
+    cur_window: bool = False  # window statistic that includes the current row's value
     pred_of: object = None
     unique_of: str | None = None
 

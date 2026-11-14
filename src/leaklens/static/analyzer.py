@@ -762,6 +762,7 @@ class Analyzer:
             new.fwd = list(value.fwd)
             new.taints = set(value.taints)
             new.thresholded, new.shifted = value.thresholded, value.shifted
+            new.cur_window = value.cur_window
             if value.shifted:
                 o.ordered_ops.add(f"lag, window or fill feature `{c}`")
             if value.is_stat:
@@ -1819,14 +1820,15 @@ class Analyzer:
         if m in ("shift", "diff", "pct_change"):
             k = num(args[0]) if args else num(kw.get("periods"))
             k = 1 if k is None and not args and "periods" not in kw else k
-            out = replace(d, shifted=True, is_stat=False, window=None, gkeys=())
+            out = replace(d, shifted=True, is_stat=False, window=None, gkeys=(), cur_window=False)
             if k is not None and ((k < 0) != d.reversed) and k != 0:
                 out = self.add_fwd(out, f"{m}({k})" + (" on a reversed series" if d.reversed else ""), "medium")
             return out
         if m == "rolling":
-            return replace(d, window="rolling", centered=is_true(kw.get("center")), shifted=True)
+            return replace(d, window="rolling", centered=is_true(kw.get("center")), shifted=True,
+                           win_unshifted=not d.shifted)
         if m in ("expanding", "ewm"):
-            return replace(d, window=m, shifted=True)
+            return replace(d, window=m, shifted=True, win_unshifted=not d.shifted)
         if m == "groupby":
             keys = str_list(args[0] if args else kw.get("by", UNKNOWN)) or []
             for k in keys:
@@ -1836,7 +1838,8 @@ class Analyzer:
             o.time_index = o.time_index or "parsed"
             return replace(d, window="groupby", gkeys=())
         if d.window in ("rolling", "expanding", "ewm"):
-            out = replace(d, window=None, centered=False, shifted=True, gkeys=())
+            out = replace(d, window=None, centered=False, shifted=True, gkeys=(),
+                          cur_window=d.win_unshifted and not d.centered, win_unshifted=False)
             if d.centered:
                 out = self.add_fwd(out, "rolling(center=True)", "medium")
             if d.reversed:
@@ -2515,6 +2518,25 @@ class Analyzer:
         fact = X.origin.cols.get(c)
         return not (fact is not None and fact.assigned)
 
+    def current_window_deps(self, o: Origin, c: str) -> set[str]:
+        """Columns whose current-row value enters column c through a window statistic that includes the current row
+        (`x.rolling(7).mean()` without a prior shift), possibly after value-preserving steps."""
+        out: set[str] = set()
+        fact = o.cols.get(c)
+        if fact is None or not fact.cur_window:
+            return out
+        stack, seen = list(fact.deps), set()
+        while stack:
+            name = stack.pop()
+            if name in seen:
+                continue
+            seen.add(name)
+            out.add(name)
+            f = o.cols.get(name)
+            if f is not None and not f.shifted:
+                stack.extend(f.deps)
+        return out
+
     def effective(self, o: Origin, c: str) -> tuple[set[Taint], list, set[str]]:
         """Taints and forward-looking operations of column c and everything it is computed from; plus the columns
         it depends on through value-preserving steps (a lag is not a copy of its source)."""
@@ -2582,6 +2604,22 @@ class Analyzer:
             for f in fwd:
                 self.emit_fwd(f, c)
             hit = ycols & pure
+            win_hit = ycols & self.current_window_deps(o, c) if fact.assigned else set()
+            if win_hit and not hit:
+                tgt = sorted(win_hit)[0]
+                self.emit(
+                    "target_derived",
+                    "LL-TGT-002",
+                    (fact.line, fact.end_line),
+                    "window_includes_target",
+                    "medium",
+                    f"Feature `{c}` is a window statistic of the target `{tgt}` that includes the current row, so "
+                    "each row's feature contains the value being predicted.",
+                    [{"kind": "data_flow", "detail": f"`{c}` aggregates `{tgt}` over a window ending at the row"}],
+                    f"Shift before the window (`{tgt}.shift(1).rolling(...)`) or remove `{c}`.",
+                    f"drop_feature:{c}",
+                    {"feature": c, "target": tgt},
+                )
             if hit and fact.assigned and not any(t.kind == "pre" and t.stat_cols & ycols for t in taints):
                 tgt = sorted(hit)[0]
                 self.emit(
