@@ -85,8 +85,13 @@ leak, \tool{} can apply a canonical fix to a copy of the pipeline, re-run it, an
 pipeline's own metric. On the held-out half of our benchmark of injected leaks (79 files, 73 leaks), scored once
 under a protocol frozen beforehand, the static pass finds 59 leaks and the combined mode 65, with no false
 positive. On the same files, scored per file, the static analyser of Yang et al.\ is right for 20 of the 37 files that
-hold a leak of the three types it supports, against 33 for the static pass of \tool{}. The run raises group detection from 3 of 7 to 7 of 7 by the matching rule, but only 3 findings name
-the true entity column. All results are on synthetic files written by the authors of the tool; no result on
+hold a leak of the three types it supports, against 33 for the static pass of \tool{} (exact McNemar test,
+$p<0.001$). The run raises group detection from 3 of 7 to 7 of 7 by the matching rule, but only 3 findings name
+the true entity column. Given the same exported splits, four data-level checkers and a run-time checker find the
+group and time-order leaks well once the right column is named, and poorly otherwise: without a named column the
+best of them finds 3 of 8 shuffled time-series splits, which \tool{} finds 8 of 8 from the code. For impact
+estimates, a proxy-model tool was more accurate than \tool{} on group leaks in the held-out run, because
+\tool{} grouped by the wrong column. All results are on synthetic files written by the authors of the tool; no result on
 human-labelled real notebooks exists yet. We report the failures in detail, including a case study in which
 the tool found nothing in real code with known leakage.
 
@@ -327,8 +332,9 @@ found the token in none of its ancestor processes, while a control scan as root 
 Each finding carries the file, line range, type, rule identifier, confidence, severity, evidence, a suggested
 fix and, when measured, the metric before and after the fix. Output formats are terminal text, JSON with a
 published schema, and SARIF, which GitHub code scanning accepts. A pre-commit hook and a GitHub Action are
-provided. The tool is deterministic and uses no language model. Its test suite has 371 passing tests, including
-property-based tests that the analyser terminates and gives identical output on repeated runs.
+provided. The tool is deterministic and uses no language model. Its test suite has 373 tests, including
+property-based tests that the analyser terminates and gives identical output on repeated runs; on a laptop 371
+pass and the 2 sandbox tests that need root are skipped (they pass as root in the cloud job).
 
 \section{Benchmark and Evaluation Protocol}
 
@@ -385,9 +391,23 @@ not the line that causes the leak, so the line-overlap rule cannot be applied to
 both tools are scored per file and type: a tool is right about a type in a file when it reports that type and
 the file has a labelled leak of that type. This rule was fixed before any output of the baseline on TEST existed.
 
-Other tools were not run. scicode-lint needs a GPU with 20\,GB of memory in its published setup; in a CPU attempt with a
-different model server, both leaky test files hit a 25-minute cap. LeakCheck~\cite{draoui2026} needs a paid LLM interface and an
-access-restricted package. Data-level tools need exported splits and remain future work.
+\textbf{Data-level and run-time tools.} leakcheck-ml~\cite{leakcheckml}, LeakHound~\cite{leakhound},
+dataleaks~\cite{dataleaks} and Deepchecks~\cite{chorev2022} take a training and a test table, not code. The
+instrumented run of \tool{} can export, at every split call and for up to five folds, the training and evaluation
+tables the pipeline actually used (every row-aligned column of the script's data frames, with the label column
+removed and the target kept separately). Each tool received every exported pair twice: with its defaults, and
+with the true entity or time column named through its own documented parameter. A detection is placed at the
+split call's line (protocol). splitguard~\cite{splitguard} instruments a run itself; it was run as its documentation
+prescribes, and again with the true group declared through its \code{mark\_groups} call. Each tool ran in its own
+environment at the version cited; Deepchecks needs an older Python stack (3.11, NumPy~1.26). For all baselines,
+a finding is one per file, line and type, as for \tool{}. These tools were run after the single TEST run of
+\tool{}, in separate jobs; they were not tuned, so this cannot inform \tool{}.
+
+\textbf{Not run.} scicode-lint~\cite{samsonau2026} needs a GPU with at least 16\,GB and native FP8 support in its
+published setup. On the GPUs available to us (two NVIDIA T4, no FP8), its pinned model server (vLLM~0.18.0) failed
+to start; a fallback server (llama.cpp with the same model at 8-bit) answered but produced no result within
+20 minutes per file for any of the 29 files it attempted. We report it as not run, not as zero.
+LeakCheck~\cite{draoui2026} needs a paid LLM interface and an access-restricted package.
 
 \section{Results}
 
@@ -481,7 +501,9 @@ saturated on both halves and cannot measure further progress.
 
 Table~\ref{tab:yang} gives the per-file comparison. On the three types the baseline supports, it found 20 of 37
 files with one false alarm, and the static pass of \tool{} found 33 of 37 with none. Both tools analysed all 79
-files and reported nothing on the 9 leak-free files.
+files and reported nothing on the 9 leak-free files. On the 37 file-and-type pairs, \tool{} alone was right in
+14, the baseline alone in 1, both in 19 and neither in 3; an exact McNemar test gives $p=0.001$. The difference
+comes from preprocessing leakage (12 against 1); on overlap the two tools agree on every file.
 
 \begin{table}[t]
 \caption{Yang et al.\ and \tool{} (static mode) on the 79 injected TEST files, scored per file and type.
@@ -504,6 +526,35 @@ that may differ from the notebooks the baseline was designed on. The figures its
 hand-labelled notebooks (precision 97.6\%, recall 67.8\%) are a different measurement and cannot be set against
 Table~\ref{tab:yang}. A fair comparison needs the labelled real notebooks.
 
+\subsection{Leaks at a split: data-level and run-time tools}
+
+Table~\ref{tab:baselines} compares the tools on the TEST leaks that sit at a split call, the only ones a
+data-level tool can see: 8 non-chronological splits of time-ordered data, 7 group splits and 2 sets of duplicated
+records already present in the raw data. Without a named column, leakcheck-ml finds 4 of 7 group splits, all with the
+right column, and 3 of 8 time splits; LeakHound, Deepchecks and splitguard find none of either. Once the true column is named,
+leakcheck-ml and LeakHound find 7 of 8 and 7 of 7. dataleaks reaches 7 of 7 group splits under the matching rule
+without a hint, but names an unrelated column in 3 of them and reports a group overlap in 2 of the 9 leak-free
+files; it has no check for the order of a split in its default configuration. Deepchecks has no group check and
+finds the time splits only when told the time column. splitguard finds group splits only when the group is
+declared, and in this benchmark it does not see the held-out rows of a split taken with
+\code{next(splitter.split(...))}, so it misses later fits on them. All data-level tools find the duplicated
+records.
+
+\tool{} finds 8 of 8 time splits without being told any column. On group splits it is weaker than the table's
+second column suggests: by the matching rule 7 of 7, but only 3 name the true entity, against 4 for leakcheck-ml
+without a hint. Every tool in the table except \tool{} also needs the user to export the tables, which the
+instrumented run of \tool{} did for them here.
+
+\begin{table}[t]
+\caption{Leaks at a split call, injected TEST. T1: non-chronological splits of time-ordered data. Grp: group splits
+by the matching rule; Grp, col.: with the true entity column named. Dup.: duplicated raw records. Clean: leak-free
+files with any finding. \tool{}: first look, result of record.}
+\label{tab:baselines}
+\footnotesize
+\setlength{\tabcolsep}{2.6pt}
+\input{baselines_table}
+\end{table}
+
 \subsection{Impact estimates}
 
 On TEST an estimate could be produced for 34 of 70 located leaks: all 7 group findings, 3 of 3 target-derived,
@@ -517,6 +568,26 @@ same operation as the benchmark's corrected file, which is a weak test. It was w
 group splits ($-0.084$ estimated against a true $+0.212$ AUC), because the fix grouped by the wrong column.
 In the second look, with the column fault repaired, the mean absolute error was 0.0006 and the rank correlation
 0.97; the same caveat applies as for detection.
+
+Table~\ref{tab:impact} compares these estimates with LeakHound's, which trains its own model on the exported
+split and compares it with a group-aware or chronological split it constructs. LeakHound reports AUC or $R^2$, so
+only pipelines with those metrics are compared, on data seed 0. Where both tools gave an estimate (11 findings),
+LeakHound's mean absolute error was 0.065 and \tool{}'s 0.086: \tool{} was worse on the hold-out group splits,
+where it grouped by the wrong column and got the sign wrong, and exact on duplicated records and time splits,
+where LeakHound was off by 0.01 to 0.08. With the column fault repaired (second look, not held out) \tool{}'s error
+on the same 11 findings was 0.020. LeakHound gave no estimate for preprocessing or target-derived findings, and
+none at all without a named column except for duplicated records. The near-zero preprocessing errors carry
+little information: the true inflation of those leaks is close to zero.
+
+\begin{table}[t]
+\caption{Impact estimates against the true inflation, injected TEST, single-leak files, seed 0. Cells: number of
+estimates (mean absolute error). AUC/R$^2$: findings whose pipeline reports a metric LeakHound also reports.
+\tool{}: first look.}
+\label{tab:impact}
+\footnotesize
+\setlength{\tabcolsep}{2.4pt}
+\input{impact_table}
+\end{table}
 
 \subsection{Running time}
 
@@ -556,7 +627,9 @@ splits, custom classes and deep learning frameworks are largely outside it, as t
 leaks. A group-aware or chronological split changes which rows are evaluated, so the estimate is the change under
 the canonical fix, not a causal decomposition.
 
-\textbf{One baseline.} Only the analyser of Yang et al.\ was run, under a looser scoring rule than the protocol's.
+\textbf{Baselines.} The analyser of Yang et al.\ was scored under a looser rule than the protocol's. The
+data-level tools were given tables exported by our own instrumented run, and ran in jobs after the single TEST
+run of \tool{}. scicode-lint and LeakCheck could not be run.
 
 \section{Conclusion and Future Work}
 
@@ -564,13 +637,14 @@ the canonical fix, not a causal decomposition.
 code, links static findings to facts observed in an instrumented run, and estimates the effect of a located leak
 by re-running the pipeline with a fix. On a held-out set of injected leaks it found 81\% of leaks statically and
 89\% with the run, with no false positive, and it found more leaks than the reference static analyser on the
-three types they share. The same evaluation exposed a confirmation fault that named the wrong entity in four of
+three types they share ($p=0.001$). Against data-level tools given the same splits, it was the only tool that
+found the time-order leaks without being told the time column, and it was matched or beaten on group leaks by a
+tool that was told the entity column. The same evaluation exposed a confirmation fault that named the wrong entity in four of
 seven group findings, and a case study on real code showed that hand-written splits are invisible to it.
 
 The next step is the one that decides whether these results mean anything outside our benchmark: labelling the
-150 sampled notebooks and scoring \tool{} and the baselines on them. After that we plan to run the data-level
-tools on the splits that the instrumented run exports, to extend the analysis to manual and framework-specific
-splits, and to measure how often each leakage type occurs in public notebooks and how much it changes their
+150 sampled notebooks and scoring \tool{} and the baselines on them. After that we plan to run scicode-lint on hardware with FP8 support, to extend the analysis to
+manual and framework-specific splits, and to measure how often each leakage type occurs in public notebooks and how much it changes their
 reported scores.
 
 \section*{Data and Code Availability}
@@ -651,6 +725,9 @@ Learn. Res.}, vol. 12, pp. 2825--2830, 2011.
 
 \bibitem{leakcheckml} ``leakcheck-ml,'' software, version 0.3.0, 2026.
 \url{https://github.com/Sofienguy1/leakcheck}.
+
+\bibitem{dataleaks} K. Rajput, ``DataLeaks,'' software, version 0.1.2, 2026.
+\url{https://github.com/KAVYA-29-ai/Dataleaks}.
 
 \bibitem{leakly} DeMONLab-BioFINDER, ``Leakly: leakage checks for machine-learning pipelines using permutation tests,''
 software, version 0.1.2, 2026. \url{https://github.com/DeMONLab-BioFINDER/Leakly}.

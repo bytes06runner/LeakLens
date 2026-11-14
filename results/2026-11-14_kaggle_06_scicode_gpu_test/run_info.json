@@ -1,0 +1,71 @@
+{
+  "code_version": {
+    "commit": "a54d9d5124ca8bd7b16bdab8a0ae7c78a4deb00a",
+    "built_utc": "2026-11-13T16:31:09Z"
+  },
+  "cfg": {
+    "scicode_lint_version": "0.5.0",
+    "python_client": "3.13",
+    "vllm_version": "0.18.0",
+    "vllm_model": "Qwen/Qwen3-8B",
+    "served_alias": "qwen3-8b-fp8",
+    "tensor_parallel": 2,
+    "max_model_len": 16384,
+    "gpu_memory_utilization": 0.9,
+    "vllm_start_timeout_minutes": 25,
+    "fallback_llama_cpp_release": "b11249",
+    "fallback_llama_cpp_asset": "llama-b11249-bin-ubuntu-cuda-12.8-x64.tar.gz",
+    "fallback_gguf_repo": "Qwen/Qwen3-8B-GGUF",
+    "fallback_gguf_file": "Qwen3-8B-Q8_0.gguf",
+    "patterns": "ml-001,ml-002,ml-003,ml-005,ml-006,ml-007,ml-009,ml-010",
+    "pattern_types": {
+      "ml-001": "preprocessing",
+      "ml-002": "target_derived",
+      "ml-003": "preprocessing",
+      "ml-005": "temporal",
+      "ml-006": "temporal",
+      "ml-007": "preprocessing",
+      "ml-009": "overlap",
+      "ml-010": "multi_test"
+    },
+    "split": "TEST",
+    "per_file_timeout_minutes": 20,
+    "total_budget_minutes": 600
+  },
+  "steps": [
+    {
+      "name": "nvidia_smi",
+      "rc": 0,
+      "seconds": 0.0,
+      "log_tail": "name, memory.total [MiB], compute_cap\nTesla T4, 15360 MiB, 7.5\nTesla T4, 15360 MiB, 7.5\n"
+    },
+    {
+      "name": "client",
+      "rc": 0,
+      "seconds": 8.2,
+      "log_tail": ""
+    },
+    {
+      "name": "vllm_install",
+      "rc": 0,
+      "seconds": 518.3,
+      "log_tail": "ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\ngradio-client 2.7.2 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.\ngradio 6.30.0 requires huggingface-hub<3.0,>=1.16.0, but you have huggingface-hub 0.36.2 which is incompatible.\ngradio 6.30.0 requires pillow<13.0,>=8.0, but you have pillow 13.0.0 which is incompatible.\ncuda-python 13.0.3 requires cuda-bindings~=13.0.3, but you have cuda-bindings 12.9.4 which is incompatible.\ndiffusers 0.42.0 requires huggingface-hub<3.0,>=1.32.0, but you have huggingface-hub 0.36.2 which is incompatible.\ngoogle-adk 2.7.1 requires opentelemetry-api<=1.42.1,>=1.39, but you have opentelemetry-api 1.45.2 which is incompatible.\ngoogle-adk 2.7.1 requires opentelemetry-sdk<=1.42.1,>=1.39, but you have opentelemetry-sdk 1.45.2 which is incompatible.\n"
+    },
+    {
+      "name": "llama_cpp",
+      "rc": 0,
+      "seconds": 5.2,
+      "log_tail": ""
+    },
+    {
+      "name": "gguf",
+      "rc": 0,
+      "seconds": 445.1,
+      "log_tail": ""
+    }
+  ],
+  "n_items": 79,
+  "vllm_log_tail": ".py\", line 214, in __aenter__\n(APIServer pid=99)     return await anext(self.gen)\n(APIServer pid=99)            ^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/openai/api_server.py\", line 144, in build_async_engine_client_from_engine_args\n(APIServer pid=99)     async_llm = AsyncLLM.from_vllm_config(\n(APIServer pid=99)         vllm_config=vllm_config,\n(APIServer pid=99)     ...<6 lines>...\n(APIServer pid=99)         client_index=client_index,\n(APIServer pid=99)     )\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py\", line 225, in from_vllm_config\n(APIServer pid=99)     return cls(\n(APIServer pid=99)         vllm_config=vllm_config,\n(APIServer pid=99)     ...<9 lines>...\n(APIServer pid=99)         client_index=client_index,\n(APIServer pid=99)     )\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py\", line 154, in __init__\n(APIServer pid=99)     self.engine_core = EngineCoreClient.make_async_mp_client(\n(APIServer pid=99)                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n(APIServer pid=99)         vllm_config=vllm_config,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     ...<4 lines>...\n(APIServer pid=99)         client_index=client_index,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     )\n(APIServer pid=99)     ^\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\n(APIServer pid=99)     return func(*args, **kwargs)\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py\", line 128, in make_async_mp_client\n(APIServer pid=99)     return AsyncMPClient(*client_args)\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py\", line 178, in sync_wrapper\n(APIServer pid=99)     return func(*args, **kwargs)\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py\", line 924, in __init__\n(APIServer pid=99)     super().__init__(\n(APIServer pid=99)     ~~~~~~~~~~~~~~~~^\n(APIServer pid=99)         asyncio_mode=True,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     ...<3 lines>...\n(APIServer pid=99)         client_addresses=client_addresses,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     )\n(APIServer pid=99)     ^\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py\", line 583, in __init__\n(APIServer pid=99)     with launch_core_engines(\n(APIServer pid=99)          ~~~~~~~~~~~~~~~~~~~^\n(APIServer pid=99)         vllm_config, executor_class, log_stats, addresses\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     ) as (engine_manager, coordinator, addresses):\n(APIServer pid=99)     ^\n(APIServer pid=99)   File \"/usr/lib/python3.13/contextlib.py\", line 148, in __exit__\n(APIServer pid=99)     next(self.gen)\n(APIServer pid=99)     ~~~~^^^^^^^^^^\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py\", line 972, in launch_core_engines\n(APIServer pid=99)     wait_for_engine_startup(\n(APIServer pid=99)     ~~~~~~~~~~~~~~~~~~~~~~~^\n(APIServer pid=99)         handshake_socket,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     ...<6 lines>...\n(APIServer pid=99)         coordinator.proc if coordinator else None,\n(APIServer pid=99)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n(APIServer pid=99)     )\n(APIServer pid=99)     ^\n(APIServer pid=99)   File \"/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py\", line 1031, in wait_for_engine_startup\n(APIServer pid=99)     raise RuntimeError(\n(APIServer pid=99)     ...<3 lines>...\n(APIServer pid=99)     )\n(APIServer pid=99) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}\n",
+  "route": "llama.cpp b11249 CUDA, Qwen3-8B-Q8_0.gguf",
+  "total_seconds": 36274.4
+}

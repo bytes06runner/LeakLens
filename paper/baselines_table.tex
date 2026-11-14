@@ -1,0 +1,19 @@
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+\textbf{Tool} & \textbf{Column given} & \textbf{T1} & \textbf{Grp} & \textbf{Grp, col.} & \textbf{Dup.} & \textbf{Clean} \\
+ & & /8 & /7 & /7 & /2 & /9 \\
+\midrule
+\tool{} (static + run) & none needed & 8 & 7 & 3 & 2 & 0 \\
+\midrule
+leakcheck-ml & none (default) & 3 & 4 & 4 & 2 & 0 \\
+ & true column named & 7 & 7 & 7 & 2 & 0 \\
+leakhound-ml & none (default) & 0 & 0 & 0 & 2 & 0 \\
+ & true column named & 7 & 7 & 7 & 2 & 0 \\
+dataleaks & none (default) & 0 & 7 & 4 & 2 & 2 \\
+ & true column named & 0 & 7 & 7 & 2 & 2 \\
+deepchecks & none (default) & 0 & 0 & 0 & 2 & 0 \\
+ & true column named & 7 & 0 & 0 & 2 & 0 \\
+splitguard & none (default) & 0 & 0 & 0 & 0 & 0 \\
+ & true column named & 0 & 7 & 7 & 0 & 0 \\
+\bottomrule
+\end{tabular}

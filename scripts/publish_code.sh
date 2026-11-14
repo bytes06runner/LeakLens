@@ -13,6 +13,7 @@ uv build --wheel -q
 cp dist/*.whl "$OUT/"
 COPYFILE_DISABLE=1 tar czf "$OUT/tests.tar.gz" tests
 cp configs/*.yaml "$OUT/"
+(zip -qr -X "$OUT/paper.zip" paper -x "*.py" -x "*/__pycache__/*")
 (zip -qr -X "$OUT/benchmark_injected.zip" benchmark/injected -x "*/__pycache__/*" -x "*.DS_Store")
 printf '{"commit": "%s", "built_utc": "%s"}\n' "$COMMIT" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$OUT/CODE_VERSION.json"
 printf '{"title": "leaklens-code", "id": "%s/leaklens-code", "licenses": [{"name": "other"}]}\n' "$USER_NAME" > "$OUT/dataset-metadata.json"

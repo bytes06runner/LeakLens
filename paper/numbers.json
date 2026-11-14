@@ -1,0 +1,277 @@
+{
+ "table5": [
+  [
+   "LeakLens (static + run)",
+   "none needed",
+   8,
+   7,
+   3,
+   2,
+   0
+  ],
+  [
+   "leakcheck-ml",
+   "none (default)",
+   3,
+   4,
+   4,
+   2,
+   0
+  ],
+  [
+   "leakcheck-ml",
+   "true column named",
+   7,
+   7,
+   7,
+   2,
+   0
+  ],
+  [
+   "leakhound-ml",
+   "none (default)",
+   0,
+   0,
+   0,
+   2,
+   0
+  ],
+  [
+   "leakhound-ml",
+   "true column named",
+   7,
+   7,
+   7,
+   2,
+   0
+  ],
+  [
+   "dataleaks",
+   "none (default)",
+   0,
+   7,
+   4,
+   2,
+   2
+  ],
+  [
+   "dataleaks",
+   "true column named",
+   0,
+   7,
+   7,
+   2,
+   2
+  ],
+  [
+   "deepchecks",
+   "none (default)",
+   0,
+   0,
+   0,
+   2,
+   0
+  ],
+  [
+   "deepchecks",
+   "true column named",
+   7,
+   0,
+   0,
+   2,
+   0
+  ],
+  [
+   "splitguard",
+   "none (default)",
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  [
+   "splitguard",
+   "true column named",
+   0,
+   7,
+   7,
+   0,
+   0
+  ]
+ ],
+ "table5_denominators": {
+  "T1": 8,
+  "group": 7,
+  "raw_dup": 2,
+  "leak_free": 9
+ },
+ "paired": {
+  "both": 19,
+  "ll": 14,
+  "y": 1,
+  "n": 3,
+  "p": 0.000977
+ },
+ "impact": {
+  "group": {
+   "ll": [
+    6,
+    0.158
+   ],
+   "lh0": [
+    0,
+    null
+   ],
+   "lh1": [
+    6,
+    0.075
+   ],
+   "n": 6,
+   "comp": 6
+  },
+  "target_derived": {
+   "ll": [
+    3,
+    0.0
+   ],
+   "lh0": [
+    0,
+    null
+   ],
+   "lh1": [
+    0,
+    null
+   ],
+   "n": 3,
+   "comp": 3
+  },
+  "preprocessing": {
+   "ll": [
+    8,
+    0.0
+   ],
+   "lh0": [
+    0,
+    null
+   ],
+   "lh1": [
+    0,
+    null
+   ],
+   "n": 8,
+   "comp": 8
+  },
+  "overlap": {
+   "ll": [
+    6,
+    0.0
+   ],
+   "lh0": [
+    2,
+    0.043
+   ],
+   "lh1": [
+    2,
+    0.043
+   ],
+   "n": 6,
+   "comp": 6
+  },
+  "temporal": {
+   "ll": [
+    3,
+    0.0
+   ],
+   "lh0": [
+    0,
+    null
+   ],
+   "lh1": [
+    3,
+    0.059
+   ],
+   "n": 6,
+   "comp": 3
+  }
+ },
+ "impact_both": [
+  {
+   "item": "grp_eeg__grp_cv__kfold",
+   "type": "group",
+   "true": 0.1905,
+   "leaklens": 0.2635,
+   "leakhound": 0.34
+  },
+  {
+   "item": "grp_eeg__grp_cv__stratified",
+   "type": "group",
+   "true": 0.1963,
+   "leaklens": 0.2693,
+   "leakhound": 0.278
+  },
+  {
+   "item": "grp_eeg__grp_cv__default_cv",
+   "type": "group",
+   "true": 0.0223,
+   "leaklens": 0.0953,
+   "leakhound": 0.096
+  },
+  {
+   "item": "grp_patients__grp_holdout__tts",
+   "type": "group",
+   "true": 0.2009,
+   "leaklens": -0.0429,
+   "leakhound": 0.272
+  },
+  {
+   "item": "grp_patients__grp_holdout__tts_stratified",
+   "type": "group",
+   "true": 0.2353,
+   "leaklens": -0.0085,
+   "leakhound": 0.238
+  },
+  {
+   "item": "grp_patients__grp_holdout__shufflesplit",
+   "type": "group",
+   "true": 0.2009,
+   "leaklens": -0.0429,
+   "leakhound": 0.272
+  },
+  {
+   "item": "tab_credit__ovl_raw_duplicates__frac30",
+   "type": "overlap",
+   "true": 0.0435,
+   "leaklens": 0.0435,
+   "leakhound": 0.116
+  },
+  {
+   "item": "tab_housing__ovl_raw_duplicates__frac30",
+   "type": "overlap",
+   "true": 0.0299,
+   "leaklens": 0.0299,
+   "leakhound": 0.043
+  },
+  {
+   "item": "ts_air__tmp_cv__kfold_shuffle",
+   "type": "temporal",
+   "true": 0.0071,
+   "leaklens": 0.0071,
+   "leakhound": 0.087
+  },
+  {
+   "item": "ts_air__tmp_cv__kfold_plain",
+   "type": "temporal",
+   "true": -0.0087,
+   "leaklens": -0.0087,
+   "leakhound": 0.038
+  },
+  {
+   "item": "ts_air__tmp_cv__default_cv",
+   "type": "temporal",
+   "true": 0.0055,
+   "leaklens": 0.0055,
+   "leakhound": 0.056
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+[{"stream_name":"stdout","time":55.979690583,"data":"nvidia_smi 0 0.0\n"}
+,{"stream_name":"stdout","time":64.158120397,"data":"client 0 8.2\n"}
+,{"stream_name":"stdout","time":582.443175878,"data":"vllm_install 0 518.3\n"}
+,{"stream_name":"stdout","time":977.664355294,"data":"llama_cpp 0 5.2\n"}
+,{"stream_name":"stdout","time":1422.737919925,"data":"gguf 0 445.1\n"}
+,{"stream_name":"stdout","time":2672.877259206,"data":"1 79 grp_eeg__clean timeout 1200.1\n"}
+,{"stream_name":"stdout","time":3872.982870007,"data":"2 79 grp_eeg__mul_cv_loop__loop timeout 1200.1\n"}
+,{"stream_name":"stdout","time":5073.09595238,"data":"3 79 grp_eeg__grp_cv__kfold timeout 1200.1\n"}
+,{"stream_name":"stdout","time":6273.208101549,"data":"4 79 grp_eeg__grp_cv__stratified timeout 1200.1\n"}
+,{"stream_name":"stdout","time":7473.279965578,"data":"5 79 grp_eeg__grp_cv__default_cv timeout 1200.1\n"}
+,{"stream_name":"stdout","time":8673.398226752,"data":"6 79 grp_eeg__tgt_proxy__proxy timeout 1200.1\n"}
+,{"stream_name":"stdout","time":9873.509920286,"data":"7 79 grp_patients__clean timeout 1200.1\n"}
+,{"stream_name":"stdout","time":11073.590355144,"data":"8 79 grp_patients__pre_scaler__standard timeout 1200.1\n"}
+,{"stream_name":"stdout","time":12273.70233675,"data":"9 79 grp_patients__pre_scaler__minmax timeout 1200.1\n"}
+,{"stream_name":"stdout","time":13473.814076689,"data":"10 79 grp_patients__pre_scaler__robust timeout 1200.1\n"}
+,{"stream_name":"stdout","time":14673.925906548,"data":"11 79 grp_patients__pre_pandas_stats__zscore timeout 1200.1\n"}
+,{"stream_name":"stdout","time":15874.037217727,"data":"12 79 grp_patients__pre_pandas_stats__minmax timeout 1200.1\n"}
+,{"stream_name":"stdout","time":17074.150257183,"data":"13 79 grp_patients__ovl_test_in_fit__concat timeout 1200.1\n"}
+,{"stream_name":"stdout","time":18274.209846044,"data":"14 79 grp_patients__ovl_test_in_fit__refit_all timeout 1200.1\n"}
+,{"stream_name":"stdout","time":19474.225293081,"data":"15 79 grp_patients__mul_holdout_loop__loop timeout 1200.0\n"}
+,{"stream_name":"stdout","time":20674.334667408,"data":"16 79 grp_patients__grp_holdout__tts timeout 1200.1\n"}
+,{"stream_name":"stdout","time":21874.446263956,"data":"17 79 grp_patients__grp_holdout__tts_stratified timeout 1200.1\n"}
+,{"stream_name":"stdout","time":23074.557669896,"data":"18 79 grp_patients__grp_holdout__shufflesplit timeout 1200.1\n"}
+,{"stream_name":"stdout","time":24274.6702766,"data":"19 79 grp_patients__tgt_proxy__proxy timeout 1200.1\n"}
+,{"stream_name":"stdout","time":25474.77982427,"data":"20 79 grp_patients__trap_manual_scaler__fit_on_train timeout 1200.1\n"}
+,{"stream_name":"stdout","time":26674.892807137,"data":"21 79 grp_patients__combo1 timeout 1200.1\n"}
+,{"stream_name":"stdout","time":27874.982159158,"data":"22 79 tab_credit__clean timeout 1200.1\n"}
+,{"stream_name":"stdout","time":29075.019508865,"data":"23 79 tab_credit__pre_scaler__standard timeout 1200.0\n"}
+,{"stream_name":"stdout","time":30275.081136183,"data":"24 79 tab_credit__pre_scaler__minmax timeout 1200.1\n"}
+,{"stream_name":"stdout","time":31475.193346712,"data":"25 79 tab_credit__pre_scaler__robust timeout 1200.1\n"}
+,{"stream_name":"stdout","time":32675.304174339,"data":"26 79 tab_credit__pre_imputer__mean timeout 1200.1\n"}
+,{"stream_name":"stdout","time":33875.419024181,"data":"27 79 tab_credit__pre_imputer__median timeout 1200.1\n"}
+,{"stream_name":"stdout","time":35075.531270209,"data":"28 79 tab_credit__pre_pandas_stats__zscore timeout 1200.1\n"}
+,{"stream_name":"stdout","time":36275.645248496,"data":"29 79 tab_credit__pre_pandas_stats__minmax timeout 1200.1\n"}
+,{"stream_name":"stderr","time":36279.938363341,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":36279.938426126,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":36280.313874024,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":36280.313902568,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":36282.9436565,"data":"[NbConvertApp] Converting notebook __script__.ipynb to html\n"}
+,{"stream_name":"stderr","time":36283.967911957,"data":"[NbConvertApp] Writing 305777 bytes to __results__.html\n"}
+]

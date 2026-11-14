@@ -1,0 +1,176 @@
+1/79 grp_eeg__clean sites=1 724.0s 
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: divide by zero encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: overflow encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+/Users/srijeetprasadbanerjee/Desktop/leaklens/benchmark/injected/datagen.py:28: RuntimeWarning: invalid value encountered in matmul
+  logit = Xi @ r.normal(0.6, 0.2, k_inf) - 0.3
+2/79 grp_eeg__mul_cv_loop__loop sites=1 2550.3s 
+3/79 grp_eeg__grp_cv__kfold sites=1 1101.1s 
+4/79 grp_eeg__grp_cv__stratified sites=1 1103.3s 
+5/79 grp_eeg__grp_cv__default_cv sites=1 1053.1s 
+6/79 grp_eeg__tgt_proxy__proxy sites=1 607.2s 
+7/79 grp_patients__clean sites=1 122.9s 
+8/79 grp_patients__pre_scaler__standard sites=1 122.8s 
+9/79 grp_patients__pre_scaler__minmax sites=1 127.9s 
+10/79 grp_patients__pre_scaler__robust sites=1 127.8s 
+11/79 grp_patients__pre_pandas_stats__zscore sites=1 146.9s 
+12/79 grp_patients__pre_pandas_stats__minmax sites=1 146.9s 
+13/79 grp_patients__ovl_test_in_fit__concat sites=1 164.8s 
+14/79 grp_patients__ovl_test_in_fit__refit_all sites=1 164.8s 
+15/79 grp_patients__mul_holdout_loop__loop sites=1 167.2s 
+16/79 grp_patients__grp_holdout__tts sites=1 174.9s 
+17/79 grp_patients__grp_holdout__tts_stratified sites=1 170.3s 
+18/79 grp_patients__grp_holdout__shufflesplit sites=1 176.3s 
+19/79 grp_patients__tgt_proxy__proxy sites=1 142.9s 
+20/79 grp_patients__trap_manual_scaler__fit_on_train sites=1 170.9s 
+21/79 grp_patients__combo1 sites=1 186.0s 
+22/79 tab_credit__clean sites=1 106.0s 
+23/79 tab_credit__pre_scaler__standard sites=1 103.8s 
+24/79 tab_credit__pre_scaler__minmax sites=1 100.2s 
+25/79 tab_credit__pre_scaler__robust sites=1 99.8s 
+26/79 tab_credit__pre_imputer__mean sites=1 101.8s 
+27/79 tab_credit__pre_imputer__median sites=1 106.2s 
+28/79 tab_credit__pre_pandas_stats__zscore sites=1 109.3s 
+29/79 tab_credit__pre_pandas_stats__minmax sites=1 107.0s 
+30/79 tab_credit__pre_target_encoding__groupby_mean sites=1 105.9s 
+31/79 tab_credit__ovl_test_in_fit__concat sites=1 102.7s 
+32/79 tab_credit__ovl_test_in_fit__refit_all sites=1 102.5s 
+33/79 tab_credit__ovl_raw_duplicates__frac30 sites=1 142.9s 
+34/79 tab_credit__mul_holdout_loop__loop sites=1 103.2s 
+35/79 tab_credit__tgt_proxy__proxy sites=1 88.7s 
+36/79 tab_credit__trap_manual_scaler__fit_on_train sites=1 104.1s 
+37/79 tab_credit__combo5 sites=1 104.8s 
+38/79 tab_housing__clean sites=1 549.7s 
+39/79 tab_housing__pre_scaler__standard sites=1 555.4s 
+40/79 tab_housing__pre_scaler__minmax sites=1 555.1s 
+41/79 tab_housing__pre_scaler__robust sites=1 555.6s 
+42/79 tab_housing__pre_imputer__mean sites=1 563.0s 
+43/79 tab_housing__pre_imputer__median sites=1 565.7s 
+44/79 tab_housing__pre_pandas_stats__zscore sites=1 567.6s 
+45/79 tab_housing__pre_pandas_stats__minmax sites=1 524.5s 
+46/79 tab_housing__ovl_raw_duplicates__frac30 sites=1 759.7s 
+47/79 tab_housing__mul_cv_loop__loop sites=1 2187.6s 
+48/79 tab_housing__tgt_proxy__proxy sites=1 519.7s 
+49/79 ts_air__clean sites=1 1054.8s 
+50/79 ts_air__pre_scaler__standard sites=1 1056.5s 
+51/79 ts_air__pre_scaler__minmax sites=1 1053.4s 
+52/79 ts_air__pre_scaler__robust sites=1 1113.3s 
+53/79 ts_air__pre_pandas_stats__zscore sites=1 1122.1s 
+54/79 ts_air__pre_pandas_stats__minmax sites=1 1165.5s 
+55/79 ts_air__mul_cv_loop__loop sites=1 2144.6s 
+56/79 ts_air__tmp_cv__kfold_shuffle sites=1 1623.6s 
+57/79 ts_air__tmp_cv__kfold_plain sites=1 1605.1s 
+58/79 ts_air__tmp_cv__default_cv sites=1 1631.8s 
+59/79 ts_air__tmp_future_feature__neg_shift sites=1 1140.7s 
+60/79 ts_air__tmp_future_feature__centered_rolling sites=1 1127.0s 
+61/79 ts_air__tmp_future_feature__reverse_rolling sites=1 953.3s 
+62/79 ts_sales__clean sites=0 2.3s 
+63/79 ts_sales__pre_scaler__standard sites=0 1.9s 
+64/79 ts_sales__pre_scaler__minmax sites=0 1.9s 
+65/79 ts_sales__pre_scaler__robust sites=0 1.9s 
+66/79 ts_sales__pre_pandas_stats__zscore sites=0 1.9s 
+67/79 ts_sales__pre_pandas_stats__minmax sites=0 1.9s 
+68/79 ts_sales__ovl_test_in_fit__concat sites=0 2.0s 
+69/79 ts_sales__ovl_test_in_fit__refit_all sites=0 1.9s 
+70/79 ts_sales__mul_holdout_loop__loop sites=0 2.5s 
+71/79 ts_sales__tmp_holdout__tts_default sites=1 269.8s 
+72/79 ts_sales__tmp_holdout__tts_shuffle_true sites=1 304.0s 
+73/79 ts_sales__tmp_holdout__manual_sample sites=0 2.5s 
+74/79 ts_sales__tmp_future_feature__neg_shift sites=0 2.3s 
+75/79 ts_sales__tmp_future_feature__centered_rolling sites=0 2.3s 
+76/79 ts_sales__tmp_future_feature__reverse_rolling sites=0 2.3s 
+77/79 ts_sales__tmp_hidden_time__renamed_time_col sites=1 145.7s 
+78/79 ts_sales__trap_manual_scaler__fit_on_train sites=0 2.1s 
+79/79 ts_sales__combo3 sites=1 143.0s 
+done in 4695s
