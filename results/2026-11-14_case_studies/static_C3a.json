@@ -1,0 +1,65 @@
+{
+ "schema": "leaklens/report/v1",
+ "tool": {
+  "name": "leaklens",
+  "version": "0.0.1",
+  "commit": "09fbb21"
+ },
+ "scan": {
+  "mode": "static",
+  "started_utc": "2026-11-14T10:00:29Z",
+  "config_hash": "2a15a522f7017c43"
+ },
+ "files": [
+  {
+   "path": "C3a.ipynb",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": "cell",
+    "skipped_cells": []
+   }
+  }
+ ],
+ "findings": [
+  {
+   "id": "cdeed2f1481e2f43",
+   "rule_id": "LL-TMP-001",
+   "type": "temporal",
+   "subtype": "T1",
+   "severity": "high",
+   "confidence": "low",
+   "location": {
+    "file": "C3a.ipynb",
+    "line_start": 5,
+    "line_end": 5,
+    "cell": 73,
+    "flat_line_start": 264,
+    "flat_line_end": 264
+   },
+   "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+   "evidence": [
+    {
+     "kind": "split_call",
+     "detail": "train_test_split: not a forward-chaining split"
+    },
+    {
+     "kind": "time_column",
+     "detail": "column `date` (date-like name); column `datetime` (parsed as datetime); column `day` (date-like name); column `forecast_date_x` (date-like name); column `month` (date-like name); column `origin_datetime` (date-like name); column `year` (date-like name)"
+    }
+   ],
+   "related": [],
+   "suggested_fix": {
+    "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+    "canonical_fix": "replace_splitter:chronological"
+   },
+   "dynamic": {
+    "status": "not_run"
+   },
+   "impact": {
+    "status": "not_run"
+   },
+   "suppressed": null
+  }
+ ]
+}

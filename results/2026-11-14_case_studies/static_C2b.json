@@ -1,0 +1,65 @@
+{
+ "schema": "leaklens/report/v1",
+ "tool": {
+  "name": "leaklens",
+  "version": "0.0.1",
+  "commit": "09fbb21"
+ },
+ "scan": {
+  "mode": "static",
+  "started_utc": "2026-11-14T10:00:29Z",
+  "config_hash": "2a15a522f7017c43"
+ },
+ "files": [
+  {
+   "path": "C2b.ipynb",
+   "status": "ok",
+   "reason": null,
+   "ingest": {
+    "order_used": "cell",
+    "skipped_cells": []
+   }
+  }
+ ],
+ "findings": [
+  {
+   "id": "d6163d6a5472c150",
+   "rule_id": "LL-GRP-001",
+   "type": "group",
+   "subtype": "row_split",
+   "severity": "high",
+   "confidence": "medium",
+   "location": {
+    "file": "C2b.ipynb",
+    "line_start": 1,
+    "line_end": 1,
+    "cell": 47,
+    "flat_line_start": 100,
+    "flat_line_end": 100
+   },
+   "message": "Rows are split without regard to `patient_id`; the same patient_id can be in training and evaluation rows, so the score does not measure performance on new entities.",
+   "evidence": [
+    {
+     "kind": "split_call",
+     "detail": "train_test_split: row-level, not group-aware"
+    },
+    {
+     "kind": "entity_column",
+     "detail": "column `patient_id` (name evidence)"
+    }
+   ],
+   "related": [],
+   "suggested_fix": {
+    "description": "Split by entity: use GroupShuffleSplit with groups=`patient_id` (same folds, test size and seed).",
+    "canonical_fix": "replace_splitter:GroupShuffleSplit"
+   },
+   "dynamic": {
+    "status": "not_run"
+   },
+   "impact": {
+    "status": "not_run"
+   },
+   "suppressed": null
+  }
+ ]
+}

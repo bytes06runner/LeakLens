@@ -1,0 +1,14 @@
+{
+  "id": "srijeetbanerjee/leaklens-08-case-studies",
+  "title": "leaklens-08-case-studies",
+  "code_file": "case_studies.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": ["srijeetbanerjee/leaklens-code", "srijeetbanerjee/leaklens-case-notebooks", "yasserh/walmart-dataset"],
+  "competition_sources": ["tlvmc-parkinsons-freezing-gait-prediction", "amp-parkinsons-disease-progression-prediction", "predict-energy-behavior-of-prosumers"],
+  "kernel_sources": [],
+  "model_sources": []
+}
