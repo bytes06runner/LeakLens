@@ -1,0 +1,365 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-_ry3zqal",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T16:46:14Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R074.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "94eb1c4ab4895564",
+      "rule_id": "LL-PRE-001",
+      "type": "preprocessing",
+      "subtype": "scaler",
+      "severity": "low",
+      "confidence": "high",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 27,
+        "line_end": 27,
+        "cell": 2,
+        "flat_line_start": 130,
+        "flat_line_end": 130
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "StandardScaler is fitted here"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "fitted_rows": 360,
+          "note": "the fit saw every row of data that is split"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "ca5a295362f64a73",
+      "rule_id": "LL-GRP-007",
+      "type": "group",
+      "subtype": "pooled_source_files",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 37,
+        "line_end": 39,
+        "cell": 2,
+        "flat_line_start": 140,
+        "flat_line_end": 142
+      },
+      "message": "Rows were pooled from several source files with several rows per file, and the file each row came from is not kept; a row-level split puts rows of the same file (recording, subject, session) on both sides, so the score does not measure performance on new files.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "source file (rows appended per file in a loop)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Record the source file (or subject) of each row and split by it (GroupKFold / GroupShuffleSplit with groups=file).",
+        "canonical_fix": null
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "the nominated column is not row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "e7cef2797612cef0",
+      "rule_id": "LL-PRE-001",
+      "type": "preprocessing",
+      "subtype": "scaler",
+      "severity": "low",
+      "confidence": "high",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 10,
+        "line_end": 10,
+        "cell": 12,
+        "flat_line_start": 628,
+        "flat_line_end": 628
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "RobustScaler is fitted here"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "fitted_rows": 1080,
+          "note": "the fit saw every row of data that is split"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "8dc6d2fb40ef55db",
+      "rule_id": "LL-GRP-007",
+      "type": "group",
+      "subtype": "pooled_source_files",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 18,
+        "line_end": 18,
+        "cell": 12,
+        "flat_line_start": 636,
+        "flat_line_end": 636
+      },
+      "message": "Rows were pooled from several source files with several rows per file, and the file each row came from is not kept; a row-level split puts rows of the same file (recording, subject, session) on both sides, so the score does not measure performance on new files.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "source file (rows appended per file in a loop)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Record the source file (or subject) of each row and split by it (GroupKFold / GroupShuffleSplit with groups=file).",
+        "canonical_fix": null
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "the nominated column is not row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "9299ec62d5c27b34",
+      "rule_id": "LL-OVL-002",
+      "type": "overlap",
+      "subtype": "resample_before_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 7,
+        "line_end": 7,
+        "cell": 27,
+        "flat_line_start": 1428,
+        "flat_line_end": 1428
+      },
+      "message": "Rows are copied or synthesised before the split, so copies of the same row can land in both training and evaluation rows.",
+      "evidence": [
+        {
+          "kind": "data_flow",
+          "detail": "rows are concatenated with a copy or subset of themselves"
+        },
+        {
+          "kind": "split_call",
+          "detail": "the resampled rows are split afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first, then resample the training rows only.",
+        "canonical_fix": "resample_after_split"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "no identical rows across the split; synthetic rows cannot be checked"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "64a960bcedf9d0fb",
+      "rule_id": "LL-OVL-002",
+      "type": "overlap",
+      "subtype": "resample_before_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 5,
+        "line_end": 5,
+        "cell": 31,
+        "flat_line_start": 1562,
+        "flat_line_end": 1562
+      },
+      "message": "Rows are copied or synthesised before the split, so copies of the same row can land in both training and evaluation rows.",
+      "evidence": [
+        {
+          "kind": "data_flow",
+          "detail": "rows are concatenated with a copy or subset of themselves"
+        },
+        {
+          "kind": "split_call",
+          "detail": "the resampled rows are split afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first, then resample the training rows only.",
+        "canonical_fix": "resample_after_split"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "no identical rows across the split; synthetic rows cannot be checked"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "fce7f3aaa6b6c439",
+      "rule_id": "LL-OVL-002",
+      "type": "overlap",
+      "subtype": "resample_before_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 36,
+        "line_end": 36,
+        "cell": 39,
+        "flat_line_start": 1915,
+        "flat_line_end": 1915
+      },
+      "message": "Rows are copied or synthesised before the split, so copies of the same row can land in both training and evaluation rows.",
+      "evidence": [
+        {
+          "kind": "data_flow",
+          "detail": "rows are concatenated with a copy or subset of themselves"
+        },
+        {
+          "kind": "split_call",
+          "detail": "the resampled rows are split afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first, then resample the training rows only.",
+        "canonical_fix": "resample_after_split"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "no identical rows across the split; synthetic rows cannot be checked"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "fce7f3aaa6b6c439",
+      "rule_id": "LL-OVL-002",
+      "type": "overlap",
+      "subtype": "resample_before_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R074.ipynb",
+        "line_start": 43,
+        "line_end": 43,
+        "cell": 40,
+        "flat_line_start": 2083,
+        "flat_line_end": 2083
+      },
+      "message": "Rows are copied or synthesised before the split, so copies of the same row can land in both training and evaluation rows.",
+      "evidence": [
+        {
+          "kind": "data_flow",
+          "detail": "rows are concatenated with a copy or subset of themselves"
+        },
+        {
+          "kind": "split_call",
+          "detail": "the resampled rows are split afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first, then resample the training rows only.",
+        "canonical_fix": "resample_after_split"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "no identical rows across the split; synthetic rows cannot be checked"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

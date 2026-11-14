@@ -1,0 +1,26 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-bunpk0nj",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:20:00Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R033.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": []
+}

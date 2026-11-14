@@ -1,0 +1,65 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-x3mwnev_",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:22:31Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R069.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "ee1dce434bb87669",
+      "rule_id": "LL-MUL-002",
+      "type": "multi_test",
+      "subtype": "early_stopping",
+      "severity": "medium",
+      "confidence": "low",
+      "location": {
+        "file": "R069.ipynb",
+        "line_start": 9,
+        "line_end": 14,
+        "cell": 10,
+        "flat_line_start": 131,
+        "flat_line_end": 136
+      },
+      "message": "Evaluation rows are passed as `eval_set` while fitting; if they stop or select the training run, the score reported on the same rows is optimistic.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "LGBMClassifier.fit(eval_set=...) receives evaluation rows"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Use a separate validation split for early stopping and score once on the test rows.",
+        "canonical_fix": "holdout_validation_split"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "NameError: name 'display' is not defined"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

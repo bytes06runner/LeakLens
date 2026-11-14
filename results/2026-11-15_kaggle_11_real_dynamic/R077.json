@@ -1,0 +1,337 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-lrtuyuvz",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:41:42Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R077.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "f5ed82852a22397f",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 4,
+        "line_end": 4,
+        "cell": 19,
+        "flat_line_start": 115,
+        "flat_line_end": 115
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "23041b62bdc82e80",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 12,
+        "line_end": 12,
+        "cell": 22,
+        "flat_line_start": 141,
+        "flat_line_end": 141
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "7527a87ee67b4be7",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 13,
+        "line_end": 13,
+        "cell": 22,
+        "flat_line_start": 142,
+        "flat_line_end": 142
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "802d931209bd122a",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 14,
+        "line_end": 14,
+        "cell": 22,
+        "flat_line_start": 143,
+        "flat_line_end": 143
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "e80b64f6011d66b8",
+      "rule_id": "LL-OVL-001",
+      "type": "overlap",
+      "subtype": "test_in_fit",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 19,
+        "line_end": 19,
+        "cell": 23,
+        "flat_line_start": 182,
+        "flat_line_end": 182
+      },
+      "message": "The model is fitted on all rows, before or regardless of the split, then scored on evaluation rows it has already seen.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "KNeighborsRegressor.fit on rows that include the evaluation rows"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "evaluated at line 183 on the test side of the split at line 179"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Fit on the training rows only.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "c85826c52da6407c",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_cv",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 13,
+        "line_end": 13,
+        "cell": 31,
+        "flat_line_start": 282,
+        "flat_line_end": 282
+      },
+      "message": "Rows are split without regard to `PID`; the same PID can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "cross_val_score with KFold: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `PID` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Id` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Order` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupKFold with groups=`PID` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupKFold"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "af174e29a15aa247",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R077.ipynb",
+        "line_start": 3,
+        "line_end": 3,
+        "cell": 35,
+        "flat_line_start": 383,
+        "flat_line_end": 383
+      },
+      "message": "Rows are split without regard to `PID`; the same PID can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `PID` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Id` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `Order` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`PID` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: '../input/house-prices-advanced-regression-techniques/test.csv'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

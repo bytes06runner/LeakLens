@@ -1,0 +1,77 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-o_nxm67x",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:40:27Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R047.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "4ca7f56c04b7469d",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R047.ipynb",
+        "line_start": 4,
+        "line_end": 4,
+        "cell": 67,
+        "flat_line_start": 638,
+        "flat_line_end": 638
+      },
+      "message": "Rows are split without regard to `session_id`; the same session_id can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `session_id` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `subject_id` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `filename` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`session_id` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "PermissionError: [Errno 13] Permission denied: '/kaggle/working/outputs_nb3'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

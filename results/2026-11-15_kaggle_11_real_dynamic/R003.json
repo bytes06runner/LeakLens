@@ -1,0 +1,219 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-tn5pa1cv",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:10:11Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R003.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "7a9593c9be856d3d",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R003.ipynb",
+        "line_start": 28,
+        "line_end": 28,
+        "cell": 11,
+        "flat_line_start": 938,
+        "flat_line_end": 938
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Year` (date-like name); rows sorted by time; order-dependent operations: lag, window or fill feature `Close_Lag1`, lag, window or fill feature `Target_Next_Close`"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9995,
+          "detail": "100% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9995
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "f52befabab6a79dd",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R003.ipynb",
+        "line_start": 90,
+        "line_end": 92,
+        "cell": 11,
+        "flat_line_start": 1000,
+        "flat_line_end": 1002
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "learning_curve (default or integer cv): not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Year` (date-like name); rows sorted by time; order-dependent operations: lag, window or fill feature `Close_Lag1`, lag, window or fill feature `Target_Next_Close`"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.999550022498875,
+          "detail": "100% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:TimeSeriesSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9996
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "7a9593c9be856d3d",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R003.ipynb",
+        "line_start": 22,
+        "line_end": 22,
+        "cell": 12,
+        "flat_line_start": 1034,
+        "flat_line_end": 1034
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Year` (date-like name); rows sorted by time; order-dependent operations: lag, window or fill feature `Close_Lag1`, lag, window or fill feature `Target_Next_Close`"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9995,
+          "detail": "100% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9995
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "7a9593c9be856d3d",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R003.ipynb",
+        "line_start": 24,
+        "line_end": 24,
+        "cell": 13,
+        "flat_line_start": 1128,
+        "flat_line_end": 1128
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); column `Year` (date-like name); rows sorted by time; order-dependent operations: lag, window or fill feature `Close_Lag1`, lag, window or fill feature `Target_Next_Close`"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9995,
+          "detail": "100% of training rows are dated after the earliest evaluation row (`Date`)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "Date",
+          "training_rows_after_earliest_evaluation_row": 0.9995
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

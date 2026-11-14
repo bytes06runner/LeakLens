@@ -1,0 +1,153 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-bhoxwqt3",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:21:14Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R065.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "777356ee231f7b1f",
+      "rule_id": "LL-TMP-002",
+      "type": "temporal",
+      "subtype": "T2",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R065.ipynb",
+        "line_start": 44,
+        "line_end": 44,
+        "cell": 6,
+        "flat_line_start": 106,
+        "flat_line_end": 106
+      },
+      "message": "A feature is computed from values later in time (bfill); at prediction time those values do not exist yet.",
+      "evidence": [
+        {
+          "kind": "forward_op",
+          "detail": "bfill"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the result is among the features of an evaluated model"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Use the backward-looking counterpart (positive shift, center=False, ffill), computed on past rows only.",
+        "canonical_fix": "replace_forward_op"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: 'pip'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "db2b8e4b7c0aced0",
+      "rule_id": "LL-TMP-002",
+      "type": "temporal",
+      "subtype": "T2",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R065.ipynb",
+        "line_start": 42,
+        "line_end": 42,
+        "cell": 8,
+        "flat_line_start": 157,
+        "flat_line_end": 157
+      },
+      "message": "A feature is computed from values later in time (bfill); at prediction time those values do not exist yet.",
+      "evidence": [
+        {
+          "kind": "forward_op",
+          "detail": "bfill"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the result is among the features of an evaluated model"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Use the backward-looking counterpart (positive shift, center=False, ffill), computed on past rows only.",
+        "canonical_fix": "replace_forward_op"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: 'pip'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "3754f926458db689",
+      "rule_id": "LL-TMP-002",
+      "type": "temporal",
+      "subtype": "T2_whole_series",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "R065.ipynb",
+        "line_start": 73,
+        "line_end": 73,
+        "cell": 12,
+        "flat_line_start": 271,
+        "flat_line_end": 271
+      },
+      "message": "A statistic is computed over the whole time series, including rows later than the training period, and applied to the features.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "StandardScaler is fitted here"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `Date` (parsed as datetime); column `Month` (date-like name); rows sorted by time; order-dependent operations: lag, window or fill feature `HL_Spread`, lag, window or fill feature `Log_Return`, lag, window or fill feature `ROC_21`, lag, window or fill feature `ROC_5`, lag, window or fill feature `Vol_21`, lag, window or fill feature `ZScore_21`"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Fit the transformation on the training period only (for example inside a Pipeline).",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: 'pip'"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-iowrp60h",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T16:42:41Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R017.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "b7db5302c74da25d",
+      "rule_id": "LL-OVL-004",
+      "type": "overlap",
+      "subtype": "raw_duplicates",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 20,
+        "line_end": 20,
+        "cell": 10,
+        "flat_line_start": 448,
+        "flat_line_end": 448
+      },
+      "message": "4% of the evaluation rows are identical to a training row: the data contains duplicated records, and the split puts copies on both sides.",
+      "evidence": [
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.038125184238970225,
+          "detail": "train_test_split: identical rows on both sides of the split; 98% of all rows are distinct"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Remove duplicated records before the split (for example drop_duplicates on the feature columns).",
+        "canonical_fix": "deduplicate_before_split"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "evaluation_rows_identical_to_a_training_row": 0.0381
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "b7db5302c74da25d",
+      "rule_id": "LL-OVL-004",
+      "type": "overlap",
+      "subtype": "raw_duplicates",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 36,
+        "line_end": 36,
+        "cell": 12,
+        "flat_line_start": 636,
+        "flat_line_end": 636
+      },
+      "message": "4% of the evaluation rows are identical to a training row: the data contains duplicated records, and the split puts copies on both sides.",
+      "evidence": [
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.04289083226884151,
+          "detail": "train_test_split: identical rows on both sides of the split; 97% of all rows are distinct"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Remove duplicated records before the split (for example drop_duplicates on the feature columns).",
+        "canonical_fix": "deduplicate_before_split"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "evaluation_rows_identical_to_a_training_row": 0.0429
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+ "R017": [],
+ "R040": [
+  {
+   "from": "/kaggle/input/aircraft-sensor-and-engine-performance/Dataset/PM_train.xlsx",
+   "to": "/kaggle/input/datasets/aadharshviswanath/aircraft-sensor-and-engine-performance/Dataset/PM_train.xlsx"
+  },
+  {
+   "from": "/kaggle/input/aircraft-sensor-and-engine-performance/Dataset/PM_test.xlsx",
+   "to": "/kaggle/input/datasets/aadharshviswanath/aircraft-sensor-and-engine-performance/Dataset/PM_test.xlsx"
+  },
+  {
+   "from": "/kaggle/input/aircraft-sensor-and-engine-performance/Dataset/PM_truth.xlsx",
+   "to": "/kaggle/input/datasets/aadharshviswanath/aircraft-sensor-and-engine-performance/Dataset/PM_truth.xlsx"
+  }
+ ],
+ "R074": [
+  {
+   "from": "/kaggle/input/seed-iv/eeg_feature_smooth",
+   "to": "/kaggle/input/datasets/phhasian0710/seed-iv/eeg_feature_smooth"
+  },
+  {
+   "from": "/kaggle/input/seed-iv",
+   "to": "/kaggle/input/datasets/phhasian0710/seed-iv"
+  },
+  {
+   "from": "/kaggle/input/seed-iv",
+   "to": "/kaggle/input/datasets/phhasian0710/seed-iv"
+  },
+  {
+   "from": "/kaggle/input/seed-iv/Channel Order.xlsx",
+   "to": "/kaggle/input/datasets/phhasian0710/seed-iv/Channel Order.xlsx"
+  }
+ ],
+ "R036": [
+  {
+   "from": "/kaggle/input/eeg-motor-movementimagery-dataset/files/",
+   "to": "/kaggle/input/datasets/brianleung2020/eeg-motor-movementimagery-dataset/files/"
+  },
+  {
+   "from": "/kaggle/input/eeg-motor-movementimagery-dataset/files/S002/S002R03.edf",
+   "to": "/kaggle/input/datasets/brianleung2020/eeg-motor-movementimagery-dataset/files/S002/S002R03.edf"
+  }
+ ],
+ "R003": [],
+ "R022": [
+  {
+   "from": "/kaggle/input/store-sales-time-series-forecasting/train.csv",
+   "to": "/kaggle/input/competitions/store-sales-time-series-forecasting/train.csv"
+  },
+  {
+   "from": "/kaggle/input/store-sales-time-series-forecasting/test.csv",
+   "to": "/kaggle/input/competitions/store-sales-time-series-forecasting/test.csv"
+  },
+  {
+   "from": "/kaggle/input/store-sales-time-series-forecasting/stores.csv",
+   "to": "/kaggle/input/competitions/store-sales-time-series-forecasting/stores.csv"
+  }
+ ],
+ "R033": [],
+ "R065": [
+  {
+   "from": "/kaggle/input/daily-gold-price-20152021-time-series/Gold Price.csv",
+   "to": "/kaggle/input/datasets/nisargchodavadiya/daily-gold-price-20152021-time-series/Gold Price.csv"
+  },
+  {
+   "from": "/kaggle/input/daily-gold-price-20152021-time-series/Gold Price.csv",
+   "to": "/kaggle/input/datasets/nisargchodavadiya/daily-gold-price-20152021-time-series/Gold Price.csv"
+  }
+ ],
+ "R069": [],
+ "R083": [],
+ "R084": [
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  },
+  {
+   "from": "/kaggle/input/energy-consumption-prediction/Energy_consumption.csv",
+   "to": "/kaggle/input/datasets/mrsimple07/energy-consumption-prediction/Energy_consumption.csv"
+  }
+ ],
+ "R088": [
+  {
+   "from": "../input/paysim1/PS_20174392719_1491204439457_log.csv",
+   "to": "/kaggle/input/datasets/ealaxi/paysim1/PS_20174392719_1491204439457_log.csv"
+  }
+ ],
+ "R090": [
+  {
+   "from": "../input/eye-state-classification-eeg-dataset/EEG_Eye_State_Classification.csv",
+   "to": "/kaggle/input/datasets/robikscube/eye-state-classification-eeg-dataset/EEG_Eye_State_Classification.csv"
+  }
+ ],
+ "R106": [
+  {
+   "from": "../input/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/train.csv/train.csv",
+   "to": "/kaggle/input/datasets/micgonzalez/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/train.csv/train.csv"
+  },
+  {
+   "from": "../input/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/features.csv/features.csv",
+   "to": "/kaggle/input/datasets/micgonzalez/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/features.csv/features.csv"
+  },
+  {
+   "from": "../input/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/stores.csv",
+   "to": "/kaggle/input/datasets/micgonzalez/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/stores.csv"
+  },
+  {
+   "from": "../input/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/test.csv/test.csv",
+   "to": "/kaggle/input/datasets/micgonzalez/walmart-store-sales-forecasting/walmart-recruiting-store-sales-forecasting/test.csv/test.csv"
+  }
+ ],
+ "R127": [
+  {
+   "from": "/kaggle/input/eeg-eye-state/EEG Eye State.arff",
+   "to": "/kaggle/input/datasets/kamelhassan/eeg-eye-state/EEG Eye State.arff"
+  }
+ ],
+ "R133": [],
+ "R047": [],
+ "R077": [
+  {
+   "from": "../input/ames-housing-dataset/",
+   "to": "/kaggle/input/datasets/prevek18/ames-housing-dataset/"
+  }
+ ],
+ "R110": [
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_1.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_1.csv"
+  },
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_2.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_2.csv"
+  },
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_3.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_3.csv"
+  },
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_4.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_4.csv"
+  },
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_5.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_5.csv"
+  },
+  {
+   "from": "../input/recommendation-system/phone_user_review_file_6.csv",
+   "to": "/kaggle/input/datasets/dsrivastava2020/recommendation-system/phone_user_review_file_6.csv"
+  }
+ ]
+}

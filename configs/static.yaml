@@ -86,7 +86,7 @@ entity_tokens:
          product, item, order, transaction, loan, policy, house, property, cohort, trial, visit, unit, well,
          plate, batch, family, centre, center]
   strong_only_with_id_suffix: [device, machine, vehicle, engine, group, session, sessions]
-  id_suffixes: [id, ids, no, num, number, nr, code, key, idx, index, uid, guid, uuid, name, label, tag]
+  id_suffixes: [id, ids, "no", nbr, num, number, nr, code, key, idx, index, uid, guid, uuid, name, label, tag]  # "no" quoted: YAML reads a bare no as false
 
 # Time-column evidence by name (TAXONOMY section 6, T1). Name evidence alone is weak.
 time_tokens: [date, datetime, time, timestamp, ts, year, month, day, week, quarter, hour, minute, period, dt]

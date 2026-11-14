@@ -1,0 +1,73 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-d0idplr7",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:07:22Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R036.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "7b1237ebeb0583db",
+      "rule_id": "LL-GRP-006",
+      "type": "group",
+      "subtype": "overlapping_entity_lists",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R036.ipynb",
+        "line_start": 36,
+        "line_end": 37,
+        "cell": 8,
+        "flat_line_start": 44,
+        "flat_line_end": 45
+      },
+      "message": "The training list `TRAIN_SUBJECTS` and the evaluation list `VALID_SUBJECTS` share 59 of 59 values of `subject`, so the same subjects are trained on and evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "explicit subject lists `TRAIN_SUBJECTS` / `VALID_SUBJECTS`"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "`subject` (list names, values evaluated)"
+        },
+        {
+          "kind": "split_call",
+          "detail": "explicit subject lists `TRAIN_SUBJECTS` / `TEST_SUBJECTS`"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Make the subject lists disjoint (each subject in exactly one of training, validation and test).",
+        "canonical_fix": null
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "no result within 1200 s"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-rf643ncw",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:18:35Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R022.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": [
+          {
+            "cell": 109,
+            "reason": "cell does not parse as Python 3.12"
+          }
+        ]
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "bd1c7d5dd9ef0502",
+      "rule_id": "LL-PRE-003",
+      "type": "preprocessing",
+      "subtype": "supervised",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R022.ipynb",
+        "line_start": 2,
+        "line_end": 2,
+        "cell": 13,
+        "flat_line_start": 54,
+        "flat_line_end": 54
+      },
+      "message": "A target-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "pandas/NumPy statistics are not instrumented; only scikit-learn transformers are"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "6e420c5c69a33eab",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R022.ipynb",
+        "line_start": 2,
+        "line_end": 2,
+        "cell": 77,
+        "flat_line_start": 317,
+        "flat_line_end": 317
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "pandas/NumPy statistics are not instrumented; only scikit-learn transformers are"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "baf82921d7339ecf",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "R022.ipynb",
+        "line_start": 6,
+        "line_end": 6,
+        "cell": 82,
+        "flat_line_start": 332,
+        "flat_line_end": 332
+      },
+      "message": "Rows are split without regard to `id`; the same id can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `id` (name evidence)"
+        }
+      ],
+      "related": [
+        "0b4316bcc69b2921"
+      ],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`id` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "not_run",
+        "details": {
+          "reason": "the nominated column is not row-aligned with the split data at run time"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "0b4316bcc69b2921",
+      "rule_id": "LL-TMP-001",
+      "type": "temporal",
+      "subtype": "T1",
+      "severity": "high",
+      "confidence": "low",
+      "location": {
+        "file": "R022.ipynb",
+        "line_start": 6,
+        "line_end": 6,
+        "cell": 82,
+        "flat_line_start": 332,
+        "flat_line_end": 332
+      },
+      "message": "Time-ordered rows are split without respecting time; the model trains on rows that are later than rows it is evaluated on.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: not a forward-chaining split"
+        },
+        {
+          "kind": "time_column",
+          "detail": "column `date` (parsed as datetime); column `day` (date-like name); column `month` (date-like name)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.9991130758072378,
+          "detail": "100% of training rows are dated after the earliest evaluation row (`date`)"
+        }
+      ],
+      "related": [
+        "baf82921d7339ecf"
+      ],
+      "suggested_fix": {
+        "description": "Sort by time and split without shuffling (shuffle=False), or use TimeSeriesSplit with the same number of folds.",
+        "canonical_fix": "replace_splitter:chronological"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "date",
+          "training_rows_after_earliest_evaluation_row": 0.9991
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

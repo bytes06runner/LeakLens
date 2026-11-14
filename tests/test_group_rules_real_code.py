@@ -235,3 +235,12 @@ def test_window_after_a_shift_or_for_a_shifted_target_is_fine(tmp_path):
     code = WINDOW.replace('y = d[{target}].values', 'd["next"] = d["revenue"].shift(-1)\ny = d["next"].values')
     out = scan(tmp_path, code.format(roll='d["revenue"].rolling(7).mean()'))
     assert [t for t, *_ in out if t == "target_derived"] == []
+
+
+def test_entity_token_lists_are_strings_and_clinical_id_suffixes_count():
+    from leaklens.static.analyzer import CFG, entity_strength
+
+    for key, vals in CFG["entity_tokens"].items():
+        assert all(isinstance(v, str) for v in vals), key  # a bare `no` in YAML would be the boolean False
+    assert entity_strength("patient_no") == "strong"
+    assert entity_strength("patient_nbr") == "strong"

@@ -1,0 +1,113 @@
+{
+  "code_version": {
+    "commit": "6780bffebc5530bc192c0e4ddf81ac513216e30b",
+    "built_utc": "2026-11-14T16:35:01Z"
+  },
+  "cases": {
+    "R017": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 299.0
+    },
+    "R040": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 14.3
+    },
+    "R074": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 64.3
+    },
+    "R036": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 1201.1
+    },
+    "R003": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 102.5
+    },
+    "R022": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 436.4
+    },
+    "R033": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 17.8
+    },
+    "R065": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 6.9
+    },
+    "R069": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 10.1
+    },
+    "R083": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 5.8
+    },
+    "R084": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 54.1
+    },
+    "R088": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 114.3
+    },
+    "R090": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 17.3
+    },
+    "R106": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 9.6
+    },
+    "R127": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 20.0
+    },
+    "R133": {
+      "returncode": 0,
+      "timed_out": false,
+      "seconds": 70.3
+    },
+    "R047": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 247.3
+    },
+    "R077": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 7.9
+    },
+    "R110": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 21.4
+    }
+  },
+  "python": "3.13.18",
+  "versions": {
+    "scikit-learn": "1.6.1",
+    "pandas": "2.3.3",
+    "numpy": "2.1.3",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.6.0",
+    "scipy": "1.16.3"
+  },
+  "seconds": 4023.6
+}

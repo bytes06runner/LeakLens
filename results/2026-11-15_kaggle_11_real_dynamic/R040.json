@@ -1,0 +1,77 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-8a5p6hhl",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T16:44:02Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R040.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "d2398c822f32d3fa",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R040.ipynb",
+        "line_start": 1,
+        "line_end": 1,
+        "cell": 15,
+        "flat_line_start": 19,
+        "flat_line_end": 19
+      },
+      "message": "Rows are split without regard to `id`; the same id can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `id` (name evidence); rows repeat per `id` (per-id computations such as groupby('id').transform)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 1.0,
+          "detail": "100 values of `id` occur on both sides of the split; 100% of evaluation rows belong to them"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`id` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "id",
+          "shared_entities": 100,
+          "entities": 100,
+          "test_rows_with_entity_in_train": 1.0
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-f7f4cdtt",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:43:10Z",
+    "config_hash": "50e853eda95916c2"
+  },
+  "files": [
+    {
+      "path": "R110.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "53a9201315272d8a",
+      "rule_id": "LL-PRE-002",
+      "type": "preprocessing",
+      "subtype": "pandas_stats",
+      "severity": "low",
+      "confidence": "medium",
+      "location": {
+        "file": "R110.ipynb",
+        "line_start": 3,
+        "line_end": 3,
+        "cell": 25,
+        "flat_line_start": 53,
+        "flat_line_end": 53
+      },
+      "message": "A data-dependent transformation is fitted on rows that include the evaluation rows.",
+      "evidence": [
+        {
+          "kind": "fit_call",
+          "detail": "a statistic computed over rows is applied to the data"
+        },
+        {
+          "kind": "data_flow",
+          "detail": "the transformed data is split or cross-validated afterwards"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split first and fit on the training rows only, or put the step in a Pipeline that is fitted inside each fold.",
+        "canonical_fix": "fit_on_train_only"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "TypeError: Cannot convert [['/cellphones/samsung-galaxy-s8/' '/cellphones/samsung-galaxy-s8/'\n  '/cellphones/samsung-galaxy-s8/' ...\n  '/cellphones/alcatel-ot-club_1187/' '/cellphones/alcatel-ot-club_1187/'\n  '/cellphones/alcatel-ot-club_1187/']\n ['5/2/2017' '4/28/2017' '5/4/2017' ... '5/4/2000' '5/1/2000' '4/25/2000']\n ['en' 'en' 'en' ... 'de' 'de' 'de']\n ['us' 'us' 'us' ... 'de' 'de' 'de']\n ['Verizon Wireless' 'Phone Arena' 'Amazon' ... 'Ciao' 'Ciao' 'Ciao']\n ['verizonwireless.com' 'phonearena.com' 'amazon.com' ... 'ciao.de'\n  'ciao.de' 'ciao.de']] to numeric"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "389f1e18940fbe08",
+      "rule_id": "LL-GRP-002",
+      "type": "group",
+      "subtype": "default_cv",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R110.ipynb",
+        "line_start": 1,
+        "line_end": 1,
+        "cell": 66,
+        "flat_line_start": 149,
+        "flat_line_end": 149
+      },
+      "message": "Rows are split without regard to `author`; the same author can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "cross_validate (default or integer cv): row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `author` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `product` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupKFold with groups=`author` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupKFold"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "TypeError: Cannot convert [['/cellphones/samsung-galaxy-s8/' '/cellphones/samsung-galaxy-s8/'\n  '/cellphones/samsung-galaxy-s8/' ...\n  '/cellphones/alcatel-ot-club_1187/' '/cellphones/alcatel-ot-club_1187/'\n  '/cellphones/alcatel-ot-club_1187/']\n ['5/2/2017' '4/28/2017' '5/4/2017' ... '5/4/2000' '5/1/2000' '4/25/2000']\n ['en' 'en' 'en' ... 'de' 'de' 'de']\n ['us' 'us' 'us' ... 'de' 'de' 'de']\n ['Verizon Wireless' 'Phone Arena' 'Amazon' ... 'Ciao' 'Ciao' 'Ciao']\n ['verizonwireless.com' 'phonearena.com' 'amazon.com' ... 'ciao.de'\n  'ciao.de' 'ciao.de']] to numeric"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "de9edb24e3e7719b",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R110.ipynb",
+        "line_start": 1,
+        "line_end": 1,
+        "cell": 73,
+        "flat_line_start": 186,
+        "flat_line_end": 186
+      },
+      "message": "Rows are split without regard to `author`; the same author can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `author` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `uid` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `product` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`author` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "TypeError: Cannot convert [['/cellphones/samsung-galaxy-s8/' '/cellphones/samsung-galaxy-s8/'\n  '/cellphones/samsung-galaxy-s8/' ...\n  '/cellphones/alcatel-ot-club_1187/' '/cellphones/alcatel-ot-club_1187/'\n  '/cellphones/alcatel-ot-club_1187/']\n ['5/2/2017' '4/28/2017' '5/4/2017' ... '5/4/2000' '5/1/2000' '4/25/2000']\n ['en' 'en' 'en' ... 'de' 'de' 'de']\n ['us' 'us' 'us' ... 'de' 'de' 'de']\n ['Verizon Wireless' 'Phone Arena' 'Amazon' ... 'Ciao' 'Ciao' 'Ciao']\n ['verizonwireless.com' 'phonearena.com' 'amazon.com' ... 'ciao.de'\n  'ciao.de' 'ciao.de']] to numeric"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "a869c511163b4b31",
+      "rule_id": "LL-GRP-001",
+      "type": "group",
+      "subtype": "row_split",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R110.ipynb",
+        "line_start": 1,
+        "line_end": 1,
+        "cell": 80,
+        "flat_line_start": 198,
+        "flat_line_end": 198
+      },
+      "message": "Rows are split without regard to `author`; the same author can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `author` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `uid` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `product` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`author` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "TypeError: Cannot convert [['/cellphones/samsung-galaxy-s8/' '/cellphones/samsung-galaxy-s8/'\n  '/cellphones/samsung-galaxy-s8/' ...\n  '/cellphones/alcatel-ot-club_1187/' '/cellphones/alcatel-ot-club_1187/'\n  '/cellphones/alcatel-ot-club_1187/']\n ['5/2/2017' '4/28/2017' '5/4/2017' ... '5/4/2000' '5/1/2000' '4/25/2000']\n ['en' 'en' 'en' ... 'de' 'de' 'de']\n ['us' 'us' 'us' ... 'de' 'de' 'de']\n ['Verizon Wireless' 'Phone Arena' 'Amazon' ... 'Ciao' 'Ciao' 'Ciao']\n ['verizonwireless.com' 'phonearena.com' 'amazon.com' ... 'ciao.de'\n  'ciao.de' 'ciao.de']] to numeric"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "06ef76eb2780699d",
+      "rule_id": "LL-GRP-002",
+      "type": "group",
+      "subtype": "default_cv",
+      "severity": "high",
+      "confidence": "medium",
+      "location": {
+        "file": "R110.ipynb",
+        "line_start": 2,
+        "line_end": 2,
+        "cell": 93,
+        "flat_line_start": 246,
+        "flat_line_end": 246
+      },
+      "message": "Rows are split without regard to `author`; the same author can be in training and evaluation rows, so the score does not measure performance on new entities.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "cross_validate (default or integer cv): row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `author` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `uid` (name evidence)"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `product` (name evidence)"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupKFold with groups=`author` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupKFold"
+      },
+      "dynamic": {
+        "status": "error",
+        "details": {
+          "reason": "TypeError: Cannot convert [['/cellphones/samsung-galaxy-s8/' '/cellphones/samsung-galaxy-s8/'\n  '/cellphones/samsung-galaxy-s8/' ...\n  '/cellphones/alcatel-ot-club_1187/' '/cellphones/alcatel-ot-club_1187/'\n  '/cellphones/alcatel-ot-club_1187/']\n ['5/2/2017' '4/28/2017' '5/4/2017' ... '5/4/2000' '5/1/2000' '4/25/2000']\n ['en' 'en' 'en' ... 'de' 'de' 'de']\n ['us' 'us' 'us' ... 'de' 'de' 'de']\n ['Verizon Wireless' 'Phone Arena' 'Amazon' ... 'Ciao' 'Ciao' 'Ciao']\n ['verizonwireless.com' 'phonearena.com' 'amazon.com' ... 'ciao.de'\n  'ciao.de' 'ciao.de']] to numeric"
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}
