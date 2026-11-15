@@ -1,0 +1,23 @@
+{
+  "code_version": {
+    "commit": "9e919b0ce7c2a27fd69b7e6e687a768faaf82833",
+    "built_utc": "2026-11-14T17:52:09Z"
+  },
+  "cases": {
+    "R017": {
+      "returncode": 1,
+      "timed_out": false,
+      "seconds": 287.9
+    }
+  },
+  "python": "3.13.18",
+  "versions": {
+    "scikit-learn": "1.6.1",
+    "pandas": "2.3.3",
+    "numpy": "2.1.3",
+    "xgboost": "3.4.1",
+    "lightgbm": "4.6.0",
+    "scipy": "1.16.3"
+  },
+  "seconds": 372.0
+}

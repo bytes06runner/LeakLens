@@ -1,0 +1,203 @@
+{
+  "schema": "leaklens/report/v1",
+  "tool": {
+    "name": "leaklens",
+    "version": "0.0.1",
+    "commit": null
+  },
+  "scan": {
+    "root": "/tmp/leaklens-sbx-x5lahhze",
+    "mode": "dynamic",
+    "started_utc": "2026-11-14T17:59:04Z",
+    "config_hash": "1db91b649610620d"
+  },
+  "files": [
+    {
+      "path": "R017.ipynb",
+      "status": "ok",
+      "reason": null,
+      "ingest": {
+        "order_used": "cell",
+        "skipped_cells": []
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "b7db5302c74da25d",
+      "rule_id": "LL-OVL-004",
+      "type": "overlap",
+      "subtype": "raw_duplicates",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 20,
+        "line_end": 20,
+        "cell": 10,
+        "flat_line_start": 448,
+        "flat_line_end": 448
+      },
+      "message": "4% of the evaluation rows are identical to a training row: the data contains duplicated records, and the split puts copies on both sides.",
+      "evidence": [
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.038125184238970225,
+          "detail": "train_test_split: identical rows on both sides of the split; 98% of all rows are distinct"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Remove duplicated records before the split (for example drop_duplicates on the feature columns).",
+        "canonical_fix": "deduplicate_before_split"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "evaluation_rows_identical_to_a_training_row": 0.0381
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "2948d4c7dc8a5e2d",
+      "rule_id": "LL-GRP-004",
+      "type": "group",
+      "subtype": "entity_overlap",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 20,
+        "line_end": 20,
+        "cell": 10,
+        "flat_line_start": 448,
+        "flat_line_end": 448
+      },
+      "message": "The data has a column `patient_nbr` that the split ignores: 7001 of its values are on both sides, and 42% of the evaluation rows belong to an entity that is also in the training rows.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `patient_nbr` found at run time (71518 values in 101766 rows; name evidence)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.41603615996855653,
+          "detail": "7001 values of `patient_nbr` occur on both sides of the split"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`patient_nbr` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "patient_nbr",
+          "shared_entities": 7001,
+          "test_rows_with_entity_in_train": 0.416
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "b7db5302c74da25d",
+      "rule_id": "LL-OVL-004",
+      "type": "overlap",
+      "subtype": "raw_duplicates",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 36,
+        "line_end": 36,
+        "cell": 12,
+        "flat_line_start": 636,
+        "flat_line_end": 636
+      },
+      "message": "4% of the evaluation rows are identical to a training row: the data contains duplicated records, and the split puts copies on both sides.",
+      "evidence": [
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.04289083226884151,
+          "detail": "train_test_split: identical rows on both sides of the split; 97% of all rows are distinct"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Remove duplicated records before the split (for example drop_duplicates on the feature columns).",
+        "canonical_fix": "deduplicate_before_split"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "evaluation_rows_identical_to_a_training_row": 0.0429
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    },
+    {
+      "id": "2948d4c7dc8a5e2d",
+      "rule_id": "LL-GRP-004",
+      "type": "group",
+      "subtype": "entity_overlap",
+      "severity": "high",
+      "confidence": "high",
+      "location": {
+        "file": "R017.ipynb",
+        "line_start": 36,
+        "line_end": 36,
+        "cell": 12,
+        "flat_line_start": 636,
+        "flat_line_end": 636
+      },
+      "message": "The data has a column `patient_nbr` that the split ignores: 7001 of its values are on both sides, and 42% of the evaluation rows belong to an entity that is also in the training rows.",
+      "evidence": [
+        {
+          "kind": "split_call",
+          "detail": "train_test_split: row-level, not group-aware"
+        },
+        {
+          "kind": "entity_column",
+          "detail": "column `patient_nbr` found at run time (71518 values in 101766 rows; name evidence)"
+        },
+        {
+          "kind": "dynamic_overlap",
+          "value": 0.41603615996855653,
+          "detail": "7001 values of `patient_nbr` occur on both sides of the split"
+        }
+      ],
+      "related": [],
+      "suggested_fix": {
+        "description": "Split by entity: use GroupShuffleSplit with groups=`patient_nbr` (same folds, test size and seed).",
+        "canonical_fix": "replace_splitter:GroupShuffleSplit"
+      },
+      "dynamic": {
+        "status": "confirmed",
+        "details": {
+          "column": "patient_nbr",
+          "shared_entities": 7001,
+          "test_rows_with_entity_in_train": 0.416
+        }
+      },
+      "impact": {
+        "status": "not_run"
+      },
+      "suppressed": null
+    }
+  ]
+}
